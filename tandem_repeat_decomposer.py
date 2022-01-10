@@ -154,7 +154,7 @@ def is_valid_sequence(sequence):
     return True
 
 
-def decompose_dp(sequence, motifs, verbose=False):
+def decompose_dp(sequence, motifs, match_score=1, mismatch_score=-3, verbose=False):
     """
     Decompose sequence into motifs using dynamic programming
     :param sequence: a string of VNTR sequence
@@ -190,11 +190,11 @@ def decompose_dp(sequence, motifs, verbose=False):
     s[i,m,j] =
     1. if j = 1
                max(max_m'( s[i-1, m', len(m')] ) + match )
-                  (s[i-1, m, 1] + mismatch               )
+                  (s[i-1, m, 1] + indel               )
     2. otherwise
                   ( s[i-1, m, j-1] + match    )
-               max( s[i-1, m, j]   + mismatch )
-                  ( s[i, m, j-1]   + mismatch )
+               max( s[i-1, m, j]   + deletion )
+                  ( s[i, m, j-1]   + insertion )
     
     
     # Solution
@@ -208,64 +208,90 @@ def decompose_dp(sequence, motifs, verbose=False):
     """
 
     # Score
-    mismatch_score = -2
-    match_score = 5
-    insertion_score = -3
-    deletion_score = -3
+    # mismatch_score = -2
+    # match_score = 5
+    insertion_score = mismatch_score
+    deletion_score = mismatch_score
 
     # Define s[i, m, j]
     # numpy array doesn't allow to have different length array
     # Use a largest length of motifs to build a 3D square-like array
+    # 0 <= i <= n: count: n+1
+    # 0 <= m <= len(motif) - 1: count: len(motif)
+    # 0 <= j <= len(m): count: len(m)+1
     max_motif_length = len(max(motifs, key=len))
     if verbose:
         print("Max motif length", max_motif_length)
 
-    s = np.zeros(len(sequence), dtype=object)
-    backtrack = np.zeros(len(sequence), dtype=object)
-    for i in range(len(sequence)):
+    s = np.zeros(len(sequence) + 1, dtype=object)
+    backtrack = np.zeros(len(sequence) + 1, dtype=object)
+    for i in range(len(sequence) + 1):
         s[i] = np.zeros(len(motifs), dtype=object)
         backtrack[i] = np.zeros(len(motifs), dtype=object)
         for m in range(len(motifs)):
-            s[i][m] = np.zeros(max_motif_length)
-            backtrack[i][m] = np.zeros(max_motif_length, dtype=object)
+            s[i][m] = np.zeros(max_motif_length + 1)
+            backtrack[i][m] = np.zeros(max_motif_length + 1, dtype=object)
 
-    # Boundary cases
+    # Boundary cases, when i = 0 or j = 0
     for m, motif in enumerate(motifs):
-        for j in range(1, len(motif)):
-            if j == 0:  # Boundary case, if i = 0 and j = 0
-                s[0][m][0] = match_score if sequence[0] == motif[0] else mismatch_score
-                backtrack[0][m][j] = (0, m, 0)
-            else:  # Boundary case if i = 0 and j > 0
-                s[0][m][j] = s[0][m][j - 1] + insertion_score
-                backtrack[0][m][j] = (0, m, j - 1)
+        for i in range(len(sequence) + 1):
+            for j in range(len(motif) + 1):
+                if i == 0 and j == 0:
+                    s[0][m][0] = 0
+                    backtrack[0][m][j] = (0, m, 0)
+                elif i == 0 and j != 0:
+                    s[0][m][j] = s[0][m][j - 1] + insertion_score
+                    backtrack[0][m][j] = (0, m, j - 1)
+                elif i != 0 and j == 0:
+                    s[i][m][0] = s[i - 1][m][0] + insertion_score
+                    backtrack[i][m][0] = (i - 1, m, 0)
 
     # Normal cases, if i != 0
-    for i in range(1, len(sequence)):
+    for i in range(1, len(sequence) + 1):
         for m, motif in enumerate(motifs):
-            for j in range(len(motif)):
-                if j == 0:
-                    max_motif_val = -1
-                    max_m_index = -1
-                    max_j_of_max_m = -1
-                    for mi, ms in enumerate(motifs):
-                        m_end = s[i-1][mi][len(ms) - 1]
-                        if m_end > max_motif_val:
-                            max_motif_val = m_end
-                            max_m_index = mi
-                            max_j_of_max_m = len(ms) - 1
+            for j in range(1, len(motif) + 1):
+                if j == 1:
+                    if i == 1:
+                        from_diagonal = s[i -1][m][j - 1] + match_score if sequence[i - 1] == motif[j - 1] else s[i -1][m][j -1] + mismatch_score
+                        from_m_left = s[i - 1][m][1] + match_score if sequence[i - 1] == motif[j - 1] else s[i - 1][m][1] + mismatch_score
+                        from_m_up = s[i][m][j - 1] + match_score if sequence[i - 1] == motif[0] else s[i][m][j - 1] + mismatch_score
 
-                    max_from_end = max_motif_val + match_score if sequence[i] == motif[j] else max_motif_val + mismatch_score
-                    from_m_left = s[i - 1][m][0] + match_score if sequence[i] == motif[0] else s[i - 1][m][0] + mismatch_score
+                        s[i][m][j] = max(from_diagonal, from_m_left, from_m_up)
+                        argmax_index = np.argmax([from_diagonal, from_m_left, from_m_up])
 
-                    s[i][m][j] = max(max_from_end, from_m_left)
-                    if np.argmax([max_from_end, from_m_left]) == 0:  # max from end
-                        backtrack[i][m][j] = (i - 1, max_m_index, max_j_of_max_m)
-                    else:  # from same m
-                        backtrack[i][m][j] = (i - 1, m, 0)  # j == 0
+                        if argmax_index == 0:  # max from end
+                            backtrack[i][m][j] = (0, m, 0)
+                        elif argmax_index == 1:  # max from left in the same m
+                            backtrack[i][m][j] = (i - 1, m, j)
+                        else:  # max from up in the same m
+                            backtrack[i][m][j] = (i, m, 0)  # j == 0
+                    else:
+                        max_motif_val = -1
+                        max_m_index = -1
+                        max_j_of_max_m = -1
+                        for mi, ms in enumerate(motifs):
+                            m_end = s[i - 1][mi][len(ms)]
+                            if m_end > max_motif_val:
+                                max_motif_val = m_end
+                                max_m_index = mi
+                                max_j_of_max_m = len(ms)
+
+                        max_from_end = max_motif_val + match_score if sequence[i - 1] == motif[0] else max_motif_val + mismatch_score
+                        from_m_left = s[i - 1][m][1] + match_score if sequence[i - 1] == motif[0] else s[i - 1][m][1] + mismatch_score
+                        from_m_up = s[i][m][0] + match_score if sequence[i - 1] == motif[0] else s[i][m][0] + mismatch_score
+
+                        s[i][m][j] = max(max_from_end, from_m_left, from_m_up)
+                        argmax_index = np.argmax([max_from_end, from_m_left, from_m_up])
+                        if argmax_index == 0:  # max from end
+                            backtrack[i][m][j] = (i - 1, max_m_index, max_j_of_max_m)
+                        elif argmax_index == 1:  # max from left in the same m
+                            backtrack[i][m][j] = (i - 1, m, 1)
+                        else:  # max from up in the same m
+                            backtrack[i][m][j] = (i, m, 0)
 
                 else:
-                    # print(f'motif {motif}, i {i}, m {m}, j{j}')
-                    diagonal = s[i - 1][m][j - 1] + match_score if sequence[i] == motif[j] else s[i - 1][m][j - 1] + mismatch_score
+                    print(f'motif {motif}, i {i}, m {m}, j{j}')
+                    diagonal = s[i - 1][m][j - 1] + match_score if sequence[i - 1] == motif[j - 1] else s[i - 1][m][j - 1] + mismatch_score
                     insertion = s[i - i][m][j] + insertion_score
                     deletion = s[i][m][j - 1] + deletion_score
 
@@ -294,9 +320,12 @@ def decompose_dp(sequence, motifs, verbose=False):
     backtrack_start = 0
     backtrack_max = 0
     for m, motif in enumerate(motifs):
-        if backtrack_max < s[len(sequence)-1][m][len(motif)-1]:
-            backtrack_max = s[len(sequence)-1][m][len(motif)-1]
-            backtrack_start = (len(sequence)-1, m, len(motif)-1)
+        if backtrack_max < s[len(sequence)][m][len(motif)]:
+            backtrack_max = s[len(sequence)][m][len(motif)]
+            backtrack_start = (len(sequence), m, len(motif))
+
+    if verbose:
+        print("Best score: ", backtrack_max)
 
     backtrack_pointer = backtrack_start
     prev_i = -1
@@ -309,18 +338,24 @@ def decompose_dp(sequence, motifs, verbose=False):
             print("Backtrack pointer", backtrack_pointer)
         i, m, j = backtrack_pointer
 
-        if prev_j == 0 and j != 0:  # decompose
+        if prev_j == 1 and j != 1:  # decompose
+            print("added", decomposed_motif[::-1])
             decomposed_motifs.append(decomposed_motif[::-1])
             decomposed_motif = ""
 
-        if prev_i != i:
-            decomposed_motif += sequence[i]
+        if prev_i != i and i != 0:
+            decomposed_motif += sequence[i - 1]
+
         backtrack_pointer = backtrack[i][m][j]
-        if i == 0:
-            decomposed_motifs.append(decomposed_motif[::-1])
+
+        if i == 0 and j == 0:
             break
+
         prev_i = i
         prev_j = j
+
+    print("sequence {}".format(''.join(decomposed_motifs[::-1])))
+    print("sequence {}".format(' '.join(decomposed_motifs[::-1])))
 
     return decomposed_motifs[::-1]
 
@@ -405,21 +440,22 @@ def label_motifs(decomposed_vntrs):
 
 if __name__ == "__main__":
 
-    # sequence = "ACTGGGACTGACTGT"
-    # motifs = ["ACTG", "ACTGGG", "ACTGT"]
-    # decomposed_motifs = decompose_dp(sequence, motifs)
-    # print(f'sequence {sequence}')
-    # print(f'motifs {motifs}')
-    # print(f'decomposed_motifs {decomposed_motifs}')
-    #
-    # sequence = "AAATAAAATTAAAATAAAAAATA"
-    # # motifs = ["AAATA"]
-    # motifs = "AAATA"
-    # decomposed_motifs = decompose_dp(sequence, motifs)
-    # print(f'sequence {sequence}')
-    # print(f'motifs {motifs}')
-    # print(f'decomposed_motifs {decomposed_motifs}')
-    # exit(1)
+    sequence = "ACTGGGACTGACTGT"
+    motifs = ["ACTG", "ACTGGG", "ACTGT"]
+    decomposed_motifs = decompose_dp(sequence, motifs, verbose=True)
+    print(f'sequence {sequence}')
+    print(f'motifs {motifs}')
+    print(f'decomposed_motifs {decomposed_motifs}')
+
+    sequence = "AAATAAAATAAAATAAAATA"
+    #          "AAATA AAATTA AAATA AAAAATA"
+    # motifs = ["AAATA"]
+    motifs = "AAATA"
+    decomposed_motifs = decompose_dp(sequence, motifs, verbose=True)
+    print(f'sequence {sequence}')
+    print(f'motifs {motifs}')
+    print(f'decomposed_motifs {decomposed_motifs}')
+    exit(1)
 
     decomposed_vntrs = []
 
