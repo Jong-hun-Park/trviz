@@ -154,7 +154,12 @@ def is_valid_sequence(sequence):
     return True
 
 
-def decompose_dp(sequence, motifs, match_score=1, mismatch_score=-3, verbose=False):
+def decompose_dp(sequence,
+                 motifs,
+                 match_score=5,
+                 mismatch_score=-2,
+                 min_score_threshold=float("-inf"),
+                 verbose=False):
     """
     Decompose sequence into motifs using dynamic programming
     :param sequence: a string of VNTR sequence
@@ -266,7 +271,7 @@ def decompose_dp(sequence, motifs, match_score=1, mismatch_score=-3, verbose=Fal
                         else:  # max from up in the same m
                             backtrack[i][m][j] = (i, m, 0)  # j == 0
                     else:
-                        max_motif_val = -1
+                        max_motif_val = float('-inf')
                         max_m_index = -1
                         max_j_of_max_m = -1
                         for mi, ms in enumerate(motifs):
@@ -290,7 +295,7 @@ def decompose_dp(sequence, motifs, match_score=1, mismatch_score=-3, verbose=Fal
                             backtrack[i][m][j] = (i, m, 0)
 
                 else:
-                    print(f'motif {motif}, i {i}, m {m}, j{j}')
+                    # print(f'motif {motif}, i {i}, m {m}, j{j}')
                     diagonal = s[i - 1][m][j - 1] + match_score if sequence[i - 1] == motif[j - 1] else s[i - 1][m][j - 1] + mismatch_score
                     insertion = s[i - i][m][j] + insertion_score
                     deletion = s[i][m][j - 1] + deletion_score
@@ -317,12 +322,15 @@ def decompose_dp(sequence, motifs, match_score=1, mismatch_score=-3, verbose=Fal
                 print(f"i{i}, m{m}, {backtrack[i]}")
 
     # Backtracking - getting decomposed motifs
-    backtrack_start = 0
-    backtrack_max = 0
+    backtrack_start = None
+    backtrack_max = min_score_threshold
     for m, motif in enumerate(motifs):
         if backtrack_max < s[len(sequence)][m][len(motif)]:
             backtrack_max = s[len(sequence)][m][len(motif)]
             backtrack_start = (len(sequence), m, len(motif))
+
+    if backtrack_start is None:
+        raise ValueError("No good match greater than score threshold of {}".format(min_score_threshold))
 
     if verbose:
         print("Best score: ", backtrack_max)
@@ -339,7 +347,8 @@ def decompose_dp(sequence, motifs, match_score=1, mismatch_score=-3, verbose=Fal
         i, m, j = backtrack_pointer
 
         if prev_j == 1 and j != 1:  # decompose
-            print("added", decomposed_motif[::-1])
+            if verbose:
+                print("Decomposed motif: ", decomposed_motif[::-1])
             decomposed_motifs.append(decomposed_motif[::-1])
             decomposed_motif = ""
 
@@ -354,8 +363,9 @@ def decompose_dp(sequence, motifs, match_score=1, mismatch_score=-3, verbose=Fal
         prev_i = i
         prev_j = j
 
-    print("sequence {}".format(''.join(decomposed_motifs[::-1])))
-    print("sequence {}".format(' '.join(decomposed_motifs[::-1])))
+    if verbose:
+        print("Input     : {}".format(''.join(decomposed_motifs[::-1])))
+        print("Decomposed: {}".format(' '.join(decomposed_motifs[::-1])))
 
     return decomposed_motifs[::-1]
 
@@ -416,7 +426,12 @@ def get_motif_labels(decomposed_vntrs):
 
 
 def index_to_char(index):
-    return chr(index + 97)
+    if index > 126 - (33 + 3):
+        raise ValueError("Index: {}, Index should be in range of 33 <= index <= 126".format(index))
+    if index >= (60 - 33):
+        return chr(index + 33 + 3)  # "=, >, <" can not be used in MAFFT
+    else:
+        return chr(index + 33)  # "Start with !"
 
 
 def label_motifs(decomposed_vntrs):
@@ -426,16 +441,19 @@ def label_motifs(decomposed_vntrs):
     :return: labeled_vntrs, motif to alphabet (dictionary of the mapping)
     """
     unique_motifs = get_motif_labels(decomposed_vntrs)
+    if len(unique_motifs) > 126-33+1:  # single symbol ascii
+        raise ValueError("Too many unique motifs. Can not encode properly.")
     motif_to_alphabet = {motif: index_to_char(index) for index, motif in enumerate(sorted(list(unique_motifs)))}
+    alphabet_to_motif = {index_to_char(index): motif for index, motif in enumerate(sorted(list(unique_motifs)))}
 
     labeled_vntrs = []
     for vntr in decomposed_vntrs:
         labeled_vntr = ""
         for motif in vntr:
-            labeled_vntr += str(motif_to_alphabet[motif])
+            labeled_vntr += str(motif_to_alphabet[motif])  # Only alphabets are allowed
         labeled_vntrs.append(labeled_vntr)
 
-    return labeled_vntrs, motif_to_alphabet
+    return labeled_vntrs, motif_to_alphabet, alphabet_to_motif
 
 
 if __name__ == "__main__":
