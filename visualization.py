@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
-import seaborn as sns
 
 
 def encode_tr_sequence(labeled_motifs):
@@ -20,7 +19,50 @@ def encode_tr_sequence(labeled_motifs):
     return decomposed_motifs
 
 
-def trplot(data):
+def get_unique_repeats(aligned_repeats):
+    unique_repeats = set()
+    for rs in aligned_repeats:
+        for r in rs:
+            unique_repeats.add(r)
+
+    return sorted(list(unique_repeats))
+
+
+def plot_motif_color_map(motif_color_map):
+
+    fig = plt.figure(figsize=(8, 5))  # width and height in inch
+    ax = plt.subplot(1, 1, 1, aspect=1, autoscale_on=True, frameon=False,
+                     xticks=[y for y in range(len(motif_color_map) + 1)],
+                     yticks=[y for y in range(len(motif_color_map) + 1)])
+
+    for i, (motif, color) in enumerate(motif_color_map.items()):
+        print(motif)
+        print(color)
+        print(i)
+        box_position = [0, i]
+        box_width = 0.5
+        box_height = 0.5
+        ax.add_patch(plt.Rectangle(box_position, box_width, box_height,
+                                   linewidth=0,
+                                   facecolor=color,
+                                   edgecolor="white"))
+        text_position = [box_position[0] + 2.5 * box_width / 2, box_position[1] + box_height / 2]
+        ax.text(x=text_position[0], y=text_position[1], s=motif, fontsize=20)
+
+    plt.xticks([])
+    plt.yticks([])
+    plt.tight_layout()
+    plt.savefig("test_motif_map.png")
+    plt.show()
+
+
+def trplot(aligned_repeats,
+           outfolder=None, outname=None,
+           dpi=100,
+           xticks=None,
+           xtick_degrees=90,
+           hide_yticks=False,
+           debug=False):
     """
 
     :type data: object
@@ -30,50 +72,65 @@ def trplot(data):
     # ['BBB----', 'BBBAB--', 'BBCABBB']
     # Convert alphabet to number
 
-    encoded_data = encode_tr_sequence(data)
-    print(encoded_data)
+    fig = plt.figure(figsize=(15, 7))  # width and height in inch
 
-    max_ru_length = len(encoded_data[0])
-    df_dict = {}
-    for i in range(max_ru_length):
-        df_dict[str(i+1)] = list()
-        for d in encoded_data:
-            df_dict[str(i+1)].append(d[i])
+    max_repeat = len(aligned_repeats[0])
+    if debug:
+        print("Max repeats: {}".format(max_repeat))
 
-    print(df_dict)
-    df = pd.DataFrame.from_dict(df_dict)
-    print(df)
-    # print(df[[1, 2, 3]])
+    ax = plt.subplot(1, 1, 1, aspect=2, autoscale_on=False, frameon=False,
+                     xticks=[x for x in range(len(aligned_repeats) + 1)],
+                     yticks=[y for y in range(max_repeat + 1)])
 
-    df = pd.read_csv("test_dict.csv")
-    df.set_index('sample', inplace=True)
-    print("DF")
-    print(df)
+    unique_repeats = get_unique_repeats(aligned_repeats)
+    number_of_colors = len(unique_repeats)
 
+    cmap = plt.cm.get_cmap("tab20")  #XXX Note that the number of colors maybe not enough!
+    # colors = cmap(len(unique_repeats))
+    motif_color_map = {r: cmap(i) for i, r in enumerate(list(unique_repeats))}
 
-    fig = plt.figure()
+    allele_count = len(aligned_repeats)
+    box_height = max_repeat/len(aligned_repeats[0])
+    box_width = 1.0
+    # print("box height", box_height)
+    # print("box width", box_width)
 
-    num_colors = df.to_numpy().max()
-    print("num colors", num_colors)
-    cmap = ListedColormap([(1.0, 1.0, 1.0, 1.0)] + sns.color_palette("plasma", n_colors=num_colors))
+    for allele_index, allele in enumerate(aligned_repeats):
+        if debug:
+            print("Allele index", allele_index)
+        box_position = [allele_index, 0]
+        for box_index, repeat in enumerate(allele):
+            box_position[1] = box_height * box_index
+            if debug:
+                print("Drawing box in position", box_position)
+            fcolor = motif_color_map[repeat]
+            if repeat == '-':  # For gaps, color them as white blocks
+                fcolor = (1, 1, 1, 1)
+            ax.add_patch(plt.Rectangle(box_position, box_width, box_height,
+                                       linewidth=0.0,
+                                       facecolor=fcolor,
+                                       edgecolor="white"))
 
-    g = sns.clustermap(df[[str(i+1) for i in range(len(df.columns))]],
-                       col_cluster=False,
-                       linewidth=0.2,
-                       # figsize=(len(df.columns), len(df.index)/10),
-                       yticklabels=False,
-                       cbar_kws={'ticks': [i for i in range(num_colors+1)]},
-                       vmin=0,
-                       vmax=num_colors,
-                       cmap=cmap)
+    if xticks is not None:
+        plt.xticks([x+0.5 for x in range(len(xticks))], xticks,
+                   fontsize=5,
+                   rotation=xtick_degrees)
+    else:
+        plt.xticks([])
 
-    g.cax.set_visible(False)  # No colorbar
-    ax = g.ax_heatmap
+    if hide_yticks:
+        plt.yticks([])
 
-    ax.set_xlabel("Repeat Counts", fontsize=20)
-    ax.set_xlabel("Alleles", fontsize=20)
+    plt.tick_params(
+        axis='x',  # changes apply to the x-axis
+        which='both',  # both major and minor ticks are affected
+        bottom=False,  # ticks along the bottom edge are off
+        top=False,  # ticks along the top edge are off
+        labelbottom=True)  # labels along the bottom edge are off
 
-    # plt.show()
     plt.tight_layout()
-    plt.savefig("test.png")
-    # plt.close()
+    if outname is not None and outfolder is not None:
+        plt.savefig("{}/{}.png".format(outfolder, outname), dpi=dpi)
+    else:
+        plt.savefig("test_real_vntr.png", dpi= dpi)
+    # plt.show()
