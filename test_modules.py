@@ -202,8 +202,10 @@ def process_vntr(tr_sequences, motifs, vid, sample_ids, private_motif_threshold)
     fasta_out = open("{}_seq.fasta".format(vid), "w")
 
     decomposed_vntrs = []
-    # Test motif 1
-    # motifs = motifs[0]
+    # Test with one motif (for faster decomposition)
+    motifs = motifs[0]
+    print("Motifs used for decomposition: {}".format(motifs))
+
     for i, tr_sequence in enumerate(tr_sequences):
         print("Processing: {}, {}".format(i, tr_sequence))
         fasta_out.write(">{}\n{}\n".format(i, tr_sequence))
@@ -223,6 +225,10 @@ def process_vntr(tr_sequences, motifs, vid, sample_ids, private_motif_threshold)
 
     # Label motifs
     labeled_vntrs, motif_to_alphabet, alphabet_to_motif = label_motifs(decomposed_vntrs, private_motif_threshold, auto=True)
+    with open("{}_motif_map.tsv", "w") as f:
+        for motif in motif_to_alphabet:
+            f.write("{}\t{}\n".format(motif, motif_to_alphabet[motif]))
+
     print("Motif to alphabet dict", motif_to_alphabet)
     print("Alphabet dict", alphabet_to_motif)
     print("Labeled vntrs", labeled_vntrs)
@@ -333,6 +339,7 @@ def process_vntr(tr_sequences, motifs, vid, sample_ids, private_motif_threshold)
     trplot(sorted_aligned_vntrs,
            outfolder="long_vntr_plots", outname=str(vid) + "_annealing",
            dpi=100,
+           alpha=0.5,
            xticks=sample_ids,
            xtick_degrees=90,
            hide_yticks=False)
@@ -342,12 +349,18 @@ if __name__ == "__main__":
     # load vntr data
 
 
-    # target_vntr_files = glob.glob("./tr_seqeunces/*sequences.tsv")
+    # target_vntr_files = glob.glob("./tr_sequences/*sequences.tsv")
     # Error VNTR
-    target_vntr_files = glob.glob("./tr_seqeunces/385941_tr_sequences.tsv")
-    # target_vntr_files = glob.glob("./tr_seqeunces/830537_tr_sequences.tsv")
-    # target_vntr_files = glob.glob("./tr_seqeunces/329655_tr_sequences_edited.tsv")
-    # target_vntr_files = glob.glob("./tr_seqeunces/329655_tr_sequences_selected.tsv")
+    target_vntr_files = glob.glob("tr_sequences/385941_tr_sequences.tsv")
+
+    # target_vntr_files = glob.glob("./tr_sequences/830537_tr_sequences.tsv")
+    # target_vntr_files = glob.glob("./tr_sequences/329655_tr_sequences_edited.tsv")
+    # target_vntr_files = glob.glob("./tr_sequences/329655_tr_sequences_selected.tsv")
+
+    target_vntr_files = glob.glob("course_tr_sequences/*.tsv")
+    # target_vntr_files = glob.glob("tr_sequences/329655_tr_sequences.tsv")  # VPS53 41 bp motif
+    # target_vntr_files = glob.glob("tr_sequences/830537_tr_sequences.tsv")  # WDR60 38 bp motif
+
     PRIVATE_MOTIF_THRESHOLD = 0
     print(len(target_vntr_files))
 
