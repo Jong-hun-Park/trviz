@@ -9,7 +9,7 @@ from Bio.Align.Applications import MafftCommandline
 from Bio import AlignIO
 
 
-def align_motifs(labeled_vntrs, method="muscle"):
+def align_motifs(labeled_vntrs, vid=None, method="muscle"):
     if method == "muscle":
         muscle_cline = MuscleCommandline('muscle', clwstrict=True)
         data = '\n'.join(['>%s\n' % str(i) + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
@@ -31,21 +31,48 @@ def align_motifs(labeled_vntrs, method="muscle"):
         aligned_motifs = [str(aligned.seq) for aligned in alignment]
 
     elif method == "mafft":
+        temp_input_name = "temp/temp_input.fa"
+        temp_output_name = "temp/temp_output.fa"
+        if vid is not None:
+            temp_input_name = "temp/temp_input_{}.fa".format(vid)
+            temp_output_name = "temp/temp_output_{}.fa".format(vid)
 
         data = '\n'.join(['>%s\n' % str(i) + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
-        with open("test_input.fasta", "w") as f:
+        with open(temp_input_name, "w") as f:
             f.write(data)
-        mafft_cline = MafftCommandline(input="test_input.fasta")
-        print(mafft_cline)
-        stdout, stderr = mafft_cline()
-        print(stdout)
-        import subprocess
-        # import os
-        # stdout = os.system("mafft --anysymbol < {}".format(data))
-        # print(stdout)
-        # stdout = subprocess.run(["mafft", "--anysymbol", "<", data], stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
 
-        alignment = AlignIO.read(StringIO(stdout), "fasta")
-        aligned_motifs = [str(aligned.seq) for aligned in alignment]
+        # mafft_cline = MafftCommandline(input="test_input.fasta")
+        # print(mafft_cline)
+        # stdout, stderr = mafft_cline()
+        # print(stdout)
+
+        import subprocess
+        import os
+        stdout = os.system("mafft --text --auto {} > {}".format(temp_input_name, temp_output_name))
+
+        # import subprocess
+        # align_out = open(temp_output_name, "w")
+        # p = subprocess.run(['mafft', '--anysymbol', '--auto', temp_input_name],
+        #                    shell=True,
+        #                    stdout=align_out,
+        #                    stderr=subprocess.STDOUT)
+        # print(p)
+
+        import time
+        print("sleeping...")
+        time.sleep(3)
+        # stdout = subprocess.run(["mafft", "--anysymbol", "temp_input.fasta"], stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
+        # print(stdout)
+
+        # alignment = AlignIO.read(StringIO(stdout), "fasta")
+        # aligned_motifs = [str(aligned.seq) for aligned in alignment]
+
+        aligned_motifs = []
+        with open(temp_output_name, "r") as f:
+            for line in f:
+                if line.startswith(">"):
+                    continue
+                else:
+                    aligned_motifs.append(line.strip())
 
     return aligned_motifs
