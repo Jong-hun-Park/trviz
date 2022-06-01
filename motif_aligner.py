@@ -67,12 +67,18 @@ def align_motifs(labeled_vntrs, vid=None, method="muscle"):
         # alignment = AlignIO.read(StringIO(stdout), "fasta")
         # aligned_motifs = [str(aligned.seq) for aligned in alignment]
 
-        aligned_motifs = []
+        aligned_vntrs = []
+        tr_seq = None
         with open(temp_output_name, "r") as f:
             for line in f:
                 if line.startswith(">"):
-                    continue
+                    if tr_seq is not None:
+                        aligned_vntrs.append(tr_seq)
+                    tr_seq = ""
                 else:
-                    aligned_motifs.append(line.strip())
+                    tr_seq += line.strip()
 
-    return aligned_motifs
+        if len(tr_seq) > 0:
+            aligned_vntrs.append(tr_seq)
+
+    return aligned_vntrs
