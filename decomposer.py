@@ -1,3 +1,5 @@
+from collections import Counter
+
 import settings
 
 if settings.decomposition_method == "hmm":
@@ -226,6 +228,7 @@ def decompose_dp(sequence,
     # 0 <= j <= len(m): count: len(m)+1
     max_motif_length = len(max(motifs, key=len))
     if verbose:
+        print("Motifs used for decomposition: {}".format(','.join(motifs)))
         print("Max motif length", max_motif_length)
 
     s = np.zeros(len(sequence) + 1, dtype=object)
@@ -426,34 +429,120 @@ def get_motif_labels(decomposed_vntrs):
 
 
 def index_to_char(index):
-    if index > 126 - (33 + 3):
-        raise ValueError("Index: {}, Index should be in range of 33 <= index <= 126".format(index))
-    if index >= (60 - 33):
-        return chr(index + 33 + 3)  # "=, >, <" can not be used in MAFFT
-    else:
-        return chr(index + 33)  # "Start with !"
+    """
+    --anysymbol
+    To use unusual characters (e.g., U as selenocysteine in protein sequence; i as inosine in nucleotide sequence),
+    use the --anysymbol option:
+    % mafft --anysymbol input > output
+    It accepts any printable characters (U, O, #, $, %, etc.; 0x21-0x7e in the ASCII code),
+    execpt for > (0x3e) and ( (0x28).
+    # '= (60) < (61) > (62)' can not be used
+    Unusual characters are scored as unknown (not considered in the calculation), unlike in the --text mode.
+    """
+    transformed_index = index + 33  # Transform index to start with '!' (Decimal 33)
+
+    if transformed_index < 33 or transformed_index > 126:
+        raise ValueError("Index should be in range of 33 <= index <= 126. Received {}".format(transformed_index))
+
+    if transformed_index < 40:
+        return chr(transformed_index)
+    elif 40 <= transformed_index <= 58:
+        return chr(transformed_index + 1)  # skip "("
+    else:  # transformed_index >= 59:
+        return chr(transformed_index + 1 + 3)  # skip "=, <, >"
 
 
-def label_motifs(decomposed_vntrs):
+def get_motif_counter(decomposed_vntrs):
+    motif_counter = Counter()
+    for decomposed_vntr in decomposed_vntrs:
+        motif_counter.update(Counter(decomposed_vntr))
+
+    return motif_counter
+
+
+def divide_motifs_into_normal_and_private(decomposed_vntrs, private_motif_threshold):
+    """
+    Givne a list of decomposed VNTRs, divide motifs into two groups: normal and private.
+    If a motif occurred less than the private_motif_threshold, it is regarded as private motif.
+    Otherwise, normal motifs.
+
+    :param decomposed_vntrs
+    :param private_motif_threshold
+    :return: normal motifs, private motifs
+    """
+
+    motif_counter = get_motif_counter(decomposed_vntrs)
+
+    private_motifs = []
+    normal_motifs = []
+    for motif, count in motif_counter.items():
+        if count <= private_motif_threshold:
+            private_motifs.append(motif)
+        else:
+            normal_motifs.append(motif)
+
+    return normal_motifs, private_motifs, motif_counter
+
+
+def find_minimum_private_motif_threshold(decomposed_vntrs):
+    motif_counter = get_motif_counter(decomposed_vntrs)
+
+    min_private_motif_threshold = 0
+    for index, (motif, count) in enumerate(motif_counter.most_common()):
+        print(index, motif, count)
+        if index + 1 > 126 - 33 + 4: # 126 ASCII, starting with 33, skipping 4 symbols
+            min_private_motif_threshold = count
+            break
+
+    return min_private_motif_threshold
+
+
+def label_motifs(decomposed_vntrs, private_motif_threshold=0, auto=None):
     """
 
     :param decomposed_vntrs:
+    :param private_motif_threshold:
+    :param auto: if True, find the minimum threshold to encode everything using 126-33+1 ASCII characters.
     :return: labeled_vntrs, motif to alphabet (dictionary of the mapping)
     """
-    unique_motifs = get_motif_labels(decomposed_vntrs)
-    if len(unique_motifs) > 126-33+1:  # single symbol ascii
-        raise ValueError("Too many unique motifs. Can not encode properly.")
-    motif_to_alphabet = {motif: index_to_char(index) for index, motif in enumerate(sorted(list(unique_motifs)))}
-    alphabet_to_motif = {index_to_char(index): motif for index, motif in enumerate(sorted(list(unique_motifs)))}
 
+    if auto:
+        private_motif_threshold = find_minimum_private_motif_threshold(decomposed_vntrs)
+
+    motif_to_symbol = {}
+    symbol_to_motif = {}
+    # For private motifs, we use single letter to encode them.
+    if private_motif_threshold > 0:
+        normal_motifs, private_motifs, motif_counter = divide_motifs_into_normal_and_private(decomposed_vntrs, private_motif_threshold)
+        if len(normal_motifs) + 1 > 126-33+1:
+            print("Motif counter:", motif_counter)
+            raise ValueError("Too many unique motifs. Can not encode properly: {} unique motifs".format(
+                len(normal_motifs) + len(private_motifs)))
+
+        # Assign a code to all private motifs
+        motif_to_symbol.update({motif: index_to_char(0) for motif in sorted(private_motifs)})
+        symbol_to_motif.update({index_to_char(0): motif for motif in sorted(private_motifs)})
+
+        # For normal motifs
+        motif_to_symbol.update({motif: index_to_char(index + 1) for index, motif in enumerate(sorted(normal_motifs))})
+        symbol_to_motif.update({index_to_char(index + 1): motif for index, motif in enumerate(sorted(private_motifs))})
+    else:  # Use all distinct motif
+        unique_motifs = get_motif_labels(decomposed_vntrs)
+        if len(unique_motifs) > 126-33+1:  # single symbol ascii
+            raise ValueError("Too many unique motifs. Can not encode properly: {} unique motifs".format(len(unique_motifs)))
+
+        motif_to_symbol.update({motif: index_to_char(index) for index, motif in enumerate(sorted(list(unique_motifs)))})
+        symbol_to_motif.update({index_to_char(index): motif for index, motif in enumerate(sorted(list(unique_motifs)))})
+
+    # Label VNTRs using the encoding
     labeled_vntrs = []
     for vntr in decomposed_vntrs:
         labeled_vntr = ""
         for motif in vntr:
-            labeled_vntr += str(motif_to_alphabet[motif])  # Only alphabets are allowed
+            labeled_vntr += str(motif_to_symbol[motif])
         labeled_vntrs.append(labeled_vntr)
 
-    return labeled_vntrs, motif_to_alphabet, alphabet_to_motif
+    return labeled_vntrs, motif_to_symbol, symbol_to_motif
 
 
 if __name__ == "__main__":
