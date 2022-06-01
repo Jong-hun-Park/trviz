@@ -85,7 +85,9 @@ def trplot(aligned_repeats,
     unique_repeats = get_unique_repeats(aligned_repeats)
     number_of_colors = len(unique_repeats)
 
-    cmap = plt.cm.get_cmap("tab20")  #XXX Note that the number of colors maybe not enough!
+    # cmap = plt.cm.get_cmap("tab20")  #XXX Note that the number of colors maybe not enough!
+    cmap = plt.cm.get_cmap('hsv', number_of_colors)
+
     # colors = cmap(len(unique_repeats))
     motif_color_map = {r: cmap(i) for i, r in enumerate(list(unique_repeats))}
 
@@ -132,5 +134,4 @@ def trplot(aligned_repeats,
     if outname is not None and outfolder is not None:
         plt.savefig("{}/{}.png".format(outfolder, outname), dpi=dpi)
     else:
-        plt.savefig("test_real_vntr.png", dpi= dpi)
-    # plt.show()
+        plt.savefig("test_vntr_plot.png", dpi= dpi)
