@@ -490,7 +490,7 @@ def find_minimum_private_motif_threshold(decomposed_vntrs):
     min_private_motif_threshold = 0
     for index, (motif, count) in enumerate(motif_counter.most_common()):
         print(index, motif, count)
-        if index + 1 > 126 - 33 + 4: # 126 ASCII, starting with 33, skipping 4 symbols
+        if index + 1 > 126 - 33 + 1 - 4:  # starting with 33, last 126, skipping 4 symbols
             min_private_motif_threshold = count
             break
 
@@ -508,6 +508,7 @@ def label_motifs(decomposed_vntrs, private_motif_threshold=0, auto=None):
 
     if auto:
         private_motif_threshold = find_minimum_private_motif_threshold(decomposed_vntrs)
+        print("private motif threshold: ", private_motif_threshold)
 
     motif_to_symbol = {}
     symbol_to_motif = {}

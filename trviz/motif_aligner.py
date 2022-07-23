@@ -9,7 +9,7 @@ from Bio.Align.Applications import MafftCommandline
 from Bio import AlignIO
 
 
-def align_motifs(labeled_vntrs, vid=None, method="muscle"):
+def align_motifs(sample_ids, labeled_vntrs, vid=None, method="muscle"):
     if method == "muscle":
         muscle_cline = MuscleCommandline('muscle', clwstrict=True)
         data = '\n'.join(['>%s\n' % str(i) + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
@@ -37,7 +37,7 @@ def align_motifs(labeled_vntrs, vid=None, method="muscle"):
             temp_input_name = "temp/temp_input_{}.fa".format(vid)
             temp_output_name = "temp/temp_output_{}.fa".format(vid)
 
-        data = '\n'.join(['>%s\n' % str(i) + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
+        data = '\n'.join(['>%s\n' % sample_ids[i] + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
         with open(temp_input_name, "w") as f:
             f.write(data)
 
@@ -68,10 +68,12 @@ def align_motifs(labeled_vntrs, vid=None, method="muscle"):
         # aligned_motifs = [str(aligned.seq) for aligned in alignment]
 
         aligned_vntrs = []
+        sample_ids = []
         tr_seq = None
         with open(temp_output_name, "r") as f:
             for line in f:
                 if line.startswith(">"):
+                    sample_ids.append(line.strip()[1:])
                     if tr_seq is not None:
                         aligned_vntrs.append(tr_seq)
                     tr_seq = ""
@@ -81,4 +83,5 @@ def align_motifs(labeled_vntrs, vid=None, method="muscle"):
         if len(tr_seq) > 0:
             aligned_vntrs.append(tr_seq)
 
-    return aligned_vntrs
+    print("sample size", len(sample_ids), len(aligned_vntrs))
+    return sample_ids, aligned_vntrs

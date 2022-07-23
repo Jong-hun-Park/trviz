@@ -1,7 +1,6 @@
 
-import pandas as pd
-import matplotlib
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.colors import ListedColormap
 
 
@@ -28,9 +27,9 @@ def get_unique_repeats(aligned_repeats):
     return sorted(list(unique_repeats))
 
 
-def plot_motif_color_map(motif_color_map):
+def plot_motif_color_map(motif_color_map, file_name):
 
-    fig = plt.figure(figsize=(8, 5))  # width and height in inch
+    # fig = plt.figure(figsize=(8, 5))  # width and height in inch
     ax = plt.subplot(1, 1, 1, aspect=1, autoscale_on=True, frameon=False,
                      xticks=[y for y in range(len(motif_color_map) + 1)],
                      yticks=[y for y in range(len(motif_color_map) + 1)])
@@ -52,13 +51,14 @@ def plot_motif_color_map(motif_color_map):
     plt.xticks([])
     plt.yticks([])
     plt.tight_layout()
-    plt.savefig("test_motif_map.png")
-    plt.show()
+    plt.savefig(file_name)
 
 
 def trplot(aligned_repeats,
+           figure_size=None,
            outfolder=None, outname=None,
-           dpi=100,
+           dpi=700,
+           alpha=0.5,
            xticks=None,
            xtick_degrees=90,
            hide_yticks=False,
@@ -72,13 +72,15 @@ def trplot(aligned_repeats,
     # ['BBB----', 'BBBAB--', 'BBCABBB']
     # Convert alphabet to number
 
-    fig = plt.figure(figsize=(15, 7))  # width and height in inch
+    fig = plt.figure()
+    if figure_size is not None:
+        fig = plt.figure(figsize=figure_size)  # width and height in inch
 
     max_repeat = len(aligned_repeats[0])
     if debug:
         print("Max repeats: {}".format(max_repeat))
 
-    ax = plt.subplot(1, 1, 1, aspect=2, autoscale_on=False, frameon=False,
+    ax = plt.subplot(1, 1, 1, aspect=1.5, autoscale_on=False, frameon=False,
                      xticks=[x for x in range(len(aligned_repeats) + 1)],
                      yticks=[y for y in range(max_repeat + 1)])
 
@@ -87,6 +89,12 @@ def trplot(aligned_repeats,
 
     # cmap = plt.cm.get_cmap("tab20")  #XXX Note that the number of colors maybe not enough!
     cmap = plt.cm.get_cmap('hsv', number_of_colors)
+
+    # Setting alpha values
+    temp_cmap = cmap(np.arange(cmap.N))
+    temp_cmap[:, -1] = alpha
+    # New colormap
+    cmap = ListedColormap(temp_cmap)
 
     # colors = cmap(len(unique_repeats))
     motif_color_map = {r: cmap(i) for i, r in enumerate(list(unique_repeats))}
@@ -109,13 +117,13 @@ def trplot(aligned_repeats,
             if repeat == '-':  # For gaps, color them as white blocks
                 fcolor = (1, 1, 1, 1)
             ax.add_patch(plt.Rectangle(box_position, box_width, box_height,
-                                       linewidth=0.0,
+                                       linewidth=0.1,
                                        facecolor=fcolor,
                                        edgecolor="white"))
 
     if xticks is not None:
         plt.xticks([x+0.5 for x in range(len(xticks))], xticks,
-                   fontsize=5,
+                   fontsize=8,
                    rotation=xtick_degrees)
     else:
         plt.xticks([])
@@ -135,3 +143,5 @@ def trplot(aligned_repeats,
         plt.savefig("{}/{}.png".format(outfolder, outname), dpi=dpi)
     else:
         plt.savefig("test_vntr_plot.png", dpi= dpi)
+
+    plot_motif_color_map(motif_color_map, file_name="{}/motif_color_map_{}.png".format(outfolder, outname))
