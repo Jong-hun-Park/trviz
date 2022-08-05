@@ -114,7 +114,7 @@ if __name__ == "__main__":
     visualizer.plot(sorted_aligned_vntrs,
                     figure_size=(10, 10),
                     outfolder="../long_vntr_plots", outname=str('ART1') + "_annealing",
-                    dpi=50,
+                    dpi=300,
                     xticks=sample_ids,
                     xtick_degrees=90,
                     hide_yticks=True,
