@@ -9,15 +9,31 @@ from Bio.Align.Applications import MafftCommandline
 from Bio import AlignIO
 
 
-def align_motifs(sample_ids, labeled_vntrs, vid=None, method="muscle"):
-    if method == "muscle":
+# singleton,
+class MotifAligner:
+
+    def align(self, sample_ids, labeled_vntrs, vid=None, tool="mafft"):
+        motif_aligner = self._get_motif_aligner(tool)
+        return motif_aligner(sample_ids, labeled_vntrs, vid)
+
+    def _get_motif_aligner(self, tool):
+        if tool == 'mafft':
+            return self._align_motifs_with_mafft
+        elif tool == 'muscle':
+            return self._align_motifs_with_muscle
+        elif tool == 'clustalo':
+            return self._align_motifs_with_clustalo
+        else:
+            ValueError(tool)
+
+    def _align_motifs_with_muscle(self, sample_ids, labeled_vntrs, vid):
         muscle_cline = MuscleCommandline('muscle', clwstrict=True)
         data = '\n'.join(['>%s\n' % str(i) + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
         stdout, stderr = muscle_cline(stdin=data)
         alignment = AlignIO.read(StringIO(stdout), "clustal")
         aligned_motifs = [str(aligned.seq) for aligned in alignment]
 
-    elif method == "clustalo":
+    def _align_motifs_with_clustalo(self, sample_ids, labeled_vntrs, vid):
         clustalo_cline = ClustalOmegaCommandline('clustalo', infile="data.fasta", outfile="test.out",
                                                  force=True,
                                                  clusteringout="cluster.out")
@@ -30,12 +46,12 @@ def align_motifs(sample_ids, labeled_vntrs, vid=None, method="muscle"):
         alignment = AlignIO.read(StringIO(stdout), "clustal")
         aligned_motifs = [str(aligned.seq) for aligned in alignment]
 
-    elif method == "mafft":
-        temp_input_name = "temp/temp_input.fa"
-        temp_output_name = "temp/temp_output.fa"
+    def _align_motifs_with_mafft(self, sample_ids, labeled_vntrs, vid):
+        temp_input_name = "../temp/temp_input.fa"
+        temp_output_name = "../temp/temp_output.fa"
         if vid is not None:
-            temp_input_name = "temp/temp_input_{}.fa".format(vid)
-            temp_output_name = "temp/temp_output_{}.fa".format(vid)
+            temp_input_name = "../temp/temp_input_{}.fa".format(vid)
+            temp_output_name = "../temp/temp_output_{}.fa".format(vid)
 
         data = '\n'.join(['>%s\n' % sample_ids[i] + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
         with open(temp_input_name, "w") as f:
@@ -83,5 +99,5 @@ def align_motifs(sample_ids, labeled_vntrs, vid=None, method="muscle"):
         if len(tr_seq) > 0:
             aligned_vntrs.append(tr_seq)
 
-    print("sample size", len(sample_ids), len(aligned_vntrs))
-    return sample_ids, aligned_vntrs
+        print("sample size", len(sample_ids), len(aligned_vntrs))
+        return sample_ids, aligned_vntrs
