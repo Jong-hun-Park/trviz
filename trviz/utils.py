@@ -31,7 +31,7 @@ def read_fasta(fasta_file):
                 header = line.strip()[1:]
                 sequence = ""
             else:
-                sequence += line.strip()
+                sequence += line.strip().upper()
         headers.append(header)
         sequences.append(sequence)
 
