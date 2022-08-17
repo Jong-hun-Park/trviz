@@ -1,3 +1,7 @@
+import subprocess
+import os
+import time
+
 try:
     from StringIO import StringIO
 except ImportError:
@@ -9,7 +13,6 @@ from Bio.Align.Applications import MafftCommandline
 from Bio import AlignIO
 
 
-# singleton,
 class MotifAligner:
 
     def align(self, sample_ids, labeled_vntrs, vid=None, tool="mafft"):
@@ -26,14 +29,18 @@ class MotifAligner:
         else:
             ValueError(tool)
 
-    def _align_motifs_with_muscle(self, sample_ids, labeled_vntrs, vid):
+    @staticmethod
+    def _align_motifs_with_muscle(sample_ids, labeled_vntrs, vid):
         muscle_cline = MuscleCommandline('muscle', clwstrict=True)
-        data = '\n'.join(['>%s\n' % str(i) + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
+        data = '\n'.join(['>%s\n' % str(sample_ids[i]) + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
         stdout, stderr = muscle_cline(stdin=data)
         alignment = AlignIO.read(StringIO(stdout), "clustal")
-        aligned_motifs = [str(aligned.seq) for aligned in alignment]
+        aligned_vntrs = [str(aligned.seq) for aligned in alignment]
 
-    def _align_motifs_with_clustalo(self, sample_ids, labeled_vntrs, vid):
+        return sample_ids, aligned_vntrs  # TODO sample_ids are not correctly sorted
+
+    @staticmethod
+    def _align_motifs_with_clustalo(sample_ids, labeled_vntrs, vid):
         clustalo_cline = ClustalOmegaCommandline('clustalo', infile="data.fasta", outfile="test.out",
                                                  force=True,
                                                  clusteringout="cluster.out")
@@ -41,10 +48,12 @@ class MotifAligner:
         # Use dist-in (and use pre computed distance)
         # See the clusters - and plot only for those clusters.
 
-        data = '\n'.join(['>%s\n' % str(i) + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
+        data = '\n'.join(['>%s\n' % str(sample_ids[i]) + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
         stdout, stderr = clustalo_cline()
         alignment = AlignIO.read(StringIO(stdout), "clustal")
-        aligned_motifs = [str(aligned.seq) for aligned in alignment]
+        aligned_vntrs = [str(aligned.seq) for aligned in alignment]
+
+        return sample_ids, aligned_vntrs  # TODO sample_ids are not correctly sorted
 
     def _align_motifs_with_mafft(self, sample_ids, labeled_vntrs, vid):
         temp_input_name = "alignment/alignment_input.fa"
@@ -57,13 +66,7 @@ class MotifAligner:
         with open(temp_input_name, "w") as f:
             f.write(data)
 
-        # mafft_cline = MafftCommandline(input="test_input.fasta")
-        # print(mafft_cline)
-        # stdout, stderr = mafft_cline()
-        # print(stdout)
-
-        import subprocess
-        import os
+        # TODO call mafft using pysam wrapper
         stdout = os.system("mafft --text --auto {} > {}".format(temp_input_name, temp_output_name))
 
         # import subprocess
@@ -74,14 +77,7 @@ class MotifAligner:
         #                    stderr=subprocess.STDOUT)
         # print(p)
 
-        import time
-        print("sleeping...")
         time.sleep(3)
-        # stdout = subprocess.run(["mafft", "--anysymbol", "temp_input.fasta"], stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
-        # print(stdout)
-
-        # alignment = AlignIO.read(StringIO(stdout), "fasta")
-        # aligned_motifs = [str(aligned.seq) for aligned in alignment]
 
         aligned_vntrs = []
         sample_ids = []
