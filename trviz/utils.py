@@ -4,16 +4,9 @@ LOWERCASE_LETTERS = string.ascii_lowercase
 UPPERCASE_LETTERS = string.ascii_uppercase
 DIGITS = string.digits
 
-skipping_characters = []
-
+skipping_characters = ['(', '=', '<', '>']
 INDEX_TO_CHR = list(LOWERCASE_LETTERS) + list(UPPERCASE_LETTERS) + list(DIGITS)
-INDEX_TO_CHR.extend([chr(x) for x in range(33, 40)])  # 33-39  # skipping 40 ("(")
-INDEX_TO_CHR.extend([chr(x) for x in range(41, 48)])  # 41-47  # skipping 48-57 (digits)
-INDEX_TO_CHR.extend([chr(x) for x in range(58, 60)])  # 41-59  # skipping 60, 61, 62 ("=, <, >")
-INDEX_TO_CHR.extend([chr(x) for x in range(63, 65)])  # 63-64
-INDEX_TO_CHR.extend([chr(x) for x in range(91, 97)])  # 91-96
-INDEX_TO_CHR.extend([chr(x) for x in range(123, 127)])  # 123-126
-
+INDEX_TO_CHR.extend([chr(x) for x in range(33, 127) if chr(x) not in skipping_characters and chr(x) not in INDEX_TO_CHR])
 
 DNA_CHARACTERS = {'A', 'C', 'G', 'T'}
 
@@ -79,5 +72,3 @@ def is_valid_sequence(sequence):
 
 def sort_lexicographically(aligned_vntrs, sample_ids):
     return zip(*sorted(list(zip(aligned_vntrs, sample_ids)), key=lambda x: x[0]))
-
-
