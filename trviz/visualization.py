@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import ListedColormap
 
+from trviz.utils import PRIVATE_MOTIF_LABEL
+
 
 class TandemRepeatVisualizer:
 
@@ -23,7 +25,7 @@ class TandemRepeatVisualizer:
         return decomposed_motifs
 
     @staticmethod
-    def _get_unique_repeats(aligned_repeats):
+    def _get_unique_labels(aligned_repeats):
         unique_repeats = set()
         for rs in aligned_repeats:
             for r in rs:
@@ -59,15 +61,15 @@ class TandemRepeatVisualizer:
         plt.savefig(file_name)
 
     def plot(self,
-             aligned_repeats,
+             aligned_labeled_repeats,
              figure_size=None,
-             outfolder=None,
-             outname=None,
+             output_name=None,
              dpi=500,
              alpha=0.5,
-             xticks=None,
+             sample_ids=None,
              xtick_degrees=90,
              hide_yticks=False,
+             private_motif_color='black',
              debug=False):
 
         """ Generate tandem repeat plot """
@@ -76,16 +78,23 @@ class TandemRepeatVisualizer:
         if figure_size is not None:
             fig = plt.figure(figsize=figure_size)  # width and height in inch
 
-        max_repeat = len(aligned_repeats[0])
+        max_repeat = len(aligned_labeled_repeats[0])
         if debug:
             print("Max repeats: {}".format(max_repeat))
 
-        ax = plt.subplot(1, 1, 1, aspect=1.5, autoscale_on=False, frameon=False,
-                         xticks=[x for x in range(len(aligned_repeats) + 1)],
-                         yticks=[y for y in range(max_repeat + 1)])
+        x_y_ratio = max_repeat/len(sample_ids)
+        print("x vs y ratio", x_y_ratio)
 
-        unique_repeats = self._get_unique_repeats(aligned_repeats)
-        number_of_colors = len(unique_repeats)
+        ax = fig.add_subplot(1, 1, 1,
+                             # aspect=1.5,
+                             aspect=1/(x_y_ratio)*4,
+                             autoscale_on=False,
+                             frameon=False,
+                             xticks=[x for x in range(len(aligned_labeled_repeats) + 1)],
+                             yticks=[y for y in range(max_repeat + 1)])
+
+        unique_labels = self._get_unique_labels(aligned_labeled_repeats)
+        number_of_colors = len(unique_labels)
 
         # cmap = plt.cm.get_cmap("tab20")  #XXX Note that the number of colors maybe not enough!
         cmap = plt.cm.get_cmap('hsv', number_of_colors)
@@ -96,32 +105,35 @@ class TandemRepeatVisualizer:
         # New colormap
         cmap = ListedColormap(temp_cmap)
 
-        # colors = cmap(len(unique_repeats))
-        motif_color_map = {r: cmap(i) for i, r in enumerate(list(unique_repeats))}
+        # colors = cmap(len(unique_labels))
+        label_to_color = {r: cmap(i) for i, r in enumerate(list(unique_labels))}
 
-        allele_count = len(aligned_repeats)
-        box_height = max_repeat/len(aligned_repeats[0])
+        allele_count = len(aligned_labeled_repeats)
+        box_height = max_repeat/len(aligned_labeled_repeats[0])
         box_width = 1.0
 
-        for allele_index, allele in enumerate(aligned_repeats):
-            if debug:
-                print("Allele index", allele_index)
+        for allele_index, allele in enumerate(aligned_labeled_repeats):
+            # if debug:
+            #     print("Allele index", allele_index)
             box_position = [allele_index, 0]
-            for box_index, repeat in enumerate(allele):
+            for box_index, label in enumerate(allele):
                 box_position[1] = box_height * box_index
-                if debug:
-                    print("Drawing box in position", box_position)
-                fcolor = motif_color_map[repeat]
-                if repeat == '-':  # For gaps, color them as white blocks
+                # if debug:
+                #     print("Drawing box in position", box_position)
+                fcolor = label_to_color[label]
+                if label == '-':  # For gaps, color them as white blocks
                     fcolor = (1, 1, 1, 1)
+                if label == PRIVATE_MOTIF_LABEL:
+                    fcolor = private_motif_color
                 ax.add_patch(plt.Rectangle(box_position, box_width, box_height,
                                            linewidth=0.1,
                                            facecolor=fcolor,
                                            edgecolor="white"))
 
-        if xticks is not None:
-            plt.xticks([x+0.5 for x in range(len(xticks))], xticks,
-                       fontsize=8,
+        if sample_ids is not None:
+            plt.xticks([x + 0.5 for x in range(len(sample_ids))],
+                       sample_ids,
+                       fontsize=3,
                        rotation=xtick_degrees)
         else:
             plt.xticks([])
@@ -137,7 +149,8 @@ class TandemRepeatVisualizer:
             labelbottom=True)  # labels along the bottom edge are off
 
         plt.tight_layout()
-        if outname is not None and outfolder is not None:
-            plt.savefig("{}/{}.png".format(outfolder, outname), dpi=dpi)
+
+        if output_name is not None:
+            plt.savefig("{}.png".format(output_name), dpi=dpi)
         else:
-            plt.savefig("test_vntr_plot.png", dpi= dpi)
+            plt.savefig("test_vntr_plot.png", dpi=dpi)
