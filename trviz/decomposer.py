@@ -1,9 +1,12 @@
+from typing import List
+
 from collections import Counter
 
 from trviz.utils import is_valid_sequence
 from trviz.utils import get_motifs_from_visited_states_and_region
 
 from trviz.utils import INDEX_TO_CHR
+from trviz.utils import PRIVATE_MOTIF_LABEL
 
 import settings
 if settings.decomposition_method == "hmm":
@@ -134,12 +137,14 @@ class TandemRepeatDecomposer:
     # When 2 is given, we can use different types of HMM
     # When 3 is not given, we can find a consensus motif using TRF.
     @staticmethod
-    def decompose_dp(sequence,
-                     motifs,
-                     match_score=5,
-                     mismatch_score=-2,
-                     min_score_threshold=float("-inf"),
-                     verbose=False):
+    def decompose_dp(
+            sequence,
+            motifs,
+            match_score=5,
+            mismatch_score=-2,
+            min_score_threshold=float("-inf"),
+            verbose=False,
+    ) -> List:
         """
         Decompose sequence into motifs using dynamic programming
         :param sequence: a string of VNTR sequence
@@ -149,7 +154,7 @@ class TandemRepeatDecomposer:
         """
 
         if not is_valid_sequence(sequence):
-            raise ValueError("Sequence has invalid characters")
+            raise ValueError(f"Sequence has invalid characters: {sequence}")
 
         if isinstance(motifs, str):
             motifs = [motifs]  # only one string is given
@@ -491,20 +496,15 @@ class TandemRepeatDecomposer:
                 raise ValueError("Too many unique motifs. Can not encode properly: {} unique motifs".format(
                     len(normal_motifs) + len(private_motifs)))
 
-            # debug
-            print(motif_counter)
-            print(normal_motifs)
-            print(private_motifs)
-
             # Assign a code to all private motifs
-            motif_to_symbol.update({motif: _index_to_char(0) for motif in sorted(private_motifs)})
-            symbol_to_motif.update({_index_to_char(0): motif for motif in sorted(private_motifs)})
+            motif_to_symbol.update({motif: PRIVATE_MOTIF_LABEL for motif in sorted(private_motifs)})
+            symbol_to_motif.update({PRIVATE_MOTIF_LABEL: motif for motif in sorted(private_motifs)})
 
             # For normal motifs
             motif_to_symbol.update(
-                {motif: _index_to_char(index + 1) for index, motif in enumerate(sorted(normal_motifs))})
+                {motif: _index_to_char(index) for index, motif in enumerate(sorted(normal_motifs))})
             symbol_to_motif.update(
-                {_index_to_char(index + 1): motif for index, motif in enumerate(sorted(normal_motifs))})
+                {_index_to_char(index): motif for index, motif in enumerate(sorted(normal_motifs))})
         else:  # Use all distinct motif
             unique_motifs = _get_motif_labels(decomposed_vntrs)
             if len(unique_motifs) > len(INDEX_TO_CHR):  # single symbol ascii

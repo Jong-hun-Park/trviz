@@ -4,7 +4,8 @@ LOWERCASE_LETTERS = string.ascii_lowercase
 UPPERCASE_LETTERS = string.ascii_uppercase
 DIGITS = string.digits
 
-skipping_characters = ['(', '=', '<', '>']
+skipping_characters = ['(', '=', '<', '>', '?']
+PRIVATE_MOTIF_LABEL = '?'
 INDEX_TO_CHR = list(LOWERCASE_LETTERS) + list(UPPERCASE_LETTERS) + list(DIGITS)
 INDEX_TO_CHR.extend([chr(x) for x in range(33, 127) if chr(x) not in skipping_characters and chr(x) not in INDEX_TO_CHR])
 
