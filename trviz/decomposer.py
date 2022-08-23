@@ -2,7 +2,7 @@ from typing import List, Dict
 
 from collections import Counter
 
-from trviz.utils import is_valid_sequence
+from trviz.utils import is_valid_sequence, get_motif_counter
 from trviz.utils import get_motifs_from_visited_states_and_region
 
 from trviz.utils import INDEX_TO_CHR
@@ -399,14 +399,6 @@ class TandemRepeatDecomposer:
         return deomposed_motifs
 
     @staticmethod
-    def get_motif_counter(decomposed_vntrs):
-        motif_counter = Counter()
-        for decomposed_vntr in decomposed_vntrs:
-            motif_counter.update(Counter(decomposed_vntr))
-
-        return motif_counter
-
-    @staticmethod
     def _divide_motifs_into_normal_and_private(motif_counter, private_motif_threshold):
         """
         Givne a list of decomposed VNTRs, divide motifs into two groups: normal and private.
@@ -430,7 +422,7 @@ class TandemRepeatDecomposer:
 
     @staticmethod
     def find_minimum_private_motif_threshold(decomposed_vntrs):
-        motif_counter = TandemRepeatDecomposer.get_motif_counter(decomposed_vntrs)
+        motif_counter = get_motif_counter(decomposed_vntrs)
 
         min_private_motif_threshold = 0
         for index, (motif, count) in enumerate(motif_counter.most_common()):
@@ -473,7 +465,7 @@ class TandemRepeatDecomposer:
 
         motif_to_symbol: Dict = {}
         symbol_to_motif: Dict = {}
-        motif_counter: Counter = TandemRepeatDecomposer.get_motif_counter(decomposed_vntrs)
+        motif_counter: Counter = get_motif_counter(decomposed_vntrs)
 
         # For private motifs, we use single letter to encode them.
         if private_motif_threshold > 0:

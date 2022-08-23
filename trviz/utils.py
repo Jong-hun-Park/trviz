@@ -1,4 +1,8 @@
 import string
+from collections import Counter
+
+import numpy as np
+import itertools
 
 LOWERCASE_LETTERS = string.ascii_lowercase
 UPPERCASE_LETTERS = string.ascii_uppercase
@@ -30,6 +34,20 @@ def read_fasta(fasta_file):
         sequences.append(sequence)
 
     return headers, sequences
+
+
+def get_motif_counter(decomposed_vntrs):
+    motif_counter = Counter()
+    for decomposed_vntr in decomposed_vntrs:
+        motif_counter.update(Counter(decomposed_vntr))
+
+    return motif_counter
+
+
+def write_motif_map(output_file, motif_to_alphabet, motif_counter):
+    with open(output_file, "w") as f:
+        for (motif, _) in motif_counter.most_common():
+            f.write(f"{motif}\t{motif_to_alphabet[motif]}\t{motif_counter[motif]}\n")
 
 
 def is_emitting_state(state_name):
@@ -73,3 +91,4 @@ def is_valid_sequence(sequence):
 
 def sort_lexicographically(aligned_vntrs, sample_ids):
     return zip(*sorted(list(zip(aligned_vntrs, sample_ids)), key=lambda x: x[0]))
+
