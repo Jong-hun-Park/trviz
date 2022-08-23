@@ -1,12 +1,14 @@
 from typing import Dict, List
+import sys
+sys.path.insert(0, './')
 
 from trviz.decomposer import TandemRepeatDecomposer
 from trviz.motif_aligner import MotifAligner
 from trviz.visualization import TandemRepeatVisualizer
+from trviz.utils import write_motif_map
+from trviz.utils import sort_lexicographically
 
 import numpy as np
-
-from trviz.utils import sort_lexicographically, read_fasta
 
 
 class TandemRepeatVizWorker:
@@ -54,12 +56,12 @@ class TandemRepeatVizWorker:
 
         # Label motifs
         # TODO lable motifs - should be in the utils?
-        labeled_vntrs, motif_to_alphabet, alphabet_to_motif = self.decomposer.label_motifs(decomposed_vntrs,
+        labeled_vntrs, motif_to_alphabet, alphabet_to_motif, motif_counter = self.decomposer.label_motifs(
+                                                                                           decomposed_vntrs,
                                                                                            private_motif_threshold,
                                                                                            auto=True)
-        with open("{}_motif_map.txt".format(vid), "w") as f:
-            for motif in motif_to_alphabet:
-                f.write("{}\t{}\n".format(motif, motif_to_alphabet[motif]))
+        motif_map_file = f"{vid}_motif_map.txt"
+        write_motif_map(motif_map_file, motif_to_alphabet, motif_counter)
 
         print("Motif to alphabet dict", motif_to_alphabet)
         print("Alphabet dict", alphabet_to_motif)
@@ -78,72 +80,9 @@ class TandemRepeatVizWorker:
 
         # Visualization
         self.visualizer.plot(sorted_aligned_vntrs,
-                        figure_size=figure_size,
-                        outfolder="../long_vntr_plots", outname=str(vid) + "_annealing",
-                        dpi=300,
-                        xticks=sample_ids,
-                        xtick_degrees=90,
-                        hide_yticks=False)
-
-
-if __name__ == "__main__":
-    # test
-    temp_output_name = "../temp/temp_output_ART1.fa"
-    aligned_vntrs = []
-    sample_ids = []
-    tr_seq = None
-    with open(temp_output_name, "r") as f:
-        for line in f:
-            if line.startswith(">"):
-                sample_ids.append(line.strip()[1:])
-                if tr_seq is not None:
-                    aligned_vntrs.append(tr_seq)
-                tr_seq = ""
-            else:
-                tr_seq += line.strip()
-
-    if len(tr_seq) > 0:
-        aligned_vntrs.append(tr_seq)
-
-    # Sort TR sequences
-    sorted_aligned_vntrs, sample_ids = sort_lexicographically(aligned_vntrs, sample_ids)
-    print("sorted ids", sample_ids)
-
-    # Visualization
-    visualizer = TandemRepeatVisualizer()
-    visualizer.plot(sorted_aligned_vntrs,
-                    figure_size=(10, 10),
-                    outfolder="../long_vntr_plots", outname=str('ART1') + "_annealing",
-                    dpi=300,
-                    xticks=sample_ids,
-                    xtick_degrees=90,
-                    hide_yticks=True,
-                    debug=True,
-                    )
-    exit(1)
-
-    #
-    tr_visualizer = TandemRepeatVizWorker()
-    from trviz.utils import INDEX_TO_CHR
-
-    # load tr sequences - using fasta (input)
-    fasta_file = "../Paul_data/1kg_ART1_alleles.txt"
-    hedaers, tr_sequences = read_fasta(fasta_file)
-    vid = "ART1"
-    motifs = ['CCCATCAGACATCAAGTCTTGTAAATTCCACCTCCTACCTCTGTCTGTCCTCACTGCCATTCT']
-    PRIVATE_MOTIF_THRESHOLD = 0
-
-    tr_visualizer.generate_tr_plot(tr_sequences,
-                                   motifs,
-                                   vid,
-                                   hedaers,
-                                   PRIVATE_MOTIF_THRESHOLD,
-                                   figure_size=(10, 15)
-                                   )
-    # tr_sequences,
-    # motifs,
-    # vid,
-    # sample_ids,
-    # headers,
-    # private_motif_threshold,
-    # figure_size
+                             figure_size=figure_size,
+                             output_name=f"long_vntr_plots/{str(vid)}",
+                             dpi=300,
+                             sample_ids=sample_ids,
+                             xtick_degrees=90,
+                             hide_yticks=False)

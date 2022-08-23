@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 from collections import Counter
 
@@ -407,7 +407,7 @@ class TandemRepeatDecomposer:
         return motif_counter
 
     @staticmethod
-    def _divide_motifs_into_normal_and_private(decomposed_vntrs, private_motif_threshold):
+    def _divide_motifs_into_normal_and_private(motif_counter, private_motif_threshold):
         """
         Givne a list of decomposed VNTRs, divide motifs into two groups: normal and private.
         If a motif occurred less than the private_motif_threshold, it is regarded as private motif.
@@ -418,17 +418,15 @@ class TandemRepeatDecomposer:
         :return: normal motifs, private motifs
         """
 
-        motif_counter = TandemRepeatDecomposer.get_motif_counter(decomposed_vntrs)
-
         normal_motifs = []
         private_motifs = []
-        for motif, count in motif_counter.items():
+        for motif, count in motif_counter.most_common():
             if count > private_motif_threshold:
                 normal_motifs.append(motif)
             else:
                 private_motifs.append(motif)
 
-        return normal_motifs, private_motifs, motif_counter
+        return normal_motifs, private_motifs
 
     @staticmethod
     def find_minimum_private_motif_threshold(decomposed_vntrs):
@@ -453,18 +451,6 @@ class TandemRepeatDecomposer:
         :return: labeled_vntrs, motif to alphabet (dictionary of the mapping)
         """
 
-        def _get_motif_labels(decomposed_vntrs):
-            """
-            :param decomposed_vntrs
-            :return: unique motifs
-            """
-            unique_motifs = set()
-            for vntr in decomposed_vntrs:
-                for motif in vntr:
-                    unique_motifs.add(motif)
-
-            return unique_motifs
-
         def _index_to_char(index):
             """
             --anysymbol
@@ -485,11 +471,13 @@ class TandemRepeatDecomposer:
             private_motif_threshold = TandemRepeatDecomposer.find_minimum_private_motif_threshold(decomposed_vntrs)
             print("private motif threshold: ", private_motif_threshold)
 
-        motif_to_symbol = {}
-        symbol_to_motif = {}
+        motif_to_symbol: Dict = {}
+        symbol_to_motif: Dict = {}
+        motif_counter: Counter = TandemRepeatDecomposer.get_motif_counter(decomposed_vntrs)
+
         # For private motifs, we use single letter to encode them.
         if private_motif_threshold > 0:
-            normal_motifs, private_motifs, motif_counter = TandemRepeatDecomposer._divide_motifs_into_normal_and_private(decomposed_vntrs,
+            normal_motifs, private_motifs = TandemRepeatDecomposer._divide_motifs_into_normal_and_private(motif_counter,
                                                                                                  private_motif_threshold)
             if len(normal_motifs) + 1 > len(INDEX_TO_CHR):
                 print("Motif counter:", motif_counter)
@@ -506,15 +494,14 @@ class TandemRepeatDecomposer:
             symbol_to_motif.update(
                 {_index_to_char(index): motif for index, motif in enumerate(sorted(normal_motifs))})
         else:  # Use all distinct motif
-            unique_motifs = _get_motif_labels(decomposed_vntrs)
-            if len(unique_motifs) > len(INDEX_TO_CHR):  # single symbol ascii
+            if (unique_motif_count := len(motif_counter)) > len(INDEX_TO_CHR):  # single symbol ascii
                 raise ValueError(
-                    "Too many unique motifs. Can not encode properly: {} unique motifs".format(len(unique_motifs)))
+                    "Too many unique motifs. Can not encode properly: {} unique motifs".format(unique_motif_count))
 
             motif_to_symbol.update(
-                {motif: _index_to_char(index) for index, motif in enumerate(sorted(list(unique_motifs)))})
+                {motif: _index_to_char(index) for index, (motif, _) in enumerate(motif_counter.most_common())})
             symbol_to_motif.update(
-                {_index_to_char(index): motif for index, motif in enumerate(sorted(list(unique_motifs)))})
+                {_index_to_char(index): motif for index, (motif, _) in enumerate(motif_counter.most_common())})
 
         # Label VNTRs using the encoding
         labeled_vntrs = []
@@ -524,7 +511,7 @@ class TandemRepeatDecomposer:
                 labeled_vntr += str(motif_to_symbol[motif])
             labeled_vntrs.append(labeled_vntr)
 
-        return labeled_vntrs, motif_to_symbol, symbol_to_motif
+        return labeled_vntrs, motif_to_symbol, symbol_to_motif, motif_counter
 
 
 if __name__ == "__main__":
