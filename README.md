@@ -2,9 +2,11 @@
 A tool to decompose, align, and visualize tandem repeat sequences.
 
 ## Examples
-<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure1_VPS53.png" width="210" height="300">
-<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure2_SORL1.png" width="210" height="300">
-<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure3_CACNA1.png" width="210" height="300">
+<p float="left">
+<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure1_VPS53.png" width="32%" height="300">
+<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure2_SORL1.png" width="32%" height="300">
+<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure3_CACNA1.png" width="32%" height="300">
+</p>
 
 ## Installation
 TBD
