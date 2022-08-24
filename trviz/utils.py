@@ -92,3 +92,107 @@ def is_valid_sequence(sequence):
 def sort_lexicographically(aligned_vntrs, sample_ids):
     return zip(*sorted(list(zip(aligned_vntrs, sample_ids)), key=lambda x: x[0]))
 
+
+def get_levenshtein_distance(s1, s2):
+    if len(s1) > len(s2):
+        s1, s2 = s2, s1
+
+    distances = range(len(s1) + 1)
+    for i2, c2 in enumerate(s2):
+        distances_ = [i2+1]
+        for i1, c1 in enumerate(s1):
+            if c1 == c2:
+                distances_.append(distances[i1])
+            else:
+                distances_.append(1 + min((distances[i1], distances[i1 + 1], distances_[-1])))
+        distances = distances_
+    return distances[-1]
+
+
+def _calculate_cost(seq1, seq2, alphabet_to_motif):
+    if len(seq1) != len(seq2):
+        raise Exception("The length of two sequences should be identical.")
+
+    cost = 0
+    for i in range(len(seq1)):
+        if seq1[i] != seq2[i]:
+            # convert the motif to actual sequence
+            if seq1[i] != '-' and seq2[i] != '-':
+                s1 = alphabet_to_motif[seq1[i].lower()]
+                s2 = alphabet_to_motif[seq2[i].lower()]
+                cost += get_levenshtein_distance(s1, s2)
+            else:
+                if seq1[i] == '-':
+                    cost += len(seq2[i])
+                else:
+                    cost += len(seq1[i])
+            # cost += 1
+    return cost
+
+
+def calculate_cost(alinged_vntrs, alphabet_to_motif):
+    # same length, start with simple cost
+    total_cost = 0
+    for i in range(len(alinged_vntrs) - 1):
+        total_cost += _calculate_cost(alinged_vntrs[i], alinged_vntrs[i + 1], alphabet_to_motif)
+
+    return total_cost
+
+
+def sort_with_simulated_annealing(seq_list, alphabet_to_motif, sample_ids):
+    initial_cost = calculate_cost(seq_list, alphabet_to_motif)
+    T = 10000
+
+    iteration = 0
+    while True:
+        iteration += 1
+        print("T:", T)
+        if T <= 1:
+            break
+        print("iteration", iteration)
+        not_changed_count = 0
+
+        for pair in itertools.combinations(range(len(seq_list)), 2):
+            first, second = pair
+
+            # only compare the cost before and after changing the order
+            current_cost = 0
+            after_cost = 0
+            # Flanking cost for the first sequence
+            current_cost += _calculate_cost(seq_list[first], seq_list[first + 1], alphabet_to_motif)
+            after_cost += _calculate_cost(seq_list[second], seq_list[first + 1], alphabet_to_motif)
+
+            current_cost += _calculate_cost(seq_list[first], seq_list[first - 1], alphabet_to_motif)
+            after_cost += _calculate_cost(seq_list[second], seq_list[first - 1], alphabet_to_motif)
+
+            # Flanking cost for the second sequence
+            current_cost += _calculate_cost(seq_list[second], seq_list[second - 1], alphabet_to_motif)
+            after_cost += _calculate_cost(seq_list[first], seq_list[second - 1], alphabet_to_motif)
+
+            if second == len(seq_list) - 1:
+                current_cost += _calculate_cost(seq_list[second], seq_list[0], alphabet_to_motif)
+                after_cost += _calculate_cost(seq_list[first], seq_list[0], alphabet_to_motif)
+            else:
+                current_cost += _calculate_cost(seq_list[second], seq_list[second + 1], alphabet_to_motif)
+                after_cost += _calculate_cost(seq_list[first], seq_list[second + 1], alphabet_to_motif)
+
+            if after_cost < current_cost:
+                seq_list[first], seq_list[second] = seq_list[second], seq_list[first]
+                sample_ids[first], sample_ids[second] = sample_ids[second], sample_ids[first]
+            else:
+                prob = np.exp(-(after_cost - current_cost)*1000/T)
+                if prob > np.random.uniform(low=0.0, high=1.0):
+                    # swap
+                    # print("swap because of prob {}".format(prob), "after cost", after_cost, "cur cost", current_cost)
+                    seq_list[first], seq_list[second] = seq_list[second], seq_list[first]
+                    sample_ids[first], sample_ids[second] = sample_ids[second], sample_ids[first]
+                else:
+                    not_changed_count += 1
+
+        T *= 0.90
+        # if not_changed_count == len(seq_list):
+        #     break
+
+    print("initial cost", initial_cost)
+    print("after cost", calculate_cost(seq_list, alphabet_to_motif))
+    return seq_list
