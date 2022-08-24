@@ -36,14 +36,11 @@ TRViz has three modules:
 ```python
 from trviz.main import TandemRepeatVizWorker
 from trviz.utils import read_fasta
+
 tr_visualizer = TandemRepeatVizWorker()
 samples, tr_sequences = read_fasta(input_fasta)
 vntr_id = "CACNA1C"
 motifs = ['GACCCTGACCTGACTAGTTTACAATCACAC']
 
-tr_visualizer.generate_tr_plot(tr_sequences,
-                               motifs,
-                               vntr_id,
-                               samples,
-                               )
+tr_visualizer.generate_tr_plot(tr_sequences, motifs, vntr_id, samples)
 ``` 
