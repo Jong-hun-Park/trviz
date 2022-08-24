@@ -79,11 +79,10 @@ class TandemRepeatVisualizer:
             fig = plt.figure(figsize=figure_size)  # width and height in inch
 
         max_repeat = len(aligned_labeled_repeats[0])
+        x_y_ratio = max_repeat / len(sample_ids)
         if debug:
             print("Max repeats: {}".format(max_repeat))
-
-        x_y_ratio = max_repeat/len(sample_ids)
-        print("x vs y ratio", x_y_ratio)
+            print("x vs y ratio", x_y_ratio)
 
         ax = fig.add_subplot(1, 1, 1,
                              # aspect=1.5,
@@ -94,32 +93,29 @@ class TandemRepeatVisualizer:
                              yticks=[y for y in range(max_repeat + 1)])
 
         unique_labels = self._get_unique_labels(aligned_labeled_repeats)
-        number_of_colors = len(unique_labels)
+        unique_label_count = len(unique_labels)
 
-        # cmap = plt.cm.get_cmap("tab20")  #XXX Note that the number of colors maybe not enough!
-        cmap = plt.cm.get_cmap('hsv', number_of_colors)
+        if unique_label_count < 20:
+            cmap = plt.cm.get_cmap("tab20")
+        else:
+            cmap = plt.cm.get_cmap('hsv', unique_label_count)
 
         # Setting alpha values
         temp_cmap = cmap(np.arange(cmap.N))
         temp_cmap[:, -1] = alpha
-        # New colormap
+        # Update color map
         cmap = ListedColormap(temp_cmap)
 
         # colors = cmap(len(unique_labels))
         label_to_color = {r: cmap(i) for i, r in enumerate(list(unique_labels))}
 
-        allele_count = len(aligned_labeled_repeats)
         box_height = max_repeat/len(aligned_labeled_repeats[0])
         box_width = 1.0
 
         for allele_index, allele in enumerate(aligned_labeled_repeats):
-            # if debug:
-            #     print("Allele index", allele_index)
             box_position = [allele_index, 0]
             for box_index, label in enumerate(allele):
                 box_position[1] = box_height * box_index
-                # if debug:
-                #     print("Drawing box in position", box_position)
                 fcolor = label_to_color[label]
                 if label == '-':  # For gaps, color them as white blocks
                     fcolor = (1, 1, 1, 1)

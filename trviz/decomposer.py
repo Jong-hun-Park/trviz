@@ -434,7 +434,7 @@ class TandemRepeatDecomposer:
         return min_private_motif_threshold
 
     @staticmethod
-    def label_motifs(decomposed_vntrs, private_motif_threshold=0, auto=None):
+    def label_motifs(decomposed_vntrs, private_motif_threshold=0, auto=True):
         """
 
         :param decomposed_vntrs:
