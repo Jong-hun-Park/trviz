@@ -66,18 +66,11 @@ class MotifAligner:
         with open(temp_input_name, "w") as f:
             f.write(data)
 
-        # TODO call mafft using pysam wrapper
-        stdout = os.system("mafft --text --auto {} > {}".format(temp_input_name, temp_output_name))
+        # TODO call mafft using pysam wrapper (
+        # mafft_exe = "/usr/bin/mafft"
+        # mafft_cline = MafftCommandline(mafft_exe, input=temp_input_name)
 
-        # import subprocess
-        # align_out = open(temp_output_name, "w")
-        # p = subprocess.run(['mafft', '--anysymbol', '--auto', temp_input_name],
-        #                    shell=True,
-        #                    stdout=align_out,
-        #                    stderr=subprocess.STDOUT)
-        # print(p)
-
-        time.sleep(3)
+        os.system("mafft --quiet --text --auto {} > {}".format(temp_input_name, temp_output_name))
 
         aligned_vntrs = []
         sample_ids = []
@@ -91,9 +84,11 @@ class MotifAligner:
                     tr_seq = ""
                 else:
                     tr_seq += line.strip()
-
         if len(tr_seq) > 0:
             aligned_vntrs.append(tr_seq)
+
+        if len(aligned_vntrs) == 0:
+            raise ValueError(f"No alinged VNTRs in {temp_output_name} file")
 
         print("sample size", len(sample_ids), len(aligned_vntrs))
         return sample_ids, aligned_vntrs
