@@ -2,7 +2,9 @@
 A tool to decompose, align, and visualize tandem repeat sequences.
 
 ## Examples
-![Example](https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure.png?raw=true)
+<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure1_VPS53.png" width="210" height="300">
+<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure2_SORL1.png" width="210" height="300">
+<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure3_CACNA1.png" width="210" height="300">
 
 ## Installation
 TBD
@@ -30,5 +32,16 @@ TRViz has three modules:
 3. Visualization
 
 ```python
+from trviz.main import TandemRepeatVizWorker
+from trviz.utils import read_fasta
+tr_visualizer = TandemRepeatVizWorker()
+samples, tr_sequences = read_fasta(input_fasta)
+vntr_id = "CACNA1C"
+motifs = ['GACCCTGACCTGACTAGTTTACAATCACAC']
 
+tr_visualizer.generate_tr_plot(tr_sequences,
+                               motifs,
+                               vntr_id,
+                               samples,
+                               )
 ``` 
