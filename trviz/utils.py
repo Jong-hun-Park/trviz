@@ -83,8 +83,11 @@ def is_valid_sequence(sequence):
     return True
 
 
-def sort_lexicographically(aligned_vntrs, sample_ids):
-    return zip(*sorted(list(zip(aligned_vntrs, sample_ids)), key=lambda x: x[0]))
+def sort(aligned_vntrs, sample_ids, method='lexicographically'):
+    if method == 'lexicographically':
+        return zip(*sorted(list(zip(aligned_vntrs, sample_ids)), key=lambda x: x[0]))
+    else:
+        raise ValueError("Please check the sorting method. {}".format(method))
 
 
 def get_levenshtein_distance(s1, s2):

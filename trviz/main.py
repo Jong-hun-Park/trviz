@@ -5,7 +5,7 @@ from trviz.decomposer import TandemRepeatDecomposer
 from trviz.motif_encoder import MotifEncoder
 from trviz.motif_aligner import MotifAligner
 from trviz.visualizer import TandemRepeatVisualizer
-from trviz.utils import sort_lexicographically
+from trviz.utils import sort
 
 
 class TandemRepeatVizWorker:
@@ -17,10 +17,10 @@ class TandemRepeatVizWorker:
         self.visualizer = TandemRepeatVisualizer()
 
     def generate_tr_plot(self,
-                         tr_sequences,
-                         motifs,
                          vntr_id,
                          sample_ids,
+                         tr_sequences,
+                         motifs,
                          figure_size=None,
                          verbose=True,
                          ):
@@ -46,7 +46,7 @@ class TandemRepeatVizWorker:
         sample_ids, aligned_vntrs = self.motif_aligner.align(sample_ids, encoded_vntrs, vntr_id)
 
         # 4. Sorting
-        sorted_aligned_vntrs, sample_ids = sort_lexicographically(aligned_vntrs, sample_ids)
+        sorted_aligned_vntrs, sample_ids = sort(aligned_vntrs, sample_ids)
 
         # 5. Visualization
         self.visualizer.plot(sorted_aligned_vntrs,
