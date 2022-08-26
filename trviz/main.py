@@ -2,9 +2,9 @@ import sys
 sys.path.insert(0, './')
 
 from trviz.decomposer import TandemRepeatDecomposer
+from trviz.motif_encoder import MotifEncoder
 from trviz.motif_aligner import MotifAligner
-from trviz.visualization import TandemRepeatVisualizer
-from trviz.utils import write_motif_map
+from trviz.visualizer import TandemRepeatVisualizer
 from trviz.utils import sort_lexicographically
 
 
@@ -12,6 +12,7 @@ class TandemRepeatVizWorker:
 
     def __init__(self):
         self.decomposer = TandemRepeatDecomposer()
+        self.motif_encoder = MotifEncoder()
         self.motif_aligner = MotifAligner()
         self.visualizer = TandemRepeatVisualizer()
 
@@ -20,7 +21,6 @@ class TandemRepeatVizWorker:
                          motifs,
                          vntr_id,
                          sample_ids,
-                         private_motif_threshold=0,
                          figure_size=None,
                          verbose=True,
                          ):
@@ -34,30 +34,21 @@ class TandemRepeatVizWorker:
         decomposed_vntrs = []
         for i, tr_sequence in enumerate(tr_sequences):
             if verbose:
-                print(f"Decomposing TR {i}")
+                print(f"Decomposing TR sequence {i}")
             decomposed_vntrs.append(self.decomposer.decompose_dp(tr_sequence, motifs, verbose=False))
-        if verbose:
-            print(f"Decomposed VNTRs: {decomposed_vntrs}")
 
-        # 2. Labeling
-        labeled_vntrs, motif_to_alphabet, alphabet_to_motif, motif_counter = self.decomposer.label_motifs(
-                                                                                           decomposed_vntrs,
-                                                                                           private_motif_threshold,
-                                                                                           auto=True)
-        # Write motif map
-        motif_map_file = f"{vntr_id}_motif_map.txt"
-        write_motif_map(motif_map_file, motif_to_alphabet, motif_counter)
-
-        if verbose:
-            print("Labeled vntrs", labeled_vntrs)
+        # 2. Encoding
+        encoded_vntrs = self.motif_encoder.encode(decomposed_vntrs,
+                                                  motif_map_file=f"{vntr_id}_motif_map.txt",
+                                                  auto=True)
 
         # 3. Align motifs
-        sample_ids, aligned_vntrs = self.motif_aligner.align(sample_ids, labeled_vntrs, vntr_id, tool="mafft")
+        sample_ids, aligned_vntrs = self.motif_aligner.align(sample_ids, encoded_vntrs, vntr_id)
 
-        # Sort TR sequences
+        # 4. Sorting
         sorted_aligned_vntrs, sample_ids = sort_lexicographically(aligned_vntrs, sample_ids)
 
-        # Visualization
+        # 5. Visualization
         self.visualizer.plot(sorted_aligned_vntrs,
                              figure_size=figure_size,
                              output_name=f"long_vntr_plots/{str(vntr_id)}",
