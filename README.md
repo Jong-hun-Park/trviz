@@ -1,5 +1,9 @@
 # TRviz
-A tool to decompose, align, and visualize tandem repeat sequences.
+
+TRviz is a python library for analyzing tandem repeat sequences. TRviz includes modules for 
+decomposing, encoding, aligning, and visualizing tandem repeat sequences.  
+
+See full documentation at [readthedocs]()
 
 ## Examples
 <p float="left">
@@ -19,7 +23,7 @@ decomposed motifs, and finally generate a plot to show the aligned motifs.
 
 ### Input
 1. Tandem repeat sequences in FASTA format
-2. (Optional) Motifs for decomposition
+2. (Optional) A motif/motifs for decomposition
 
 ### Output
 1. Motif map, a set of motifs detected in the samples and their labels and frequencies
@@ -28,11 +32,15 @@ decomposed motifs, and finally generate a plot to show the aligned motifs.
 
 
 ## Usage
-TRViz has three modules:
+TRViz has four modules:
 1. Decomposition
-2. Alignment
-3. Visualization
+2. Encoding
+3. Alignment
+4. Visualization
 
+See full documentation at [readthedocs]()
+
+#### Generating a TR plot
 ```python
 from trviz.main import TandemRepeatVizWorker
 from trviz.utils import read_fasta
@@ -43,4 +51,15 @@ vntr_id = "CACNA1C"
 motifs = ['GACCCTGACCTGACTAGTTTACAATCACAC']
 
 tr_visualizer.generate_tr_plot(vntr_id, sample_ids, tr_sequences, motifs)
+``` 
+
+#### Motif Decomposition
+```python
+from trviz.decomposer import TandemRepeatDecomposer
+
+tr_decomposer = TandemRepeatDecomposer()
+tr_sequence = "ACCTTGACCTTGACCTTGACCTTG"
+motifs = ["ACCTTG"]
+tr_decomposer.decompose_dp(tr_sequence, motifs)
+# >>> ["ACCTTG", "ACCTTG", "ACCTTG", "ACCTTG"]
 ``` 
