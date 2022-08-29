@@ -22,6 +22,8 @@ class TandemRepeatVizWorker:
                          tr_sequences,
                          motifs,
                          figure_size=None,
+                         preserve_order=False,
+                         rearragement=None,
                          verbose=True,
                          ):
 
@@ -43,13 +45,14 @@ class TandemRepeatVizWorker:
                                                   auto=True)
 
         # 3. Align motifs
-        sample_ids, aligned_vntrs = self.motif_aligner.align(sample_ids, encoded_vntrs, vntr_id)
+        sample_ids, aligned_vntrs = self.motif_aligner.align(sample_ids, encoded_vntrs, vntr_id, preserve_order)
 
         # 4. Sorting
-        sorted_aligned_vntrs, sample_ids = sort(aligned_vntrs, sample_ids)
+        if rearragement is not None:
+            sample_ids, aligned_vntrs = sort(aligned_vntrs, sample_ids)
 
         # 5. Visualization
-        self.visualizer.plot(sorted_aligned_vntrs,
+        self.visualizer.plot(aligned_vntrs,
                              figure_size=figure_size,
                              output_name=f"long_vntr_plots/{str(vntr_id)}",
                              dpi=300,

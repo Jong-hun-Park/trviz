@@ -55,7 +55,7 @@ class MotifAligner:
 
         return sample_ids, aligned_vntrs  # TODO sample_ids are not correctly sorted
 
-    def _align_motifs_with_mafft(self, sample_ids, labeled_vntrs, vid):
+    def _align_motifs_with_mafft(self, sample_ids, labeled_vntrs, vid, preserve_order=False):
         temp_input_name = "alignment/alignment_input.fa"
         temp_output_name = "alignment/alignment_output.fa"
         if vid is not None:
@@ -70,7 +70,10 @@ class MotifAligner:
         # mafft_exe = "/usr/bin/mafft"
         # mafft_cline = MafftCommandline(mafft_exe, input=temp_input_name)
 
-        os.system("mafft --quiet --text --auto {} > {}".format(temp_input_name, temp_output_name))
+        if preserve_order:
+            os.system("mafft --quiet --text --auto {} > {}".format(temp_input_name, temp_output_name))
+        else:
+            os.system("mafft --quiet --text --auto --reorder {} > {}".format(temp_input_name, temp_output_name))
 
         aligned_vntrs = []
         sample_ids = []

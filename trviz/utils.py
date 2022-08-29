@@ -20,6 +20,7 @@ def read_fasta(fasta_file):
     headers = []
     sequences = []
     sequence = ""
+    header = ""
     with open(fasta_file) as f:
         for line in f:
             if line.startswith(">"):
@@ -85,7 +86,7 @@ def is_valid_sequence(sequence):
 
 def sort(aligned_vntrs, sample_ids, method='lexicographically'):
     if method == 'lexicographically':
-        return zip(*sorted(list(zip(aligned_vntrs, sample_ids)), key=lambda x: x[0]))
+        return zip(*sorted(list(zip(sample_ids, aligned_vntrs)), key=lambda x: x[0]))
     else:
         raise ValueError("Please check the sorting method. {}".format(method))
 
