@@ -1,75 +1,143 @@
-import unittest
+import pytest
 
-from tandem_repeat_decomposer import decompose_hmm
-from tandem_repeat_decomposer import decompose_dp
-# # from pomegranate import DiscreteDistribution, State
-# from pomegranate import HiddenMarkovModel as Model
+from trviz.decomposer import TandemRepeatDecomposer
 
 
-class MyTestCase(unittest.TestCase):
-    def test_hmm_perfect_motif_len4(self):
-        sequence = "ACTGACTGACTG"
-        consensus_motif = "ACTG"
-        deomposed_motifs = decompose_hmm(sequence, consensus_motif)
-        self.assertEqual(deomposed_motifs, ['ACTG', 'ACTG', 'ACTG'])
+@pytest.fixture(scope="session")
+def tr_decomposer():
+    return TandemRepeatDecomposer()
 
-    def test_hmm_imperfect_motif_len4(self):
-        sequence = "ACTGAACTGACTG"
-        consensus_motif = "ACTG"
-        deomposed_motifs = decompose_hmm(sequence, consensus_motif)
-        self.assertEqual(deomposed_motifs, ['ACTG', 'AACTG', 'ACTG'])
 
-    def test_hmm_perfect_motif_len3(self):
-        sequence = "AACAACAACAACAAC"
-        consensus_motif = "AAC"
-        deomposed_motifs = decompose_hmm(sequence, consensus_motif)
-        self.assertEqual(deomposed_motifs, ['AAC', 'AAC', 'AAC', 'AAC', 'AAC'])
+@pytest.mark.parametrize(
+    "sequence, motifs, expected",
+    [
+        (
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                "AAAAAA",
+                ["AAAAAA", "AAAAAA", "AAAAAA", "AAAAAA", "AAAAAA"]
+        ),
+        (
+                "ACTGACTGACTG",
+                "ACTG",
+                ["ACTG", "ACTG", "ACTG"]
+        ),
+        (
+                "AACCTTTTCTAACCTTTTCT",
+                "AACCTTTTCT",
+                ["AACCTTTTCT", "AACCTTTTCT"]
+        ),
+        (
+                "CGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGG",
+                "CGG",
+                ["CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
+                 "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG"]
+        ),
+    ]
+)
+def test_decompose_dp_perfect_repeats_single_motif(tr_decomposer, sequence, motifs, expected):
+    decomposed_tr = tr_decomposer.decompose_dp(sequence, motifs)
+    assert decomposed_tr == expected
 
-    def test_hmm_perfect_motif_len10_repeat2(self):
-        sequence = "ACCGCCGTTGACCGCCGTTG"
-        consensus_motif = "ACCGCCGTTG"
-        deomposed_motifs = decompose_hmm(sequence, consensus_motif)
-        self.assertEqual(deomposed_motifs, ['ACCGCCGTTG', 'ACCGCCGTTG'])
 
-    def test_hmm_perfect_low_complexity_motif(self):
-        sequence = "AAATAAAATAAAATAAAATA"
-        consensus_motif = "AAATA"
-        deomposed_motifs = decompose_hmm(sequence, consensus_motif)
-        self.assertEqual(deomposed_motifs, ['AAATA', 'AAATA', 'AAATA', 'AAATA'])
+@pytest.mark.parametrize(
+    "sequence, motifs, expected",
+    [
+        (
+                "AAAAAC"
+                "AAAAAA"
+                "AAAAAT"
+                "AAAAAA"
+                "TTAAAA",
+                ["AAAAAA"],
+                ["AAAAAC", "AAAAAA", "AAAAAT", "AAAAAA", "TTAAAA"]
+        ),
+        (
+                "ACTG"
+                "ACTT"
+                "ACTG",
+                ["ACTG"],
+                ["ACTG", "ACTT", "ACTG"]
+        ),
+        (
+                "AACCTTTTCT"
+                "AACCTTGTCT",
+                ["AACCTTTTCT"],
+                ["AACCTTTTCT", "AACCTTGTCT"]
+        ),
+        (
+                "CGCCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGT",
+                ["CGG"],
+                # ["CGC", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
+                #  "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGT"]
+                ["CG", "CCGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
+                 "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGT"]
+        ),
+        (
+                "AAATA"
+                "AAATT"
+                "AAATA"
+                "AAAATA",
+                ["AAATA"],
+                ['AAATA', 'AAATT', 'AAATA', 'AAAATA']
+        ),
+    ]
+)
+def test_decompose_dp_imperfect_repeats_single_motif(tr_decomposer, sequence, motifs, expected):
+    decomposed_tr = tr_decomposer.decompose_dp(sequence, motifs)
+    assert decomposed_tr == expected
 
-    # def test_hmm_impefect_low_complexity_motif(self):
-    #     sequence = "AAATAAAATTAAAATAAAAAATA"
-    #     consensus_motif = "AAATA"
-    #     deomposed_motifs = decompose_hmm(sequence, consensus_motif)
-    #     self.assertEqual(deomposed_motifs, ['AAATA', 'AAATTA', 'AAATA', 'AAAAATA'])
-    #     # This failed with answer, ['AAATA', 'AAATT', 'AAAA', 'TAAA', 'AAATA']
-    #     # This is because the estimated repeat count is 5, and it must pass 5 repeats.
 
-    def test_dp_impefect_low_complexity_motif(self):
-        sequence = "AAATAAAATTAAAATAAAAAATA"
-        motifs = ["AAATA"]
-        deomposed_motifs = decompose_dp(sequence, motifs)
-        self.assertEqual(deomposed_motifs, ['AAATA', 'AAATTA', 'AAATA', 'AAAAATA'])
+@pytest.mark.parametrize(
+    "sequence, motifs, expected",
+    [
+        (
+                "AAAAAC"
+                "AAAAAA"
+                "AAAAAT"
+                "AAAAAA"
+                "TTAAAA",
+                ["AAAAAA", "TTAAAA"],
+                ["AAAAAC", "AAAAAA", "AAAAAT", "AAAAAA", "TTAAAA"]
+        ),
+        (
+                "ACTG"
+                "ACTT"
+                "ACTG",
+                ["ACTG", "ACTT"],
+                ["ACTG", "ACTT", "ACTG"]
+        ),
+        (
+                "AACCTTTTCT"
+                "AACCTTGTCT"
+                "AACCTTGTCT",
+                ["AACCTTTTCT", "AACCTTGTCT"],
+                ["AACCTTTTCT", "AACCTTGTCT", "AACCTTGTCT"]
+        ),
+        (
+                "CGCCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGT",
+                ["CGG", "CGC", "CGT"],
+                ["CGC", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
+                 "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGT"]
+                # Compare with the prev test
+                # ["CG", "CCGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
+                #  "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGT"]
+        ),
+        (
+                "AAATA"
+                "AAATT"
+                "AAATA"
+                "AAAATA",
+                ["AAATA", "AAATAA"],
+                # ['AAATA', 'AAATT', 'AAATA', 'AAAATA']  # Compare with the prev test
+                ['AAATA', 'AAATT', 'AAATAA', 'AAATA']
+        ),
+    ]
+)
+def test_decompose_dp_imperfect_repeats_multiple_motif(tr_decomposer, sequence, motifs, expected):
+    decomposed_tr = tr_decomposer.decompose_dp(sequence, motifs)
+    assert decomposed_tr == expected
 
-    def test_hmm_invalid_sequence(self):
-        sequence = "NNNNNNNNNNN"
-        consensus_motif = "ACTG"
-        with self.assertRaises(ValueError) as context:
-            decompose_hmm(sequence, consensus_motif)
-        self.assertEqual('Sequence has invalid characters', str(context.exception))
 
-    def test_dp_invalid_sequence(self):
-        sequence = "NNNNNNNNNNN"
-        consensus_motif = "ACTG"
-        with self.assertRaises(ValueError) as context:
-            decompose_dp(sequence, list(consensus_motif))
-        self.assertEqual('Sequence has invalid characters', str(context.exception))
-
-    def test_dp_imperfect_motifs(self):
-        sequence = "AGCCAGGCAGCC"
-        motifs = ["AGCC", "AGGC"]
-        deomposed_motifs = decompose_dp(sequence, motifs)
-        self.assertEqual(deomposed_motifs, ['AGCC', 'AGGC', 'AGCC'])
-
-if __name__ == '__main__':
-    unittest.main()
+def test_decompose_dp_invalid_sequence(tr_decomposer):
+    with pytest.raises(ValueError):
+        tr_decomposer.decompose_dp("NNNNNN", "ACTG")
