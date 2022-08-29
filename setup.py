@@ -9,12 +9,12 @@ setuptools.setup(
     setup_requires=['setuptools_scm'],
     author='Jonghun Park',
     author_email='jop002@eng.ucsd.edu',
-    description='A tool to visualize the tandem repeat polymorphisms',
+    description='A python library for decomposing and visualizing tandem repeat sequences',
     long_description=long_description,
     long_description_content_typ='text/markdown',
     classifiers=[
         'Programming Language :: Python :: 3',
-        'License :: MIT License',
+        'License :: BSD-3-Clause',
         'Operating System :: OS Independent',
     ],
     packages=setuptools.find_packages(),
@@ -22,8 +22,7 @@ setuptools.setup(
     install_requires=[
         'matplotlib',
         'numpy',
-        'biopython'
-        'mafft'
+        'biopython',
     ],
     python_requires='>=3.8',
 )
