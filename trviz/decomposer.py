@@ -28,6 +28,8 @@ class TandemRepeatDecomposer:
             motifs,
             match_score=5,
             mismatch_score=-2,
+            ins_score=None,
+            del_score=None,
             min_score_threshold=float("-inf"),
             verbose=False,
     ) -> List:
@@ -88,8 +90,8 @@ class TandemRepeatDecomposer:
         """
 
         # Score
-        insertion_score = mismatch_score
-        deletion_score = mismatch_score
+        _insertion_score = ins_score if ins_score is not None else mismatch_score
+        _deletion_score = del_score if del_score is not None else mismatch_score
 
         # Define s[i, m, j]
         # numpy array doesn't allow to have different length array
@@ -119,10 +121,10 @@ class TandemRepeatDecomposer:
                         s[0][m][0] = 0
                         backtrack[0][m][j] = (0, m, 0)
                     elif i == 0 and j != 0:
-                        s[0][m][j] = s[0][m][j - 1] + insertion_score
+                        s[0][m][j] = s[0][m][j - 1] + _insertion_score
                         backtrack[0][m][j] = (0, m, j - 1)
                     elif i != 0 and j == 0:
-                        s[i][m][0] = s[i - 1][m][0] + insertion_score
+                        s[i][m][0] = s[i - 1][m][0] + _insertion_score
                         backtrack[i][m][0] = (i - 1, m, 0)
 
         # Normal cases, if i != 0
@@ -178,8 +180,8 @@ class TandemRepeatDecomposer:
                         # print(f'motif {motif}, i {i}, m {m}, j{j}')
                         diagonal = s[i - 1][m][j - 1] + match_score if sequence[i - 1] == motif[j - 1] else \
                         s[i - 1][m][j - 1] + mismatch_score
-                        insertion = s[i - i][m][j] + insertion_score
-                        deletion = s[i][m][j - 1] + deletion_score
+                        insertion = s[i - i][m][j] + _insertion_score
+                        deletion = s[i][m][j - 1] + _deletion_score
 
                         s[i][m][j] = max(diagonal, insertion, deletion)
                         path = np.argmax([diagonal, insertion, deletion])
