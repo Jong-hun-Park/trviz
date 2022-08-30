@@ -1,5 +1,11 @@
-# TRviz
-
+```
+  _______ _______      _______ ______
+ |__   __|  __ \ \    / |_   _|___  /
+    | |  | |__) \ \  / /  | |    / / 
+    | |  |  _  / \ \/ /   | |   / /  
+    | |  | | \ \  \  /   _| |_ / /__ 
+    |_|  |_|  \_\  \/   |_____/_____
+```
 TRviz is a python library for analyzing tandem repeat sequences. TRviz includes modules for 
 decomposing, encoding, aligning, and visualizing tandem repeat sequences.  
 
@@ -12,8 +18,8 @@ See full documentation at [readthedocs]()
 <img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure3_CACNA1.png" width="32%" height="300">
 </p>
 
-## Installation
-TBD
+## Getting Started
+Install the library with pip
 
 ## Motivation
 There have been many approaches to visualize the variations in tandem repeats. 
@@ -31,7 +37,7 @@ decomposed motifs, and finally generate a plot to show the aligned motifs.
 3. Plot
 
 
-## Usage
+## Code samples and examples
 TRViz has four modules:
 1. Decomposition
 2. Encoding
