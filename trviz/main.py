@@ -53,7 +53,7 @@ class TandemRepeatVizWorker:
         # 5. Visualization
         self.visualizer.plot(aligned_vntrs,
                              figure_size=figure_size,
-                             output_name=f"long_vntr_plots/{str(vntr_id)}",
+                             output_name=f"{str(vntr_id)}",
                              dpi=300,
                              sample_ids=sample_ids,
                              xtick_degrees=90,

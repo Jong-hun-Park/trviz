@@ -56,11 +56,11 @@ class MotifAligner:
         return sample_ids, aligned_vntrs  # TODO sample_ids are not correctly sorted
 
     def _align_motifs_with_mafft(self, sample_ids, labeled_vntrs, vid, preserve_order=False):
-        temp_input_name = "alignment/alignment_input.fa"
-        temp_output_name = "alignment/alignment_output.fa"
+        temp_input_name = "alignment_input.fa"
+        temp_output_name = "alignment_output.fa"
         if vid is not None:
-            temp_input_name = "alignment/alignment_input_{}.fa".format(vid)
-            temp_output_name = "alignment/alignment_output_{}.fa".format(vid)
+            temp_input_name = "alignment_input_{}.fa".format(vid)
+            temp_output_name = "alignment_output_{}.fa".format(vid)
 
         data = '\n'.join(['>%s\n' % sample_ids[i] + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
         with open(temp_input_name, "w") as f:
@@ -91,7 +91,6 @@ class MotifAligner:
             aligned_vntrs.append(tr_seq)
 
         if len(aligned_vntrs) == 0:
-            raise ValueError(f"No alinged VNTRs in {temp_output_name} file")
+            raise ValueError(f"No aligned VNTRs in {temp_output_name} file")
 
-        print("sample size", len(sample_ids), len(aligned_vntrs))
         return sample_ids, aligned_vntrs
