@@ -1,10 +1,11 @@
 ```
-  _______ _______      _______ ______
- |__   __|  __ \ \    / |_   _|___  /
-    | |  | |__) \ \  / /  | |    / / 
-    | |  |  _  / \ \/ /   | |   / /  
-    | |  | | \ \  \  /   _| |_ / /__ 
-    |_|  |_|  \_\  \/   |_____/_____
+                                      _______ _______      _______ ______
+                                     |__   __|  __ \ \    / /_   _|___  /
+                                        | |  | |__) \ \  / /  | |    / / 
+                                        | |  |  _  / \ \/ /   | |   / /  
+                                        | |  | | \ \  \  /   _| |_ / /__ 
+                                        |_|  |_|  \_\  \/   |_____/_____|
+
 ```
 TRviz is a python library for analyzing tandem repeat sequences. TRviz includes modules for 
 decomposing, encoding, aligning, and visualizing tandem repeat sequences.  
