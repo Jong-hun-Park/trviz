@@ -138,6 +138,50 @@ def test_decompose_dp_imperfect_repeats_multiple_motif(tr_decomposer_dp, sequenc
     assert decomposed_tr == expected
 
 
+@pytest.mark.parametrize(
+    "sequence, motifs, kwargs, expected",
+    [
+        (
+                "ACGTTTACGTTTACGTTTACGTTT",
+                ["ACGTTT"],
+                {'match_score': 5, 'mismatch_score': -2, 'insertion_score': -3, 'deletion_score': -3},
+                ["ACGTTT", "ACGTTT", "ACGTTT", "ACGTTT"],
+        ),
+        (
+                "ACGTTTACGTTTACGTTTACGTTT",
+                "ACGTTT",
+                {'match_score': '5', 'mismatch_score': '3', 'insertion_score': '1', 'deletion_score': '1'},
+                ValueError,
+        ),
+        (
+                "ACGTTTACGTTTACGTTTACGTTT",
+                "ACGTTT",
+                {'mismatch': 3},  # Invalid. mismatch_score is the correct key
+                KeyError,
+        ),
+        (
+                "ACGTTTACGTTTACGTTTACGTTT",
+                "ACGTTT",
+                {'verbose': True},
+                ["ACGTTT", "ACGTTT", "ACGTTT", "ACGTTT"],
+        ),
+        (
+                "ACGTTTACGTTTACGTTTACGTTT",
+                "ACGTTT",
+                {'verbose': 'T'},
+                ValueError,
+        ),
+    ]
+)
+def test_decompose_dp_arguments(tr_decomposer_dp, sequence, motifs, kwargs, expected):
+    if type(expected) == type and issubclass(expected, Exception):
+        with pytest.raises(expected):
+            tr_decomposer_dp.decompose(sequence, motifs, **kwargs)
+    else:
+        decomposed_tr = tr_decomposer_dp.decompose(sequence, motifs, **kwargs)
+        assert decomposed_tr == expected
+
+
 def test_decompose_dp_invalid_sequence(tr_decomposer_dp):
     with pytest.raises(ValueError):
         tr_decomposer_dp.decompose("NNNNNN", "ACTG")
