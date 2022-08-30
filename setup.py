@@ -5,16 +5,16 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setuptools.setup(
     name='trviz',
-    use_scm_version=True,
-    setup_requires=['setuptools_scm'],
+    version="0.1.0",
     author='Jonghun Park',
     author_email='jop002@eng.ucsd.edu',
     description='A python library for decomposing and visualizing tandem repeat sequences',
+    url="https://github.com/Jong-hun-Park/trviz",
     long_description=long_description,
-    long_description_content_typ='text/markdown',
+    long_description_content_type='text/markdown',
     classifiers=[
         'Programming Language :: Python :: 3',
-        'License :: BSD-3-Clause',
+        'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
     ],
     packages=setuptools.find_packages(),
