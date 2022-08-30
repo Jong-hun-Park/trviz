@@ -22,7 +22,6 @@ class TandemRepeatVizWorker:
                          tr_sequences,
                          motifs,
                          figure_size=None,
-                         preserve_order=False,
                          rearragement=None,
                          verbose=True,
                          ):
@@ -37,7 +36,7 @@ class TandemRepeatVizWorker:
         for i, tr_sequence in enumerate(tr_sequences):
             if verbose:
                 print(f"Decomposing TR sequence {i}")
-            decomposed_vntrs.append(self.decomposer.decompose_dp(tr_sequence, motifs, verbose=False))
+            decomposed_vntrs.append(self.decomposer.decompose(tr_sequence, motifs))
 
         # 2. Encoding
         encoded_vntrs = self.motif_encoder.encode(decomposed_vntrs,
@@ -45,7 +44,7 @@ class TandemRepeatVizWorker:
                                                   auto=True)
 
         # 3. Align motifs
-        sample_ids, aligned_vntrs = self.motif_aligner.align(sample_ids, encoded_vntrs, vntr_id, preserve_order)
+        sample_ids, aligned_vntrs = self.motif_aligner.align(sample_ids, encoded_vntrs, vntr_id)
 
         # 4. Sorting
         if rearragement is not None:

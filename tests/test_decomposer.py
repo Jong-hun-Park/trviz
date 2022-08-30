@@ -4,8 +4,8 @@ from trviz.decomposer import TandemRepeatDecomposer
 
 
 @pytest.fixture(scope="session")
-def tr_decomposer():
-    return TandemRepeatDecomposer()
+def tr_decomposer_dp():
+    return TandemRepeatDecomposer(mode="DP")
 
 
 @pytest.mark.parametrize(
@@ -34,8 +34,8 @@ def tr_decomposer():
         ),
     ]
 )
-def test_decompose_dp_perfect_repeats_single_motif(tr_decomposer, sequence, motifs, expected):
-    decomposed_tr = tr_decomposer.decompose_dp(sequence, motifs)
+def test_decompose_dp_perfect_repeats_single_motif(tr_decomposer_dp, sequence, motifs, expected):
+    decomposed_tr = tr_decomposer_dp.decompose(sequence, motifs)
     assert decomposed_tr == expected
 
 
@@ -82,8 +82,8 @@ def test_decompose_dp_perfect_repeats_single_motif(tr_decomposer, sequence, moti
         ),
     ]
 )
-def test_decompose_dp_imperfect_repeats_single_motif(tr_decomposer, sequence, motifs, expected):
-    decomposed_tr = tr_decomposer.decompose_dp(sequence, motifs)
+def test_decompose_dp_imperfect_repeats_single_motif(tr_decomposer_dp, sequence, motifs, expected):
+    decomposed_tr = tr_decomposer_dp.decompose(sequence, motifs)
     assert decomposed_tr == expected
 
 
@@ -133,11 +133,11 @@ def test_decompose_dp_imperfect_repeats_single_motif(tr_decomposer, sequence, mo
         ),
     ]
 )
-def test_decompose_dp_imperfect_repeats_multiple_motif(tr_decomposer, sequence, motifs, expected):
-    decomposed_tr = tr_decomposer.decompose_dp(sequence, motifs)
+def test_decompose_dp_imperfect_repeats_multiple_motif(tr_decomposer_dp, sequence, motifs, expected):
+    decomposed_tr = tr_decomposer_dp.decompose(sequence, motifs)
     assert decomposed_tr == expected
 
 
-def test_decompose_dp_invalid_sequence(tr_decomposer):
+def test_decompose_dp_invalid_sequence(tr_decomposer_dp):
     with pytest.raises(ValueError):
-        tr_decomposer.decompose_dp("NNNNNN", "ACTG")
+        tr_decomposer_dp.decompose("NNNNNN", "ACTG")

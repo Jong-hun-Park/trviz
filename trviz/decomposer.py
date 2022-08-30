@@ -16,31 +16,29 @@ class TandemRepeatDecomposer:
         else:
             raise ValueError(f"{mode} is invalid mode for tandem repeat decomposer.")
 
-    # def decompose(self, sequence, motifs, **kwargs):
-    #     if self.mode == "DP":
-    #         return self._decompose_dp(sequence, motifs)
-    #     else:
-    #         return self._decompose_hmm(sequence, motifs)
+    def decompose(self, sequence, motifs, **kwargs):
+        if self.mode == "DP":
+            return self._decompose_dp(sequence, motifs, **kwargs)
+        else:
+            return self._decompose_hmm(sequence, motifs, **kwargs)
 
     @staticmethod
-    def decompose_dp(
+    def _decompose_dp(
             sequence,
             motifs,
-            match_score=5,
-            mismatch_score=-2,
-            ins_score=None,
-            del_score=None,
-            min_score_threshold=float("-inf"),
-            verbose=False,
+            **kwargs,
     ) -> List:
         """
         Decompose sequence into motifs using dynamic programming
 
         :param sequence: a string of VNTR sequence
         :param motifs: a list of motif strings composed of nucleotide strings
-        :param match_score: a score for match
-        :param mismatch_score: a score for mismatch
-        :param min_score_threshold: a minimum score of the alignment.
+
+        :param **kwargs: valids key words are
+
+        match_score: a score for match
+        mismatch_score: a score for mismatch
+        min_score_threshold: a minimum score of the alignment.
 
         :return: A list of decomposed motifs
         """
@@ -86,12 +84,31 @@ class TandemRepeatDecomposer:
         - i = 1, by definition
         - let i >= 2, j >= 2, assume that s[i][m][j] have been computed correctly.
         - We are claiming that the formulation for s[i, m, j] is the best answer
-            -  
         """
 
-        # Score
-        _insertion_score = ins_score if ins_score is not None else mismatch_score
-        _deletion_score = del_score if del_score is not None else mismatch_score
+        def _check_if_dp_parameters_are_valid(**kwargs):
+            valid_keys = {"match_score", "mismatch_score",
+                          "insertion_score", "deletion_score", "min_score_threshold",
+                          "verbose"}
+            for k, v in kwargs.items():
+                if k not in valid_keys:
+                    raise KeyError(f"Invalid keyword: {k}")
+                if "score" in k:
+                    if type(v) not in [int, float]:
+                        raise ValueError(f"Invalid value {k}: {v}")
+                if "verbose" == k:
+                    if type(v) != bool:
+                        raise ValueError(f"Invalid value type. {k}: {v}")
+
+        _check_if_dp_parameters_are_valid(**kwargs)
+
+        # Parameter setting
+        match_score = kwargs.get("match_score", 5)
+        mismatch_score = kwargs.get("mismatch_score", -2)
+        insertion_score = kwargs.get("insertion_score", mismatch_score)
+        deletion_score = kwargs.get("deletion_score", mismatch_score)
+        min_score_threshold = kwargs.get("min_score_threshold", float("-inf"))
+        verbose = kwargs.get("verbose", False)
 
         # Define s[i, m, j]
         # numpy array doesn't allow to have different length array
@@ -121,10 +138,10 @@ class TandemRepeatDecomposer:
                         s[0][m][0] = 0
                         backtrack[0][m][j] = (0, m, 0)
                     elif i == 0 and j != 0:
-                        s[0][m][j] = s[0][m][j - 1] + _insertion_score
+                        s[0][m][j] = s[0][m][j - 1] + insertion_score
                         backtrack[0][m][j] = (0, m, j - 1)
                     elif i != 0 and j == 0:
-                        s[i][m][0] = s[i - 1][m][0] + _insertion_score
+                        s[i][m][0] = s[i - 1][m][0] + insertion_score
                         backtrack[i][m][0] = (i - 1, m, 0)
 
         # Normal cases, if i != 0
@@ -180,8 +197,8 @@ class TandemRepeatDecomposer:
                         # print(f'motif {motif}, i {i}, m {m}, j{j}')
                         diagonal = s[i - 1][m][j - 1] + match_score if sequence[i - 1] == motif[j - 1] else \
                         s[i - 1][m][j - 1] + mismatch_score
-                        insertion = s[i - i][m][j] + _insertion_score
-                        deletion = s[i][m][j - 1] + _deletion_score
+                        insertion = s[i - i][m][j] + insertion_score
+                        deletion = s[i][m][j - 1] + deletion_score
 
                         s[i][m][j] = max(diagonal, insertion, deletion)
                         path = np.argmax([diagonal, insertion, deletion])
@@ -349,13 +366,17 @@ class TandemRepeatDecomposer:
 
         return model
 
-    def decompose_hmm(self, sequence, consensus_motif=None, repeat_count=None, has_flanking_sequence=False, verbose=False):
+    def _decompose_hmm(self, sequence, consensus_motif, **kwargs):
         """
         Decompose sequence into motifs using a HMM
         :param sequence: a string of VNTR sequence
         :param consensus_motif: A motif sequence
-        :param repeat_count: If not specified, use estimated repeat count based on the sequence and motif length
-        :param has_flanking_sequence: If true, use additional nodes in the HMM to identify flanking regions
+        :param **kwargs:
+
+        1. repeat_count: If not specified, use estimated repeat count based on the sequence and motif length
+        2. has_flanking_sequence: If true, use additional nodes in the HMM to identify flanking regions
+        3. verbose
+
         :return: A list of decomposed motifs
         """
 
@@ -364,6 +385,26 @@ class TandemRepeatDecomposer:
 
         if consensus_motif is not None and not is_valid_sequence(consensus_motif):
             raise ValueError("Consensus motif has invalid characters")
+
+
+        def _check_if_hmm_parameters_are_valid(**kwargs):
+            valid_keys = {"repeat_count", "has_flanking_sequence", "verbose"}
+            for k, v in kwargs.items():
+                if k not in valid_keys:
+                    raise KeyError(f"Invalid keyword: {k}")
+                if "repeat_count" in k:
+                    if type(v) != int:
+                        raise ValueError(f"Invalid value {k}: {v}")
+                if "has_flanking_sequence" in k or "verbose" == k:
+                    if type(v) != bool:
+                        raise ValueError(f"Invalid value {k}: {v}")
+
+        _check_if_hmm_parameters_are_valid(**kwargs)
+
+        # Parameter setting
+        repeat_count = kwargs.get("repeat_count", None)
+        has_flanking_sequence = kwargs.get("has_flanking_sequence", False)
+        verbose = kwargs.get("verbose", False)
 
         # if consensus_motif is None:
         #     #TODO Find a motif using TRF
