@@ -6,7 +6,7 @@ from trviz.utils import get_motifs_from_visited_states_and_region
 import numpy as np
 
 
-class TandemRepeatDecomposer:
+class Decomposer:
 
     def __init__(self, mode="DP"):
         if mode == "DP":

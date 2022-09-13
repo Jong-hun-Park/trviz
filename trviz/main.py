@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0, './')
 
-from trviz.decomposer import TandemRepeatDecomposer
+from trviz.decomposer import Decomposer
 from trviz.motif_encoder import MotifEncoder
 from trviz.motif_aligner import MotifAligner
 from trviz.visualizer import TandemRepeatVisualizer
@@ -11,7 +11,7 @@ from trviz.utils import sort
 class TandemRepeatVizWorker:
 
     def __init__(self):
-        self.decomposer = TandemRepeatDecomposer()
+        self.decomposer = Decomposer()
         self.motif_encoder = MotifEncoder()
         self.motif_aligner = MotifAligner()
         self.visualizer = TandemRepeatVisualizer()

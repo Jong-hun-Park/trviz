@@ -1,11 +1,11 @@
 import pytest
 
-from trviz.decomposer import TandemRepeatDecomposer
+from trviz.decomposer import Decomposer
 
 
 @pytest.fixture(scope="session")
 def tr_decomposer_dp():
-    return TandemRepeatDecomposer(mode="DP")
+    return Decomposer(mode="DP")
 
 
 @pytest.mark.parametrize(

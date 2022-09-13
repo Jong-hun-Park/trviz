@@ -20,7 +20,18 @@ See full documentation at [readthedocs]()
 </p>
 
 ## Getting Started
-Install the library with pip
+Install the library with pip or from source.
+### with pip
+```
+pip install trviz
+```
+
+### from source
+```
+git clone https://github.com/Jong-hun-Park/trviz.git
+cd trviz/
+pip install .
+```
 
 ## Motivation
 There have been many approaches to visualize the variations in tandem repeats. 
@@ -62,11 +73,11 @@ tr_visualizer.generate_tr_plot(vntr_id, sample_ids, tr_sequences, motifs)
 
 #### Motif Decomposition
 ```python
-from trviz.decomposer import TandemRepeatDecomposer
+from trviz.decomposer import Decomposer
 
-tr_decomposer = TandemRepeatDecomposer()
+tr_decomposer = Decomposer()
 tr_sequence = "ACCTTGACCTTGACCTTGACCTTG"
 motifs = ["ACCTTG"]
-tr_decomposer.decompose_dp(tr_sequence, motifs)
+tr_decomposer.decompose(tr_sequence, motifs)
 # >>> ["ACCTTG", "ACCTTG", "ACCTTG", "ACCTTG"]
 ``` 
