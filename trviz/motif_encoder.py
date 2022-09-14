@@ -33,13 +33,16 @@ class MotifEncoder:
         return normal_motifs, private_motifs
 
     @staticmethod
-    def find_minimum_private_motif_threshold(decomposed_vntrs):
+    def find_private_motif_threshold(decomposed_vntrs, label_count=None):
+        maximum_label_count = len(INDEX_TO_CHR) - 1
+        if label_count is not None:
+            maximum_label_count = label_count - 1  # 1 for private motif
+
         motif_counter = get_motif_counter(decomposed_vntrs)
 
         min_private_motif_threshold = 0
         for index, (motif, count) in enumerate(motif_counter.most_common()):
-            print(index, motif, count)
-            if index + 1 > len(INDEX_TO_CHR) - 1:  # starting with 33, last 126, skipping 4 symbols, 1 for private
+            if index + 1 > maximum_label_count:  # starting with 33, last 126, skipping 4 symbols, 1 for private
                 min_private_motif_threshold = count
                 break
 
@@ -61,12 +64,13 @@ class MotifEncoder:
             labeled_trs.append(labeled_vntr)
         return labeled_trs
 
-    def encode(self, decomposed_vntrs, motif_map_file, auto=True):
+    def encode(self, decomposed_vntrs, motif_map_file, label_count=None, auto=True):
         """
 
         :param decomposed_vntrs:
         :param private_motif_threshold:
-        :param auto: if True, find the minimum threshold to encode everything using 126-33+1 ASCII characters.
+        :param label_count: the number of label (encoding) to represent the motifs.
+        :param auto: if True, find the minimum threshold to encode everything using 90 ASCII characters.
         :return: labeled_vntrs, motif to alphabet (dictionary of the mapping)
         """
 
@@ -86,8 +90,12 @@ class MotifEncoder:
 
             return INDEX_TO_CHR[index]
 
+        if label_count is not None:
+            self.private_motif_threshold = self.find_private_motif_threshold(decomposed_vntrs, label_count)
+            print("private motif threshold: ", self.private_motif_threshold)
+
         if auto:
-            self.private_motif_threshold = self.find_minimum_private_motif_threshold(decomposed_vntrs)
+            self.private_motif_threshold = self.find_private_motif_threshold(decomposed_vntrs)
             print("private motif threshold: ", self.private_motif_threshold)
 
         motif_to_symbol: Dict = {}
