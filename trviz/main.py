@@ -1,4 +1,6 @@
 import sys
+from typing import List, Tuple
+
 sys.path.insert(0, './')
 
 from trviz.decomposer import Decomposer
@@ -17,19 +19,37 @@ class TandemRepeatVizWorker:
         self.visualizer = TandemRepeatVisualizer()
 
     def generate_tr_plot(self,
-                         vntr_id,
-                         sample_ids,
-                         tr_sequences,
-                         motifs,
-                         figure_size=None,
-                         rearragement=None,
-                         verbose=True,
+                         vntr_id: str,
+                         sample_ids: List[str],
+                         tr_sequences: List[str],
+                         motifs: List[str],
+                         figure_size: Tuple[int, int] = None,
+                         rearragement: str = None,
+                         verbose: bool = True,
                          ):
+        """
+        A method to generate TandemRepeat plot.
+        This executes the following modules sequentially and finally output the plot.
+        1. Decomposition
+        2. Encoding
+        3. Alignment
+        4. Sorting (if specified)
+        5. Visualization
+        For detail, please check out each module
+
+        :param vntr_id: a ID for the tandem repeat
+        :param sample_ids: a list of sample IDs corresponding to the tandem repeat sequences
+        :param tr_sequences: a list of tandem repeat sequences
+        :param motifs: a list of motifs to be used for decomposition
+        :param figure_size: figure size
+        :param rearragement: re-arrangement method (default is sorting by lexicographically)
+        :param verbose: if true, output detailed information
+        """
 
         if verbose:
             print("VID: {}".format(vntr_id))
             print("Motifs: {}".format(motifs))
-            print(f"{len(tr_sequences)} sequences")
+            print(f"Loaded {len(tr_sequences)} tandem repeat sequences")
 
         # 1. Decomposition
         decomposed_vntrs = []

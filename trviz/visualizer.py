@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import ListedColormap
@@ -35,7 +37,7 @@ class TandemRepeatVisualizer:
 
     @staticmethod
     def plot_motif_color_map(motif_color_map, file_name):
-
+        """ Generate a plot for motif color map """
         # fig = plt.figure(figsize=(8, 5))  # width and height in inch
         ax = plt.subplot(1, 1, 1, aspect=1, autoscale_on=True, frameon=False,
                          xticks=[y for y in range(len(motif_color_map) + 1)],
@@ -61,18 +63,32 @@ class TandemRepeatVisualizer:
         plt.savefig(file_name)
 
     def plot(self,
-             aligned_labeled_repeats,
-             figure_size=None,
-             output_name=None,
-             dpi=500,
-             alpha=0.5,
-             sample_ids=None,
-             xtick_degrees=90,
-             hide_yticks=False,
-             private_motif_color='black',
-             debug=False):
+             aligned_labeled_repeats: List[str],
+             figure_size: Tuple[int, int] = None,
+             output_name: str = None,
+             dpi: int = 500,
+             alpha: float = 0.5,
+             sample_ids: List[str] = None,
+             xtick_degrees: int = 90,
+             hide_yticks: bool = False,
+             private_motif_color: str = 'black',
+             debug: bool = False
+             ):
+        """
+        Generate a plot showing the variations in tandem repeat sequences.
+        A distinct color is assigned to each public motif. For private motifs, the same color (black by default) is assigned.
 
-        """ Generate tandem repeat plot """
+        :param aligned_labeled_repeats: aligned and encoded tandem repeat sequences.
+        :param figure_size: figure size
+        :param output_name: output file name
+        :param dpi: DPI for the plot
+        :param alpha: alpha value for the plot
+        :param sample_ids: sample IDs
+        :param xtick_degrees: xtick degree (default is 90)
+        :param hide_yticks: if true, hide yticks
+        :param private_motif_color: the color for private motifs. Default is black
+        :param debug: if true, print verbse information.
+        """
 
         fig = plt.figure()
         if figure_size is not None:
@@ -129,7 +145,7 @@ class TandemRepeatVisualizer:
         if sample_ids is not None:
             plt.xticks([x + 0.5 for x in range(len(sample_ids))],
                        sample_ids,
-                       fontsize=3,
+                       # fontsize=3,  # parameterize
                        rotation=xtick_degrees)
         else:
             plt.xticks([])

@@ -17,6 +17,7 @@ DNA_CHARACTERS = {'A', 'C', 'G', 'T'}
 
 
 def read_fasta(fasta_file):
+    """ Read fasta file and output headers and sequences """
     headers = []
     sequences = []
     sequence = ""
@@ -38,6 +39,7 @@ def read_fasta(fasta_file):
 
 
 def get_motif_counter(decomposed_vntrs):
+    """ Return a counter for each motif """
     motif_counter = Counter()
     for decomposed_vntr in decomposed_vntrs:
         motif_counter.update(Counter(decomposed_vntr))
@@ -46,6 +48,7 @@ def get_motif_counter(decomposed_vntrs):
 
 
 def is_emitting_state(state_name):
+    """ Check if the given state is emitting state, that is insertion or matching state """
     if state_name.startswith('M') or state_name.startswith('I') or state_name.startswith('start_random_matches') \
             or state_name.startswith('end_random_matches'):
         return True
@@ -78,6 +81,7 @@ def get_motifs_from_visited_states_and_region(visited_states, region):
 
 
 def is_valid_sequence(sequence):
+    """ Check if the given sequence is DNA sequence """
     for s in sequence:
         if s not in DNA_CHARACTERS:
             return False
@@ -85,6 +89,7 @@ def is_valid_sequence(sequence):
 
 
 def sort(aligned_vntrs, sample_ids, method='lexicographically'):
+    """ Sort the aligned and encoded tandem repeats """
     if method == 'lexicographically':
         return zip(*sorted(list(zip(sample_ids, aligned_vntrs)), key=lambda x: x[0]))
     else:
@@ -137,7 +142,7 @@ def calculate_cost(alinged_vntrs, alphabet_to_motif):
     return total_cost
 
 
-def sort_with_simulated_annealing(seq_list, alphabet_to_motif, sample_ids):
+def sort_by_simulated_annealing(seq_list, alphabet_to_motif, sample_ids):
     initial_cost = calculate_cost(seq_list, alphabet_to_motif)
     T = 10000
 

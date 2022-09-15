@@ -1,6 +1,7 @@
 import subprocess
 import os
-import time
+from typing import Tuple
+from typing import List
 
 try:
     from StringIO import StringIO
@@ -15,9 +16,22 @@ from Bio import AlignIO
 
 class MotifAligner:
 
-    def align(self, sample_ids, labeled_vntrs, vid=None, tool="mafft"):
+    def align(self,
+              sample_ids: List[str],
+              encoded_vntrs: List[str],
+              vid: str = None,
+              tool: str = "mafft",
+              ) -> Tuple[List, List]:
+        """
+        Align encoded VNTRs using multiple sequence alignment tools. Default tool is MAFFT.
+
+        :param sample_ids: sample ids
+        :param encoded_vntrs: encoded tandem repeats
+        :param tool: the tool name for multiple sequence alignment (options: MAFFT (default))
+        :param vid: ID for the tandem repeat
+        """
         motif_aligner = self._get_motif_aligner(tool)
-        return motif_aligner(sample_ids, labeled_vntrs, vid)
+        return motif_aligner(sample_ids, encoded_vntrs, vid)
 
     def _get_motif_aligner(self, tool):
         if tool == 'mafft':
@@ -78,6 +92,7 @@ class MotifAligner:
         aligned_vntrs = []
         sample_ids = []
         tr_seq = None
+        # Check if the output file exist, if not, raise error (mafft doesn't work)
         with open(temp_output_name, "r") as f:
             for line in f:
                 if line.startswith(">"):

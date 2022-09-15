@@ -1,5 +1,5 @@
 from collections import Counter
-from typing import Dict
+from typing import Dict, List
 
 from trviz.utils import INDEX_TO_CHR, PRIVATE_MOTIF_LABEL
 from trviz.utils import get_motif_counter
@@ -21,7 +21,6 @@ class MotifEncoder:
         :param private_motif_threshold
         :return: normal motifs, private motifs
         """
-
         normal_motifs = []
         private_motifs = []
         for motif, count in motif_counter.most_common():
@@ -34,6 +33,13 @@ class MotifEncoder:
 
     @staticmethod
     def find_private_motif_threshold(decomposed_vntrs, label_count=None):
+        """
+        Find the frequency threshold for private motifs.
+
+        :param decomposed_vntrs: decomposed tandem repeat sequences
+        :param label_count: if label_count is given, use only label_count number of characters to encode the motifs
+        :return min_private_motif_threshold: the frequency threshold for private motifs.
+        """
         maximum_label_count = len(INDEX_TO_CHR) - 1
         if label_count is not None:
             maximum_label_count = label_count - 1  # 1 for private motif
@@ -50,6 +56,7 @@ class MotifEncoder:
 
     @staticmethod
     def write_motif_map(output_file, motif_to_alphabet, motif_counter):
+        """ Write the mapping motif to characters to the specified file"""
         with open(output_file, "w") as f:
             for (motif, _) in motif_counter.most_common():
                 f.write(f"{motif}\t{motif_to_alphabet[motif]}\t{motif_counter[motif]}\n")
@@ -64,14 +71,22 @@ class MotifEncoder:
             labeled_trs.append(labeled_vntr)
         return labeled_trs
 
-    def encode(self, decomposed_vntrs, motif_map_file, label_count=None, auto=True):
+    def encode(self,
+               decomposed_vntrs: List[List],
+               motif_map_file: str,
+               label_count: int = None,
+               auto: bool = True
+              ) -> List[str]:
         """
+        Encode decomposed tandem repeat sequences using ASCII characters.
+        By default, the map between motifs and characters are written as a file.
 
-        :param decomposed_vntrs:
-        :param private_motif_threshold:
+        :param decomposed_vntrs: a list of decomposed tandem repeat sequences
+        :param motif_map_file: the output file name for the mapping between motifs and characters
         :param label_count: the number of label (encoding) to represent the motifs.
         :param auto: if True, find the minimum threshold to encode everything using 90 ASCII characters.
-        :return: labeled_vntrs, motif to alphabet (dictionary of the mapping)
+
+        :return: encoded_vntrs
         """
 
         def _index_to_char(index):
