@@ -1,10 +1,10 @@
 ```
-                                      _______ _______      _______ ______
-                                     |__   __|  __ \ \    / /_   _|___  /
-                                        | |  | |__) \ \  / /  | |    / / 
-                                        | |  |  _  / \ \/ /   | |   / /  
-                                        | |  | | \ \  \  /   _| |_ / /__ 
-                                        |_|  |_|  \_\  \/   |_____/_____|
+  _______ _______      _______ ______
+ |__   __|  __ \ \    / /_   _|___  /
+    | |  | |__) \ \  / /  | |    / / 
+    | |  |  _  / \ \/ /   | |   / /  
+    | |  | | \ \  \  /   _| |_ / /__ 
+    |_|  |_|  \_\  \/   |_____/_____|
 
 ```
 TRviz is a python library for analyzing tandem repeat sequences. TRviz includes modules for 
@@ -20,6 +20,10 @@ See full documentation at [readthedocs]()
 </p>
 
 ## Getting Started
+
+### Prerequisite
+TRviz requires [MAFFT](https://mafft.cbrc.jp/alignment/software/).
+
 Install the library with pip or from source.
 ### with pip
 ```
@@ -58,7 +62,7 @@ TRViz has four modules:
 
 See full documentation at [readthedocs]()
 
-#### Generating a TR plot
+### Generating a TR plot
 ```python
 from trviz.main import TandemRepeatVizWorker
 from trviz.utils import read_fasta
@@ -71,7 +75,7 @@ motifs = ['GACCCTGACCTGACTAGTTTACAATCACAC']
 tr_visualizer.generate_tr_plot(vntr_id, sample_ids, tr_sequences, motifs)
 ``` 
 
-#### Motif Decomposition
+### Motif Decomposition
 ```python
 from trviz.decomposer import Decomposer
 
