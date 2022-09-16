@@ -14,9 +14,8 @@ See full documentation at [readthedocs]()
 
 ## Examples
 <p float="left">
-<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure1_VPS53.png" width="32%" height="300">
-<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure2_SORL1.png" width="32%" height="300">
-<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/example_figure3_CACNA1.png" width="32%" height="300">
+<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/figures/example_figure1_SORL1.png" width="42%" height="300">
+<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/figures/example_figure2_VPS53.png" width="42%" height="300">
 </p>
 
 ## Getting Started
