@@ -73,7 +73,7 @@ class TandemRepeatVizWorker:
 
         # 4. Sorting
         if arrangement is not None:
-            sample_ids, aligned_vntrs = arrangement(aligned_vntrs, sample_ids)
+            sample_ids, aligned_vntrs = sort(aligned_vntrs, sample_ids)
 
         # 5. Visualization
         self.visualizer.plot(aligned_vntrs,
