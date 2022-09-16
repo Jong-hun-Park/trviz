@@ -24,7 +24,8 @@ class TandemRepeatVizWorker:
                          tr_sequences: List[str],
                          motifs: List[str],
                          figure_size: Tuple[int, int] = None,
-                         rearragement: str = None,
+                         arrangement: str = None,
+                         output_dir: str = "./",
                          verbose: bool = True,
                          ):
         """
@@ -42,7 +43,8 @@ class TandemRepeatVizWorker:
         :param tr_sequences: a list of tandem repeat sequences
         :param motifs: a list of motifs to be used for decomposition
         :param figure_size: figure size
-        :param rearragement: re-arrangement method (default is sorting by lexicographically)
+        :param arrangement: re-arrangement method (default is sorting by lexicographically)
+        :param output_dir: base directory for output files
         :param verbose: if true, output detailed information
         """
 
@@ -60,21 +62,24 @@ class TandemRepeatVizWorker:
 
         # 2. Encoding
         encoded_vntrs = self.motif_encoder.encode(decomposed_vntrs,
-                                                  motif_map_file=f"{vntr_id}_motif_map.txt",
+                                                  motif_map_file=f"{output_dir}/{vntr_id}_motif_map.txt",
                                                   auto=True)
 
         # 3. Align motifs
-        sample_ids, aligned_vntrs = self.motif_aligner.align(sample_ids, encoded_vntrs, vntr_id)
+        sample_ids, aligned_vntrs = self.motif_aligner.align(sample_ids,
+                                                             encoded_vntrs,
+                                                             vntr_id,
+                                                             output_dir=output_dir)
 
         # 4. Sorting
-        if rearragement is not None:
-            sample_ids, aligned_vntrs = sort(aligned_vntrs, sample_ids)
+        if arrangement is not None:
+            sample_ids, aligned_vntrs = arrangement(aligned_vntrs, sample_ids)
 
         # 5. Visualization
         self.visualizer.plot(aligned_vntrs,
                              figure_size=figure_size,
-                             output_name=f"{str(vntr_id)}",
-                             dpi=300,
+                             output_name=f"{output_dir}/{str(vntr_id)}",
+                             dpi=500,
                              sample_ids=sample_ids,
                              xtick_degrees=90,
                              hide_yticks=False)

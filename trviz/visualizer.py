@@ -69,6 +69,7 @@ class TandemRepeatVisualizer:
              dpi: int = 500,
              alpha: float = 0.5,
              sample_ids: List[str] = None,
+             box_line_width: float = 0,
              xtick_degrees: int = 90,
              hide_yticks: bool = False,
              private_motif_color: str = 'black',
@@ -84,6 +85,7 @@ class TandemRepeatVisualizer:
         :param dpi: DPI for the plot
         :param alpha: alpha value for the plot
         :param sample_ids: sample IDs
+        :param box_line_width: line width for box edges
         :param xtick_degrees: xtick degree (default is 90)
         :param hide_yticks: if true, hide yticks
         :param private_motif_color: the color for private motifs. Default is black
@@ -102,7 +104,7 @@ class TandemRepeatVisualizer:
 
         ax = fig.add_subplot(1, 1, 1,
                              # aspect=1.5,
-                             aspect=1/(x_y_ratio)*4,
+                             # aspect=1 / x_y_ratio * 4,
                              autoscale_on=False,
                              frameon=False,
                              xticks=[x for x in range(len(aligned_labeled_repeats) + 1)],
@@ -138,7 +140,7 @@ class TandemRepeatVisualizer:
                 if label == PRIVATE_MOTIF_LABEL:
                     fcolor = private_motif_color
                 ax.add_patch(plt.Rectangle(box_position, box_width, box_height,
-                                           linewidth=0.1,
+                                           linewidth=box_line_width,
                                            facecolor=fcolor,
                                            edgecolor="white"))
 

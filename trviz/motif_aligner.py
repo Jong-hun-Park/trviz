@@ -20,6 +20,7 @@ class MotifAligner:
               sample_ids: List[str],
               encoded_vntrs: List[str],
               vid: str = None,
+              output_dir: str = None,
               tool: str = "mafft",
               ) -> Tuple[List, List]:
         """
@@ -28,10 +29,11 @@ class MotifAligner:
         :param sample_ids: sample ids
         :param encoded_vntrs: encoded tandem repeats
         :param tool: the tool name for multiple sequence alignment (options: MAFFT (default))
+        :param output_dir: base directory for output file
         :param vid: ID for the tandem repeat
         """
         motif_aligner = self._get_motif_aligner(tool)
-        return motif_aligner(sample_ids, encoded_vntrs, vid)
+        return motif_aligner(sample_ids, encoded_vntrs, vid, output_dir)
 
     def _get_motif_aligner(self, tool):
         if tool == 'mafft':
@@ -44,7 +46,7 @@ class MotifAligner:
             ValueError(tool)
 
     @staticmethod
-    def _align_motifs_with_muscle(sample_ids, labeled_vntrs, vid):
+    def _align_motifs_with_muscle(sample_ids, labeled_vntrs, vid, output_dir):
         muscle_cline = MuscleCommandline('muscle', clwstrict=True)
         data = '\n'.join(['>%s\n' % str(sample_ids[i]) + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
         stdout, stderr = muscle_cline(stdin=data)
@@ -54,7 +56,7 @@ class MotifAligner:
         return sample_ids, aligned_vntrs  # TODO sample_ids are not correctly sorted
 
     @staticmethod
-    def _align_motifs_with_clustalo(sample_ids, labeled_vntrs, vid):
+    def _align_motifs_with_clustalo(sample_ids, labeled_vntrs, vid, output_dir):
         clustalo_cline = ClustalOmegaCommandline('clustalo', infile="data.fasta", outfile="test.out",
                                                  force=True,
                                                  clusteringout="cluster.out")
@@ -69,12 +71,12 @@ class MotifAligner:
 
         return sample_ids, aligned_vntrs  # TODO sample_ids are not correctly sorted
 
-    def _align_motifs_with_mafft(self, sample_ids, labeled_vntrs, vid, preserve_order=False):
-        temp_input_name = "alignment_input.fa"
-        temp_output_name = "alignment_output.fa"
+    def _align_motifs_with_mafft(self, sample_ids, labeled_vntrs, vid, output_dir, preserve_order=False):
+        temp_input_name = f"{output_dir}/alignment_input.fa"
+        temp_output_name = f"{output_dir}/alignment_output.fa"
         if vid is not None:
-            temp_input_name = "alignment_input_{}.fa".format(vid)
-            temp_output_name = "alignment_output_{}.fa".format(vid)
+            temp_input_name = f"{output_dir}/alignment_input_{vid}.fa"
+            temp_output_name = f"{output_dir}/alignment_output_{vid}.fa"
 
         data = '\n'.join(['>%s\n' % sample_ids[i] + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
         with open(temp_input_name, "w") as f:
