@@ -24,7 +24,7 @@ class TandemRepeatVizWorker:
                          tr_sequences: List[str],
                          motifs: List[str],
                          figure_size: Tuple[int, int] = None,
-                         arrangement: str = None,
+                         arrangement_method: str = None,
                          output_dir: str = "./",
                          verbose: bool = True,
                          ):
@@ -43,7 +43,7 @@ class TandemRepeatVizWorker:
         :param tr_sequences: a list of tandem repeat sequences
         :param motifs: a list of motifs to be used for decomposition
         :param figure_size: figure size
-        :param arrangement: re-arrangement method (default is sorting by lexicographically)
+        :param arrangement_method: re-arrangement method (default is sorting by lexicographically)
         :param output_dir: base directory for output files
         :param verbose: if true, output detailed information
         """
@@ -72,8 +72,8 @@ class TandemRepeatVizWorker:
                                                              output_dir=output_dir)
 
         # 4. Sorting
-        if arrangement is not None:
-            sample_ids, aligned_vntrs = sort(aligned_vntrs, sample_ids)
+        if arrangement_method is not None:
+            sample_ids, aligned_vntrs = sort(aligned_vntrs, sample_ids, arrangement_method)
 
         # 5. Visualization
         self.visualizer.plot(aligned_vntrs,
