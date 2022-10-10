@@ -8,6 +8,7 @@ from trviz.motif_encoder import MotifEncoder
 from trviz.motif_aligner import MotifAligner
 from trviz.visualizer import TandemRepeatVisualizer
 from trviz.utils import sort
+from trviz.utils import add_padding
 
 
 class TandemRepeatVizWorker:
@@ -25,6 +26,7 @@ class TandemRepeatVizWorker:
                          motifs: List[str],
                          figure_size: Tuple[int, int] = None,
                          arrangement_method: str = None,
+                         skip_alignment = False,
                          output_dir: str = "./",
                          verbose: bool = True,
                          ):
@@ -66,14 +68,18 @@ class TandemRepeatVizWorker:
                                                   auto=True)
 
         # 3. Align motifs
-        sample_ids, aligned_vntrs = self.motif_aligner.align(sample_ids,
-                                                             encoded_vntrs,
-                                                             vntr_id,
-                                                             output_dir=output_dir)
+        if skip_alignment:
+            aligned_vntrs = add_padding(encoded_vntrs)
+        else:
+            sample_ids, aligned_vntrs = self.motif_aligner.align(sample_ids,
+                                                                 encoded_vntrs,
+                                                                 vntr_id,
+                                                                 output_dir=output_dir)
 
         # 4. Sorting
         if arrangement_method is not None:
-            sample_ids, aligned_vntrs = sort(aligned_vntrs, sample_ids, arrangement_method)
+            print(self.motif_encoder.symbol_to_motif)
+            sample_ids, aligned_vntrs = sort(aligned_vntrs, sample_ids, self.motif_encoder.symbol_to_motif, arrangement_method)
 
         # 5. Visualization
         self.visualizer.plot(aligned_vntrs,

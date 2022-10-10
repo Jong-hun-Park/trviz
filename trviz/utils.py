@@ -262,3 +262,11 @@ def sort_by_simulated_annealing_optimized(seq_list, sample_ids, symbol_to_motif)
     return sample_ids, seq_list
 
 
+def add_padding(encoded_trs):
+    max_motif_count = len(max(encoded_trs, key=len))
+    padded_trs = []
+    for encoded_tr in encoded_trs:
+        padding_count = max_motif_count - len(encoded_tr)
+        padded_trs.append(encoded_tr + '-' * padding_count)
+
+    return padded_trs
