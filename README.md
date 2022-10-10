@@ -44,7 +44,7 @@ decomposed motifs, and finally generate a plot to show the aligned motifs.
 
 ### Input
 1. Tandem repeat sequences in FASTA format
-2. (Optional) A motif/motifs for decomposition
+2. A set of motifs for decomposition
 
 ### Output
 1. Motif map, a set of motifs detected in the samples and their labels and frequencies
