@@ -9,6 +9,8 @@ class MotifEncoder:
 
     def __init__(self, private_motif_threshold=0):
         self.private_motif_threshold = private_motif_threshold
+        self.symbol_to_motif = None
+        self.motif_to_symbol = None
 
     @staticmethod
     def _divide_motifs_into_normal_and_private(motif_counter, private_motif_threshold):
@@ -107,11 +109,9 @@ class MotifEncoder:
 
         if label_count is not None:
             self.private_motif_threshold = self.find_private_motif_threshold(decomposed_vntrs, label_count)
-            print("private motif threshold: ", self.private_motif_threshold)
-
         if auto:
             self.private_motif_threshold = self.find_private_motif_threshold(decomposed_vntrs)
-            print("private motif threshold: ", self.private_motif_threshold)
+        print("private motif threshold: ", self.private_motif_threshold)
 
         motif_to_symbol: Dict = {}
         symbol_to_motif: Dict = {}
@@ -147,6 +147,9 @@ class MotifEncoder:
 
         # Write motif encoding
         self.write_motif_map(motif_map_file, motif_to_symbol, motif_counter)
+
+        self.motif_to_symbol = motif_to_symbol
+        self.symbol_to_motif = symbol_to_motif
 
         # Encode TRs
         encoded_vntrs = self._encode_decomposed_vntr(decomposed_vntrs, motif_to_symbol)
