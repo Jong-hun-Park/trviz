@@ -71,6 +71,7 @@ class TandemRepeatVisualizer:
              sample_ids: List[str] = None,
              box_line_width: float = 0,
              xtick_degrees: int = 90,
+             hide_xticks: bool = False,
              hide_yticks: bool = False,
              private_motif_color: str = 'black',
              debug: bool = False
@@ -87,6 +88,7 @@ class TandemRepeatVisualizer:
         :param sample_ids: sample IDs
         :param box_line_width: line width for box edges
         :param xtick_degrees: xtick degree (default is 90)
+        :param hide_xticks: if true, hide xticks
         :param hide_yticks: if true, hide yticks
         :param private_motif_color: the color for private motifs. Default is black
         :param debug: if true, print verbse information.
@@ -144,7 +146,7 @@ class TandemRepeatVisualizer:
                                            facecolor=fcolor,
                                            edgecolor="white"))
 
-        if sample_ids is not None:
+        if not hide_xticks:
             plt.xticks([x + 0.5 for x in range(len(sample_ids))],
                        sample_ids,
                        # fontsize=3,  # parameterize
