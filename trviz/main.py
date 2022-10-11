@@ -46,6 +46,7 @@ class TandemRepeatVizWorker:
         :param motifs: a list of motifs to be used for decomposition
         :param figure_size: figure size
         :param arrangement_method: re-arrangement method (default is sorting by lexicographically)
+        :param skip_alignment: if true, skip the multiple sequence alignment
         :param output_dir: base directory for output files
         :param verbose: if true, output detailed information
         """
