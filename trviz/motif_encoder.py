@@ -23,13 +23,13 @@ class MotifEncoder:
         :param private_motif_threshold
         :return: normal motifs, private motifs
         """
-        normal_motifs = []
-        private_motifs = []
+        normal_motifs = Counter()
+        private_motifs = Counter()
         for motif, count in motif_counter.most_common():
             if count > private_motif_threshold:
-                normal_motifs.append(motif)
+                normal_motifs[motif] = count
             else:
-                private_motifs.append(motif)
+                private_motifs[motif] = count
 
         return normal_motifs, private_motifs
 
@@ -127,14 +127,14 @@ class MotifEncoder:
                     len(normal_motifs) + len(private_motifs)))
 
             # Assign a code to all private motifs
-            motif_to_symbol.update({motif: PRIVATE_MOTIF_LABEL for motif in sorted(private_motifs)})
-            symbol_to_motif.update({PRIVATE_MOTIF_LABEL: motif for motif in sorted(private_motifs)})
+            motif_to_symbol.update({motif: PRIVATE_MOTIF_LABEL for motif, _ in private_motifs.most_common()})
+            symbol_to_motif.update({PRIVATE_MOTIF_LABEL: motif for motif, _ in private_motifs.most_common()})
 
             # For normal motifs
             motif_to_symbol.update(
-                {motif: _index_to_char(index) for index, motif in enumerate(sorted(normal_motifs))})
+                {motif: _index_to_char(index) for index, (motif, _) in enumerate(normal_motifs.most_common())})
             symbol_to_motif.update(
-                {_index_to_char(index): motif for index, motif in enumerate(sorted(normal_motifs))})
+                {_index_to_char(index): motif for index, (motif, _) in enumerate(normal_motifs.most_common())})
         else:  # Use all distinct motif
             if (unique_motif_count := len(motif_counter)) > len(INDEX_TO_CHR):  # single symbol ascii
                 raise ValueError(
