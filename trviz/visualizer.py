@@ -101,10 +101,6 @@ class TandemRepeatVisualizer:
         unique_labels = self._get_unique_labels(aligned_labeled_repeats)
         unique_label_count = len(unique_labels)
 
-        # if unique_label_count < 20:
-        #     cmap = plt.cm.get_cmap("tab20")
-        # else:
-        #     cmap = plt.cm.get_cmap('hsv', unique_label_count)
         cmap = plt.cm.get_cmap('hsv', unique_label_count)
 
         # Setting alpha values
@@ -129,9 +125,8 @@ class TandemRepeatVisualizer:
         box_height = max_repeat/len(aligned_labeled_repeats[0])
         box_width = 1.0
 
-        ax.set_xticks([x + box_width/2 for x in range(len(aligned_labeled_repeats))])
+        ax.set_xticks([x for x in range(len(aligned_labeled_repeats) + 1)])
         ax.set_yticks([y for y in range(max_repeat + 1)])
-        ax.set_ylabel("Motif counts")
 
         for allele_index, allele in enumerate(aligned_labeled_repeats):
             box_position = [allele_index, 0]
@@ -148,7 +143,8 @@ class TandemRepeatVisualizer:
                                            edgecolor="white"))
 
         if not hide_xticks:
-            ax.set_xticklabels(sample_ids,
+            ax.set_xticklabels(sample_ids + [''],
+                               ha='left',
                                rotation=xtick_degrees)
 
         else:
