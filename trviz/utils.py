@@ -8,7 +8,7 @@ LOWERCASE_LETTERS = string.ascii_lowercase
 UPPERCASE_LETTERS = string.ascii_uppercase
 DIGITS = string.digits
 
-skipping_characters = ['(', '=', '<', '>', '?']
+skipping_characters = ['(', '=', '<', '>', '?', '-']
 PRIVATE_MOTIF_LABEL = '?'
 INDEX_TO_CHR = list(LOWERCASE_LETTERS) + list(UPPERCASE_LETTERS) + list(DIGITS)
 INDEX_TO_CHR.extend([chr(x) for x in range(33, 127) if chr(x) not in skipping_characters and chr(x) not in INDEX_TO_CHR])
@@ -162,20 +162,30 @@ def calculate_cost(alinged_vntrs, alphabet_to_motif):
     return total_cost
 
 
-def get_distance_matrix(symbol_to_motif):
-    # stores the edit distance between a motif and another motif.
-    # if two motifs are the same (e.g. dist_matrix[motif_x][motif_x]) it stores the length of the motif.
+def get_distance_matrix(symbol_to_motif, score=False):
+    """
+    Stores the edit distance between a motif and another motif.
+    if two motifs are the same (e.g. dist_matrix[motif_x][motif_x]) it stores the length of the motif.
+
+    :param symbol_to_motif: a dictionary mapping symbols to motifs
+    :param score: if True, it outputs score matrix (1 - distance/max_dist)
+    """
     dist_matrix = dict()
+    max_score = 5
 
     for symbol1 in symbol_to_motif:
         dist_matrix[symbol1] = dict()
         for symbol2 in symbol_to_motif:
-            motif_sequence1 = symbol_to_motif[symbol1]
-            motif_sequence2 = symbol_to_motif[symbol2]
+            motif_seq1 = symbol_to_motif[symbol1]
+            motif_seq2 = symbol_to_motif[symbol2]
             if symbol1 == symbol2:
-                dist_matrix[symbol1][symbol2] = len(motif_sequence1)
+                dist_matrix[symbol1][symbol2] = len(motif_seq1)
             else:
-                dist_matrix[symbol1][symbol2] = get_levenshtein_distance(motif_sequence1, motif_sequence2)
+                edit_dist = get_levenshtein_distance(motif_seq1, motif_seq2)
+                if score:
+                    dist_matrix[symbol1][symbol2] = max_score * (1.0 - edit_dist / max(len(motif_seq1), len(motif_seq2)))
+                else:
+                    dist_matrix[symbol1][symbol2] = edit_dist
 
     return dist_matrix
 
@@ -270,3 +280,25 @@ def add_padding(encoded_trs):
         padded_trs.append(encoded_tr + '-' * padding_count)
 
     return padded_trs
+
+
+def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', print_end = "\r"):
+    """
+    Call in a loop to create terminal progress bar
+    @params:
+        iteration   - Required  : current iteration (Int)
+        total       - Required  : total iterations (Int)
+        prefix      - Optional  : prefix string (Str)
+        suffix      - Optional  : suffix string (Str)
+        decimals    - Optional  : positive number of decimals in percent complete (Int)
+        length      - Optional  : character length of bar (Int)
+        fill        - Optional  : bar fill character (Str)
+        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
+    """
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + '-' * (length - filledLength)
+    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = print_end)
+    # Print New Line on Complete
+    if iteration == total:
+        print()
