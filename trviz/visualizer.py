@@ -44,9 +44,6 @@ class TandemRepeatVisualizer:
                          yticks=[y for y in range(len(motif_color_map) + 1)])
 
         for i, (motif, color) in enumerate(motif_color_map.items()):
-            print(motif)
-            print(color)
-            print(i)
             box_position = [0, i]
             box_width = 0.5
             box_height = 0.5
@@ -54,13 +51,14 @@ class TandemRepeatVisualizer:
                                        linewidth=0,
                                        facecolor=color,
                                        edgecolor="white"))
-            text_position = [box_position[0] + 2.5 * box_width / 2, box_position[1] + box_height / 2]
+            text_position = [box_position[0] + 2.5 * box_width / 2, box_position[1] + box_height / 2 - 0.1]
             ax.text(x=text_position[0], y=text_position[1], s=motif, fontsize=20)
 
         plt.xticks([])
         plt.yticks([])
         plt.tight_layout()
         plt.savefig(file_name)
+        plt.close()
 
     def plot(self,
              aligned_labeled_repeats: List[str],
@@ -94,31 +92,20 @@ class TandemRepeatVisualizer:
         :param debug: if true, print verbse information.
         """
 
-        fig = plt.figure()
-        if figure_size is not None:
-            fig = plt.figure(figsize=figure_size)  # width and height in inch
-
         max_repeat = len(aligned_labeled_repeats[0])
         x_y_ratio = max_repeat / len(sample_ids)
         if debug:
             print("Max repeats: {}".format(max_repeat))
             print("x vs y ratio", x_y_ratio)
 
-        ax = fig.add_subplot(1, 1, 1,
-                             # aspect=1.5,
-                             # aspect=1 / x_y_ratio * 4,
-                             autoscale_on=False,
-                             frameon=False,
-                             xticks=[x for x in range(len(aligned_labeled_repeats) + 1)],
-                             yticks=[y for y in range(max_repeat + 1)])
-
         unique_labels = self._get_unique_labels(aligned_labeled_repeats)
         unique_label_count = len(unique_labels)
 
-        if unique_label_count < 20:
-            cmap = plt.cm.get_cmap("tab20")
-        else:
-            cmap = plt.cm.get_cmap('hsv', unique_label_count)
+        # if unique_label_count < 20:
+        #     cmap = plt.cm.get_cmap("tab20")
+        # else:
+        #     cmap = plt.cm.get_cmap('hsv', unique_label_count)
+        cmap = plt.cm.get_cmap('hsv', unique_label_count)
 
         # Setting alpha values
         temp_cmap = cmap(np.arange(cmap.N))
@@ -129,8 +116,22 @@ class TandemRepeatVisualizer:
         # colors = cmap(len(unique_labels))
         label_to_color = {r: cmap(i) for i, r in enumerate(list(unique_labels))}
 
+        # self.plot_motif_color_map(label_to_color, output_name + "_color_map.png")
+
+        fig, ax = plt.subplots(figsize=figure_size)  # width and height in inch
+        if figure_size is None:
+            w = len(sample_ids) // 10 + 3 if len(sample_ids) > 50 else 5
+            h = max_repeat // 10 + 5 if max_repeat > 50 else max_repeat // 5 + 2
+            if h * dpi > 2**16:
+                h = 2**15 // dpi  # "Weight and Height must be less than 2^16"
+            fig, ax = plt.subplots(figsize=(w, h))
+
         box_height = max_repeat/len(aligned_labeled_repeats[0])
         box_width = 1.0
+
+        ax.set_xticks([x + box_width/2 for x in range(len(aligned_labeled_repeats))])
+        ax.set_yticks([y for y in range(max_repeat + 1)])
+        ax.set_ylabel("Motif counts")
 
         for allele_index, allele in enumerate(aligned_labeled_repeats):
             box_position = [allele_index, 0]
@@ -147,26 +148,27 @@ class TandemRepeatVisualizer:
                                            edgecolor="white"))
 
         if not hide_xticks:
-            plt.xticks([x + 0.5 for x in range(len(sample_ids))],
-                       sample_ids,
-                       # fontsize=3,  # parameterize
-                       rotation=xtick_degrees)
+            ax.set_xticklabels(sample_ids,
+                               rotation=xtick_degrees)
+
         else:
-            plt.xticks([])
+            ax.set_xticklabels.xticks([])
 
         if hide_yticks:
-            plt.yticks([])
+            ax.set_yticklabels.yticks([])
 
-        plt.tick_params(
+        ax.tick_params(
             axis='x',  # changes apply to the x-axis
             which='both',  # both major and minor ticks are affected
             bottom=False,  # ticks along the bottom edge are off
             top=False,  # ticks along the top edge are off
             labelbottom=True)  # labels along the bottom edge are off
 
-        plt.tight_layout()
+        fig.tight_layout()
 
         if output_name is not None:
             plt.savefig("{}.png".format(output_name), dpi=dpi)
         else:
             plt.savefig("test_vntr_plot.png", dpi=dpi)
+
+        plt.close(fig)
