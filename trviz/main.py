@@ -26,7 +26,7 @@ class TandemRepeatVizWorker:
                          motifs: List[str],
                          figure_size: Tuple[int, int] = None,
                          arrangement_method: str = None,
-                         skip_alignment = False,
+                         skip_alignment: bool = False,
                          output_dir: str = "./",
                          verbose: bool = True,
                          ):
@@ -55,12 +55,14 @@ class TandemRepeatVizWorker:
             print("VID: {}".format(vntr_id))
             print("Motifs: {}".format(motifs))
             print(f"Loaded {len(tr_sequences)} tandem repeat sequences")
+            print("Decomposing TR sequences")
 
         # 1. Decomposition
         decomposed_vntrs = []
         for i, tr_sequence in enumerate(tr_sequences):
             if verbose:
-                print(f"Decomposing TR sequence {i}")
+                from trviz.utils import print_progress_bar
+                print_progress_bar(i + 1, len(tr_sequences))
             decomposed_vntrs.append(self.decomposer.decompose(tr_sequence, motifs))
 
         # 2. Encoding
@@ -75,6 +77,7 @@ class TandemRepeatVizWorker:
             sample_ids, aligned_vntrs = self.motif_aligner.align(sample_ids,
                                                                  encoded_vntrs,
                                                                  vntr_id,
+                                                                 # score_matrix=self.motif_encoder.score_matrix,
                                                                  output_dir=output_dir)
 
         # 4. Sorting
