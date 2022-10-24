@@ -67,18 +67,18 @@ def test_decompose_dp_perfect_repeats_single_motif(tr_decomposer_dp, sequence, m
         (
                 "CGCCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGT",
                 ["CGG"],
-                # ["CGC", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
-                #  "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGT"]
-                ["CG", "CCGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
+                ["CGC", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
                  "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGT"]
+                # ["CG", "CCGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
+                #  "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGT"]
         ),
         (
                 "AAATA"
                 "AAATT"
-                "AAATA"
-                "AAAATA",
+                "AAATAA"
+                "AAATA",
                 ["AAATA"],
-                ['AAATA', 'AAATT', 'AAATA', 'AAAATA']
+                ['AAATA', 'AAATT', 'AAATAA', 'AAATA']
         ),
     ]
 )
@@ -130,6 +130,46 @@ def test_decompose_dp_imperfect_repeats_single_motif(tr_decomposer_dp, sequence,
                 ["AAATA", "AAATAA"],
                 # ['AAATA', 'AAATT', 'AAATA', 'AAAATA']  # Compare with the prev test
                 ['AAATA', 'AAATT', 'AAATAA', 'AAATA']
+        ),
+        (
+                "ACCCA"
+                "ACCC"
+                "ACCCA"
+                "ACCCA",
+                ["ACCCA"],
+                ["ACCCA", "ACCC", "ACCCA", "ACCCA"],
+        ),
+        (
+                "ACT"
+                "ACT"
+                "ACC"
+                "ACT",
+                ["ACT"],
+                ["ACT", "ACT", "ACC", "ACT"],
+        ),
+        (
+                "ACT"
+                "ACT"
+                "ACCG"
+                "ACT",
+                ["ACT"],
+                ["ACT", "ACT", "ACCG", "ACT"],
+        ),
+        (
+                "ACT"
+                "ACT"
+                "AC"
+                "CG"
+                "ACT",
+                ["ACT", "AC", "CG"],
+                ["ACT", "ACT", "AC", "CG", "ACT"],
+        ),
+        (
+                "AATAA"
+                "AATAAA"
+                "AATAA",
+                ["AATAA"],
+                ["AATAA", "AATAAA", "AATAA"],
         ),
     ]
 )
@@ -185,3 +225,37 @@ def test_decompose_dp_arguments(tr_decomposer_dp, sequence, motifs, kwargs, expe
 def test_decompose_dp_invalid_sequence(tr_decomposer_dp):
     with pytest.raises(ValueError):
         tr_decomposer_dp.decompose("NNNNNN", "ACTG")
+
+
+@pytest.mark.parametrize(
+    "sequence, motifs, kwargs, expected",
+    [
+        (  # insertion tie-break
+                "ACGTACGTTACGTAACGT",
+                ["ACGT"],
+                {'match_score': 2, 'mismatch_score': -1, 'insertion_score': -1, 'deletion_score': -1, 'verbose': True},
+                ["ACGT", "ACGTT", "ACGTA", "ACGT"],
+        ),
+        (  # insertion tie-break
+                "ACGTACGTTACGTAACGT",
+                ["ACGT"],
+                {'match_score': 2, 'mismatch_score': -1, 'insertion_score': -2, 'deletion_score': -2, 'verbose': True},
+                ["ACGT", "ACGTT", "ACGTA", "ACGT"],
+        ),
+        (
+                "ACCCAACCCACCCAACCCA",
+                ["ACCCA"],
+                {'match_score': 2, 'mismatch_score': -1, 'insertion_score': -1, 'deletion_score': -1, 'verbose': True},
+                ["ACCCA", "ACCC", "ACCCA", "ACCCA"],
+        ),
+    ]
+)
+def test_decompose_dp_tie_break(tr_decomposer_dp, sequence, motifs, kwargs, expected):
+    if type(expected) == type and issubclass(expected, Exception):
+        with pytest.raises(expected):
+            tr_decomposer_dp.decompose(sequence, motifs, **kwargs)
+    else:
+        decomposed_tr = tr_decomposer_dp.decompose(sequence, motifs, **kwargs)
+        assert decomposed_tr == expected
+
+
