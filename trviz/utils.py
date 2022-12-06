@@ -95,10 +95,19 @@ def sort(aligned_vntrs, sample_ids, symbol_to_motif, method='lexicographically')
     if method == 'simulated_annealing':
         return sort_by_simulated_annealing_optimized(aligned_vntrs, sample_ids, symbol_to_motif)
     else:
-        raise ValueError("Please check the sorting method. {}".format(method))
+        raise ValueError("Please check the rearrangement method. {}".format(method))
 
 
 def get_levenshtein_distance(s1, s2):
+    """
+    This function takes two strings and returns the Levenshtein distance between them.
+    The Levenshtein distance is the minimum number of single-character edits (insertions, deletions or substitutions)
+    required to change one string into the other.
+    For example, the Levenshtein distance between "kitten" and "sitting" is 3, since the following three edits change
+    one into the other, and there is no way to do it with fewer than three edits:
+    kitten → sitten (substitution of "s" for "k")
+    sitten → sittin (substitution of "i" for "e")
+    """
     if len(s1) > len(s2):
         s1, s2 = s2, s1
 
@@ -134,7 +143,7 @@ def _calculate_cost(seq1, seq2, alphabet_to_motif):
     return cost
 
 
-def _calculate_cost_with_dist_matrix(aligned_encoded_vntr1, aligned_encoded_vntr2, dist_matrix):
+def calculate_cost_with_dist_matrix(aligned_encoded_vntr1, aligned_encoded_vntr2, dist_matrix, allow_copy_change=False):
     if len(aligned_encoded_vntr1) != len(aligned_encoded_vntr2):
         raise Exception("The length of two sequences should be identical.")
     cost = 0
@@ -147,9 +156,15 @@ def _calculate_cost_with_dist_matrix(aligned_encoded_vntr1, aligned_encoded_vntr
                 cost += dist_matrix[symbol1][symbol2]
             else:
                 if symbol1 == '-':
-                    cost += dist_matrix[symbol2][symbol2]  # length of encoded character 2
+                    if allow_copy_change:
+                        cost += 1  # allow motif count change as "one edit"
+                    else:
+                        cost += dist_matrix[symbol2][symbol2]  # length of encoded character 2
                 else:
-                    cost += dist_matrix[symbol1][symbol1]  # length of encoded character 2
+                    if allow_copy_change:
+                        cost += 1  # allow motif count change as "one edit"
+                    else:
+                        cost += dist_matrix[symbol1][symbol1]  # length of encoded character 1
 
     return cost
 
@@ -190,10 +205,42 @@ def get_distance_matrix(symbol_to_motif, score=False):
     return dist_matrix
 
 
+def get_score_matrix(symbol_to_motif,
+                     match_score=2,
+                     mismatch_score_for_edit_dist_of_1=-1,
+                     mismatch_score_for_edit_dist_greater_than_1=-2,
+                     gap_open_penalty=1.5,
+                     gap_extension_penalty=0.6,
+                     ):
+
+    score_matrix = dict()
+    score_matrix['gap_open'] = gap_open_penalty
+    score_matrix['gap_extension'] = gap_extension_penalty
+
+    for symbol1 in symbol_to_motif:
+        score_matrix[symbol1] = dict()
+        for symbol2 in symbol_to_motif:
+            motif_seq1 = symbol_to_motif[symbol1]
+            motif_seq2 = symbol_to_motif[symbol2]
+            if symbol1 == symbol2:
+                score_matrix[symbol1][symbol2] = match_score
+            else:
+                edit_dist = get_levenshtein_distance(motif_seq1, motif_seq2)
+
+                edit_dist_cutoff = 1
+                if abs(len(motif_seq1) - len(motif_seq2)) <= 1:
+                    edit_dist_cutoff += len(max(motif_seq2, motif_seq1, key=len)) // 30
+                if edit_dist <= edit_dist_cutoff:
+                    score_matrix[symbol1][symbol2] = mismatch_score_for_edit_dist_of_1
+                else:
+                    score_matrix[symbol1][symbol2] = mismatch_score_for_edit_dist_greater_than_1
+
+    return score_matrix
+
 def calculate_total_cost(alinged_vntrs, dist_matrix):
     total_cost = 0
     for i in range(len(alinged_vntrs) - 1):
-        total_cost += _calculate_cost_with_dist_matrix(alinged_vntrs[i], alinged_vntrs[i + 1], dist_matrix)
+        total_cost += calculate_cost_with_dist_matrix(alinged_vntrs[i], alinged_vntrs[i + 1], dist_matrix)
 
     return total_cost
 
@@ -207,7 +254,7 @@ def sort_by_simulated_annealing_optimized(seq_list, sample_ids, symbol_to_motif)
     initial_cost_test = calculate_cost(seq_list, symbol_to_motif)
     # assert initial_cost == initial_cost_test, "Should be the same {} {}".format(initial_cost, initial_cost_test)
 
-    T = 1_000_000
+    T = 1_000
     DECAY = 0.9
 
     iteration = 0
@@ -216,12 +263,17 @@ def sort_by_simulated_annealing_optimized(seq_list, sample_ids, symbol_to_motif)
     while True:
         iteration += 1
         print("T:", T)
-        if T <= 1e-3:
+        if T <= 1e-2:
             break
         print("iteration", iteration)
         not_changed_count = 0
 
+        # from random import choice
         # index_1, index_2 = choice(all_index_pairs)
+
+        # from random import shuffle
+        # shuffle(all_index_pairs)
+
         for index_1, index_2 in all_index_pairs:
             # only compare the cost before and after changing the order
             current_cost = 0
@@ -229,30 +281,40 @@ def sort_by_simulated_annealing_optimized(seq_list, sample_ids, symbol_to_motif)
 
             # Flanking cost for the index_1 sequence
             # Right side
-            current_cost += _calculate_cost_with_dist_matrix(seq_list[index_1], seq_list[index_1 + 1], dist_matrix)
-            after_cost += _calculate_cost_with_dist_matrix(seq_list[index_2], seq_list[index_1 + 1], dist_matrix)
+            current_cost += calculate_cost_with_dist_matrix(seq_list[index_1], seq_list[index_1 + 1], dist_matrix)
+            if index_1 + 1 == index_2:
+                after_cost += calculate_cost_with_dist_matrix(seq_list[index_2], seq_list[index_1], dist_matrix)
+            else:
+                after_cost += calculate_cost_with_dist_matrix(seq_list[index_2], seq_list[index_1 + 1], dist_matrix)
             if index_1 != 0:  # has left side
                 # Left side
-                current_cost += _calculate_cost_with_dist_matrix(seq_list[index_1], seq_list[index_1 - 1], dist_matrix)
-                after_cost += _calculate_cost_with_dist_matrix(seq_list[index_2], seq_list[index_1 - 1], dist_matrix)
+                current_cost += calculate_cost_with_dist_matrix(seq_list[index_1], seq_list[index_1 - 1], dist_matrix)
+                # index_1 < index_2, so index_1 -1 != index_2
+                after_cost += calculate_cost_with_dist_matrix(seq_list[index_2], seq_list[index_1 - 1], dist_matrix)
 
             # Flanking cost for the index_2 sequence
             # Left side
-            current_cost += _calculate_cost_with_dist_matrix(seq_list[index_2], seq_list[index_2 - 1], dist_matrix)
-            after_cost += _calculate_cost_with_dist_matrix(seq_list[index_1], seq_list[index_2 - 1], dist_matrix)
+            current_cost += calculate_cost_with_dist_matrix(seq_list[index_2], seq_list[index_2 - 1], dist_matrix)
+            if index_2 - 1 == index_1:
+                after_cost += calculate_cost_with_dist_matrix(seq_list[index_1], seq_list[index_2], dist_matrix)
+            else:
+                after_cost += calculate_cost_with_dist_matrix(seq_list[index_1], seq_list[index_2 - 1], dist_matrix)
             if index_2 != len(seq_list) - 1:
                 # Right side
-                current_cost += _calculate_cost_with_dist_matrix(seq_list[index_2], seq_list[index_2 + 1], dist_matrix)
-                after_cost += _calculate_cost_with_dist_matrix(seq_list[index_1], seq_list[index_2 + 1], dist_matrix)
+                current_cost += calculate_cost_with_dist_matrix(seq_list[index_2], seq_list[index_2 + 1], dist_matrix)
+                after_cost += calculate_cost_with_dist_matrix(seq_list[index_1], seq_list[index_2 + 1], dist_matrix)
 
-            if after_cost < current_cost:
+            if after_cost == current_cost:
+                continue
+            elif after_cost < current_cost:
+                print("Swap occurred at {} and {}".format(index_1, index_2), "after cost", after_cost, "cur cost", current_cost)
                 seq_list[index_1], seq_list[index_2] = seq_list[index_2], seq_list[index_1]
                 sample_ids[index_1], sample_ids[index_2] = sample_ids[index_2], sample_ids[index_1]
             else:
-                prob = np.exp(-(after_cost - current_cost) * 1000 / T)
+                prob = np.exp(-(after_cost - current_cost) * 10 / T)
                 if prob > np.random.uniform(low=0.0, high=1.0):
                     # swap
-                    # print("Swap occurred {}".format(prob), "after cost", after_cost, "cur cost", current_cost)
+                    print("Swap occurred {}".format(prob), "after cost", after_cost, "cur cost", current_cost)
                     seq_list[index_1], seq_list[index_2] = seq_list[index_2], seq_list[index_1]
                     sample_ids[index_1], sample_ids[index_2] = sample_ids[index_2], sample_ids[index_1]
                 else:
@@ -273,6 +335,12 @@ def sort_by_simulated_annealing_optimized(seq_list, sample_ids, symbol_to_motif)
 
 
 def add_padding(encoded_trs):
+    """
+    This function takes a list of encoded traces as input and returns a list of padded traces.
+    The padding is done by adding '-' to the end of each trace.
+    The number of '-' added to each trace is equal to the difference between the length of the longest trace and
+    the length of the trace.
+    """
     max_motif_count = len(max(encoded_trs, key=len))
     padded_trs = []
     for encoded_tr in encoded_trs:
@@ -298,7 +366,7 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
     bar = fill * filledLength + '-' * (length - filledLength)
-    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = print_end)
+    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end=print_end)
     # Print New Line on Complete
     if iteration == total:
         print()
