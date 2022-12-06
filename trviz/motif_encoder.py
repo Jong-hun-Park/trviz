@@ -3,7 +3,7 @@ from typing import Dict, List
 
 from trviz.utils import INDEX_TO_CHR, PRIVATE_MOTIF_LABEL
 from trviz.utils import get_motif_counter
-
+from trviz.utils import get_score_matrix
 
 class MotifEncoder:
 
@@ -11,6 +11,8 @@ class MotifEncoder:
         self.private_motif_threshold = private_motif_threshold
         self.symbol_to_motif = None
         self.motif_to_symbol = None
+        self.score_matrix = None
+        self.motif_counter = None
 
     @staticmethod
     def _divide_motifs_into_normal_and_private(motif_counter, private_motif_threshold):
@@ -64,7 +66,7 @@ class MotifEncoder:
                 f.write(f"{motif}\t{motif_to_alphabet[motif]}\t{motif_counter[motif]}\n")
 
     @staticmethod
-    def _encode_decomposed_vntr(decomposed_vntrs, motif_to_symbol):
+    def _encode_decomposed_tr(decomposed_vntrs, motif_to_symbol):
         labeled_trs = []
         for vntr in decomposed_vntrs:
             labeled_vntr = ""
@@ -111,11 +113,12 @@ class MotifEncoder:
             self.private_motif_threshold = self.find_private_motif_threshold(decomposed_vntrs, label_count)
         if auto:
             self.private_motif_threshold = self.find_private_motif_threshold(decomposed_vntrs)
-        print("private motif threshold: ", self.private_motif_threshold)
+        # print("private motif threshold: ", self.private_motif_threshold)
 
         motif_to_symbol: Dict = {}
         symbol_to_motif: Dict = {}
         motif_counter: Counter = get_motif_counter(decomposed_vntrs)
+        self.motif_counter = motif_counter
 
         # For private motifs, we use single letter to encode them.
         if self.private_motif_threshold > 0:
@@ -151,8 +154,12 @@ class MotifEncoder:
         self.motif_to_symbol = motif_to_symbol
         self.symbol_to_motif = symbol_to_motif
 
-        # Encode TRs
-        encoded_vntrs = self._encode_decomposed_vntr(decomposed_vntrs, motif_to_symbol)
+        # Set score matrix
+        # self.score_matrix = get_distance_matrix(symbol_to_motif, score=True)
+        self.score_matrix = get_score_matrix(symbol_to_motif)
 
-        return encoded_vntrs
+        # Encode TRs
+        encoded_trs = self._encode_decomposed_tr(decomposed_vntrs, motif_to_symbol)
+
+        return encoded_trs
 
