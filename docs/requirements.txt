@@ -1,2 +1,2 @@
-autoapi
+sphinx-autoapi
 myst_parser
