@@ -17,6 +17,13 @@ class Decomposer:
             raise ValueError(f"{mode} is invalid mode for tandem repeat decomposer.")
 
     def decompose(self, sequence, motifs, **kwargs):
+        """
+        Decompose sequence into motifs
+        :param sequence: a string of tandem repeat sequence
+        :param motifs: a set of motifs to be used for decomposition
+        :param kwargs: keyword arguments for decomposer
+        :return: decomposed sequence
+        """
         if self.mode == "DP":
             return self._decompose_dp(sequence, motifs, **kwargs)
         else:
