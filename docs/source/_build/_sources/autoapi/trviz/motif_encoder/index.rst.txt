@@ -1,0 +1,67 @@
+:py:mod:`trviz.motif_encoder`
+=============================
+
+.. py:module:: trviz.motif_encoder
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   trviz.motif_encoder.MotifEncoder
+
+
+
+
+.. py:class:: MotifEncoder(private_motif_threshold=0)
+
+   .. py:method:: _divide_motifs_into_normal_and_private(motif_counter, private_motif_threshold)
+      :staticmethod:
+
+      Givne a list of decomposed VNTRs, divide motifs into two groups: normal and private.
+      If a motif occurred less than the private_motif_threshold, it is regarded as private motif.
+      Otherwise, normal motifs.
+
+      :param decomposed_vntrs
+      :param private_motif_threshold
+      :return: normal motifs, private motifs
+
+
+   .. py:method:: find_private_motif_threshold(decomposed_vntrs, label_count=None)
+      :staticmethod:
+
+      Find the frequency threshold for private motifs.
+
+      :param decomposed_vntrs: decomposed tandem repeat sequences
+      :param label_count: if label_count is given, use only label_count number of characters to encode the motifs
+      :return min_private_motif_threshold: the frequency threshold for private motifs.
+
+
+   .. py:method:: write_motif_map(output_file, motif_to_alphabet, motif_counter)
+      :staticmethod:
+
+      Write the mapping motif to characters to the specified file
+
+
+   .. py:method:: _encode_decomposed_tr(decomposed_vntrs, motif_to_symbol)
+      :staticmethod:
+
+
+   .. py:method:: encode(decomposed_vntrs: List[List], motif_map_file: str, label_count: int = None, auto: bool = True) -> List[str]
+
+      Encode decomposed tandem repeat sequences using ASCII characters.
+      By default, the map between motifs and characters are written as a file.
+
+      :param decomposed_vntrs: a list of decomposed tandem repeat sequences
+      :param motif_map_file: the output file name for the mapping between motifs and characters
+      :param label_count: the number of label (encoding) to represent the motifs.
+      :param auto: if True, find the minimum threshold to encode everything using 90 ASCII characters.
+
+      :return: encoded_vntrs
+
+
+

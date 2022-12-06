@@ -1,0 +1,93 @@
+:py:mod:`trviz.visualizer`
+==========================
+
+.. py:module:: trviz.visualizer
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   trviz.visualizer.TandemRepeatVisualizer
+
+
+
+
+.. py:class:: TandemRepeatVisualizer
+
+   .. py:method:: encode_tr_sequence(labeled_motifs)
+      :staticmethod:
+
+
+   .. py:method:: _get_unique_labels(aligned_repeats)
+      :staticmethod:
+
+
+   .. py:method:: plot_motif_color_map(symbol_to_motif, motif_counter, symbol_to_color, file_name, figure_size=None, box_size=1, box_margin=0.1, label_size=None, dpi=300)
+      :staticmethod:
+
+      Generate a plot for motif color map 
+
+
+   .. py:method:: trplot(aligned_labeled_repeats: List[str], sample_ids: List[str] = None, figure_size: Tuple[int, int] = None, output_name: str = None, dpi: int = 500, alpha: float = 0.6, box_line_width: float = 0, xtick_degrees: int = 90, hide_xticks: bool = False, hide_yticks: bool = False, symbol_to_motif: Dict = None, sort_by_clustering: bool = True, hide_dendrogram: bool = False, population_data=None, sample_as_row=False, private_motif_color: str = 'black', frame_on={'top': False, 'bottom': True, 'right': False, 'left': True}, debug: bool = False)
+
+      Generate a plot showing the variations in tandem repeat sequences.
+      A distinct color is assigned to each motif.
+      For private motifs (with low frequency), the same color (in black by default) may be assigned.
+
+      :param aligned_labeled_repeats: aligned and encoded tandem repeat sequences.
+      :param sample_ids: sample IDs
+      :param figure_size: figure size
+      :param output_name: output file name
+      :param dpi: DPI for the plot
+      :param alpha: alpha value for the plot
+      :param box_line_width: line width for box edges
+      :param xtick_degrees: xtick degree (default is 90)
+      :param hide_xticks: if true, hide xticks
+      :param hide_yticks: if true, hide yticks
+      :param private_motif_color: the color for private motifs. Default is black
+      :param debug: if true, print verbse information.
+
+
+   .. py:method:: add_dendrogram(fig, aligned_labeled_repeats, sample_ids, symbol_to_motif, hide_clustering)
+
+      Add dendrogram to the figure.
+
+      Parameters
+      ----------
+      fig : matplotlib.figure.Figure
+          Figure to add dendrogram to.
+      aligned_labeled_repeats : list of list of str
+          List of aligned labeled repeats.
+      sample_ids : list of str
+          List of sample ids.
+      symbol_to_motif : dict of str to str
+          Dictionary mapping symbols to motifs.
+      hide_clustering : bool
+          Whether to hide clustering.
+
+      Returns
+      -------
+      sorted_sample_ids : list of str
+          List of sorted sample ids.
+      sorted_aligned_labeled_repeats : list of list of str
+          List of sorted aligned labeled repeats.
+
+
+   .. py:method:: get_symbol_to_color_map(alpha, unique_symbol_count, unique_symbols)
+      :staticmethod:
+
+
+   .. py:method:: set_symbol_to_color_map(symbol_to_color)
+
+
+   .. py:method:: get_population_colormap(population_data)
+
+      Allowed super populations: {AMR, AFR, EAS, SAS, EUR} 
+
+
+

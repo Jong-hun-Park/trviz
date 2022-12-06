@@ -1,0 +1,67 @@
+:py:mod:`trviz.motif_aligner`
+=============================
+
+.. py:module:: trviz.motif_aligner
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   trviz.motif_aligner.MotifAligner
+
+
+
+
+.. py:class:: MotifAligner
+
+   .. py:method:: align(sample_ids: List[str], encoded_vntrs: List[str], vid: str = None, score_matrix: Dict[Dict, int] = None, output_dir: str = None, tool: str = 'mafft') -> Tuple[List, List]
+
+      Align encoded VNTRs using multiple sequence alignment tools. Default tool is MAFFT.
+
+      :param sample_ids: sample ids
+      :param encoded_vntrs: encoded tandem repeats
+      :param tool: the tool name for multiple sequence alignment (options: MAFFT (default))
+      :param score_matrix: defines the score matrix between all pair of motifs
+      :param output_dir: base directory for output file
+      :param vid: ID for the tandem repeat
+
+
+   .. py:method:: _get_motif_aligner(tool)
+
+
+   .. py:method:: _align_motifs_with_muscle(sample_ids, labeled_vntrs, vid, score_matrix, output_dir)
+      :staticmethod:
+
+
+   .. py:method:: _align_motifs_with_clustalo(sample_ids, labeled_vntrs, vid, score_matrix, output_dir)
+      :staticmethod:
+
+
+   .. py:method:: _align_motifs_with_mafft(sample_ids, labeled_vntrs, vid, score_matrix, output_dir, preserve_order=False)
+      :staticmethod:
+
+
+   .. py:method:: load_aligned_trs(aln_output)
+      :staticmethod:
+
+      Loads aligned VNTRs from a file.
+
+      Parameters
+      ----------
+      aln_output : str
+          Path to the file containing aligned VNTRs.
+
+      Returns
+      -------
+      alinged_sample_ids : list
+          List of sample IDs.
+      aligned_vntrs : list
+          List of aligned VNTRs.
+
+
+

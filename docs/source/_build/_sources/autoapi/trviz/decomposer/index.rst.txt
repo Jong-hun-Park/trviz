@@ -1,0 +1,60 @@
+:py:mod:`trviz.decomposer`
+==========================
+
+.. py:module:: trviz.decomposer
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   trviz.decomposer.Decomposer
+
+
+
+
+.. py:class:: Decomposer(mode='DP')
+
+   .. py:method:: decompose(sequence, motifs, **kwargs)
+
+
+   .. py:method:: _decompose_dp(sequence, motifs, **kwargs) -> List
+      :staticmethod:
+
+      Decompose sequence into motifs using dynamic programming
+
+      :param sequence: a string of VNTR sequence
+      :param motifs: a list of motif strings composed of nucleotide strings
+
+      :param **kwargs: valids key words are
+
+      match_score: a score for match
+      mismatch_score: a score for mismatch
+      min_score_threshold: a minimum score of the alignment.
+
+      :return: A list of decomposed motifs
+
+
+   .. py:method:: _build_repeat_finder_hmm(motif, copies=1, has_flanking_sequence=False)
+      :staticmethod:
+
+
+   .. py:method:: _decompose_hmm(sequence, consensus_motif, **kwargs)
+
+      Decompose sequence into motifs using a HMM
+      :param sequence: a string of VNTR sequence
+      :param consensus_motif: A motif sequence
+      :param **kwargs:
+
+      1. repeat_count: If not specified, use estimated repeat count based on the sequence and motif length
+      2. has_flanking_sequence: If true, use additional nodes in the HMM to identify flanking regions
+      3. verbose
+
+      :return: A list of decomposed motifs
+
+
+

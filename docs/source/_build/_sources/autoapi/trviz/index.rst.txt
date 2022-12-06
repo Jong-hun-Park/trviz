@@ -1,0 +1,22 @@
+:py:mod:`trviz`
+===============
+
+.. py:module:: trviz
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   decomposer/index.rst
+   logo/index.rst
+   main/index.rst
+   main_parameter_tuning/index.rst
+   motif_aligner/index.rst
+   motif_encoder/index.rst
+   utils/index.rst
+   visualizer/index.rst
+
+

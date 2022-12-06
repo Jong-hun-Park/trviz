@@ -1,0 +1,178 @@
+:py:mod:`trviz.utils`
+=====================
+
+.. py:module:: trviz.utils
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   trviz.utils.read_fasta
+   trviz.utils.get_motif_counter
+   trviz.utils.is_emitting_state
+   trviz.utils.get_repeating_pattern_lengths
+   trviz.utils.get_motifs_from_visited_states_and_region
+   trviz.utils.is_valid_sequence
+   trviz.utils.sort
+   trviz.utils.get_levenshtein_distance
+   trviz.utils._calculate_cost
+   trviz.utils.calculate_cost_with_dist_matrix
+   trviz.utils.calculate_cost
+   trviz.utils.get_distance_matrix
+   trviz.utils.get_score_matrix
+   trviz.utils.calculate_total_cost
+   trviz.utils.sort_by_simulated_annealing_optimized
+   trviz.utils.add_padding
+   trviz.utils.print_progress_bar
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   trviz.utils.LOWERCASE_LETTERS
+   trviz.utils.UPPERCASE_LETTERS
+   trviz.utils.DIGITS
+   trviz.utils.skipping_characters
+   trviz.utils.PRIVATE_MOTIF_LABEL
+   trviz.utils.INDEX_TO_CHR
+   trviz.utils.DNA_CHARACTERS
+
+
+.. py:data:: LOWERCASE_LETTERS
+   
+
+   
+
+.. py:data:: UPPERCASE_LETTERS
+   
+
+   
+
+.. py:data:: DIGITS
+   
+
+   
+
+.. py:data:: skipping_characters
+   :annotation: = ['(', '=', '<', '>', '?', '-']
+
+   
+
+.. py:data:: PRIVATE_MOTIF_LABEL
+   :annotation: = ?
+
+   
+
+.. py:data:: INDEX_TO_CHR
+   
+
+   
+
+.. py:data:: DNA_CHARACTERS
+   
+
+   
+
+.. py:function:: read_fasta(fasta_file)
+
+   Read fasta file and output headers and sequences 
+
+
+.. py:function:: get_motif_counter(decomposed_vntrs)
+
+   Return a counter for each motif 
+
+
+.. py:function:: is_emitting_state(state_name)
+
+   Check if the given state is emitting state, that is insertion or matching state 
+
+
+.. py:function:: get_repeating_pattern_lengths(visited_states)
+
+
+.. py:function:: get_motifs_from_visited_states_and_region(visited_states, region)
+
+
+.. py:function:: is_valid_sequence(sequence)
+
+   Check if the given sequence is DNA sequence 
+
+
+.. py:function:: sort(aligned_vntrs, sample_ids, symbol_to_motif, method='lexicographically')
+
+   Sort the aligned and encoded tandem repeats 
+
+
+.. py:function:: get_levenshtein_distance(s1, s2)
+
+   This function takes two strings and returns the Levenshtein distance between them.
+   The Levenshtein distance is the minimum number of single-character edits (insertions, deletions or substitutions)
+   required to change one string into the other.
+   For example, the Levenshtein distance between "kitten" and "sitting" is 3, since the following three edits change
+   one into the other, and there is no way to do it with fewer than three edits:
+   kitten → sitten (substitution of "s" for "k")
+   sitten → sittin (substitution of "i" for "e")
+
+
+.. py:function:: _calculate_cost(seq1, seq2, alphabet_to_motif)
+
+
+.. py:function:: calculate_cost_with_dist_matrix(aligned_encoded_vntr1, aligned_encoded_vntr2, dist_matrix, allow_copy_change=False)
+
+
+.. py:function:: calculate_cost(alinged_vntrs, alphabet_to_motif)
+
+
+.. py:function:: get_distance_matrix(symbol_to_motif, score=False)
+
+   Stores the edit distance between a motif and another motif.
+   if two motifs are the same (e.g. dist_matrix[motif_x][motif_x]) it stores the length of the motif.
+
+   :param symbol_to_motif: a dictionary mapping symbols to motifs
+   :param score: if True, it outputs score matrix (1 - distance/max_dist)
+
+
+.. py:function:: get_score_matrix(symbol_to_motif, match_score=2, mismatch_score_for_edit_dist_of_1=-1, mismatch_score_for_edit_dist_greater_than_1=-2, gap_open_penalty=1.5, gap_extension_penalty=0.6)
+
+
+.. py:function:: calculate_total_cost(alinged_vntrs, dist_matrix)
+
+
+.. py:function:: sort_by_simulated_annealing_optimized(seq_list, sample_ids, symbol_to_motif)
+
+
+.. py:function:: add_padding(encoded_trs)
+
+   This function takes a list of encoded traces as input and returns a list of padded traces.
+   The padding is done by adding '-' to the end of each trace.
+   The number of '-' added to each trace is equal to the difference between the length of the longest trace and
+   the length of the trace.
+
+
+.. py:function:: print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', print_end='\r')
+
+       Call in a loop to create terminal progress bar
+       @params:
+           iteration   - Required  : current iteration (Int)
+           total       - Required  : total iterations (Int)
+           prefix      - Optional  : prefix string (Str)
+           suffix      - Optional  : suffix string (Str)
+           decimals    - Optional  : positive number of decimals in percent complete (Int)
+           length      - Optional  : character length of bar (Int)
+           fill        - Optional  : bar fill character (Str)
+           printEnd    - Optional  : end character (e.g. "
+   ", "
+   ") (Str)
+       
+
+

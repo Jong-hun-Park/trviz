@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+<html lang="python">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>trviz.motif_encoder &#8212; trviz 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-trviz.motif_encoder">
+<span id="trviz-motif-encoder"></span><h1><a class="reference internal" href="#module-trviz.motif_encoder" title="trviz.motif_encoder"><code class="xref py py-mod docutils literal notranslate"><span class="pre">trviz.motif_encoder</span></code></a><a class="headerlink" href="#module-trviz.motif_encoder" title="Permalink to this heading">¶</a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.motif_encoder.MotifEncoder" title="trviz.motif_encoder.MotifEncoder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MotifEncoder</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="trviz.motif_encoder.MotifEncoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">trviz.motif_encoder.</span></span><span class="sig-name descname"><span class="pre">MotifEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">private_motif_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.motif_encoder.MotifEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="trviz.motif_encoder.MotifEncoder._divide_motifs_into_normal_and_private">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_divide_motifs_into_normal_and_private</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">motif_counter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_motif_threshold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.motif_encoder.MotifEncoder._divide_motifs_into_normal_and_private" title="Permalink to this definition">¶</a></dt>
+<dd><p>Givne a list of decomposed VNTRs, divide motifs into two groups: normal and private.
+If a motif occurred less than the private_motif_threshold, it is regarded as private motif.
+Otherwise, normal motifs.</p>
+<p>:param decomposed_vntrs
+:param private_motif_threshold
+:return: normal motifs, private motifs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="trviz.motif_encoder.MotifEncoder.find_private_motif_threshold">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_private_motif_threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decomposed_vntrs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.motif_encoder.MotifEncoder.find_private_motif_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the frequency threshold for private motifs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>decomposed_vntrs</strong> -- decomposed tandem repeat sequences</p></li>
+<li><p><strong>label_count</strong> -- if label_count is given, use only label_count number of characters to encode the motifs</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return min_private_motif_threshold</dt>
+<dd class="field-even"><p>the frequency threshold for private motifs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="trviz.motif_encoder.MotifEncoder.write_motif_map">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_motif_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">motif_to_alphabet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">motif_counter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.motif_encoder.MotifEncoder.write_motif_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the mapping motif to characters to the specified file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="trviz.motif_encoder.MotifEncoder._encode_decomposed_tr">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_encode_decomposed_tr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decomposed_vntrs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">motif_to_symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.motif_encoder.MotifEncoder._encode_decomposed_tr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="trviz.motif_encoder.MotifEncoder.encode">
+<span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decomposed_vntrs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">motif_map_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#trviz.motif_encoder.MotifEncoder.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encode decomposed tandem repeat sequences using ASCII characters.
+By default, the map between motifs and characters are written as a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>decomposed_vntrs</strong> -- a list of decomposed tandem repeat sequences</p></li>
+<li><p><strong>motif_map_file</strong> -- the output file name for the mapping between motifs and characters</p></li>
+<li><p><strong>label_count</strong> -- the number of label (encoding) to represent the motifs.</p></li>
+<li><p><strong>auto</strong> -- if True, find the minimum threshold to encode everything using 90 ASCII characters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>encoded_vntrs</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">trviz</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples.html">Code samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Jonghun Park.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/autoapi/trviz/motif_encoder/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

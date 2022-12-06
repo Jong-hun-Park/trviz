@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+
+<html lang="python">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>trviz.utils &#8212; trviz 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-trviz.utils">
+<span id="trviz-utils"></span><h1><a class="reference internal" href="#module-trviz.utils" title="trviz.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">trviz.utils</span></code></a><a class="headerlink" href="#module-trviz.utils" title="Permalink to this heading">¶</a></h1>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.utils.read_fasta" title="trviz.utils.read_fasta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_fasta</span></code></a>(fasta_file)</p></td>
+<td><p>Read fasta file and output headers and sequences</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#trviz.utils.get_motif_counter" title="trviz.utils.get_motif_counter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_motif_counter</span></code></a>(decomposed_vntrs)</p></td>
+<td><p>Return a counter for each motif</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.utils.is_emitting_state" title="trviz.utils.is_emitting_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_emitting_state</span></code></a>(state_name)</p></td>
+<td><p>Check if the given state is emitting state, that is insertion or matching state</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#trviz.utils.get_repeating_pattern_lengths" title="trviz.utils.get_repeating_pattern_lengths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_repeating_pattern_lengths</span></code></a>(visited_states)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.utils.get_motifs_from_visited_states_and_region" title="trviz.utils.get_motifs_from_visited_states_and_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_motifs_from_visited_states_and_region</span></code></a>(...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#trviz.utils.is_valid_sequence" title="trviz.utils.is_valid_sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid_sequence</span></code></a>(sequence)</p></td>
+<td><p>Check if the given sequence is DNA sequence</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.utils.sort" title="trviz.utils.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>(aligned_vntrs, sample_ids, symbol_to_motif[, method])</p></td>
+<td><p>Sort the aligned and encoded tandem repeats</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#trviz.utils.get_levenshtein_distance" title="trviz.utils.get_levenshtein_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_levenshtein_distance</span></code></a>(s1, s2)</p></td>
+<td><p>This function takes two strings and returns the Levenshtein distance between them.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.utils._calculate_cost" title="trviz.utils._calculate_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_calculate_cost</span></code></a>(seq1, seq2, alphabet_to_motif)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#trviz.utils.calculate_cost_with_dist_matrix" title="trviz.utils.calculate_cost_with_dist_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_cost_with_dist_matrix</span></code></a>(aligned_encoded_vntr1, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.utils.calculate_cost" title="trviz.utils.calculate_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_cost</span></code></a>(alinged_vntrs, alphabet_to_motif)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#trviz.utils.get_distance_matrix" title="trviz.utils.get_distance_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_distance_matrix</span></code></a>(symbol_to_motif[, score])</p></td>
+<td><p>Stores the edit distance between a motif and another motif.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.utils.get_score_matrix" title="trviz.utils.get_score_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_score_matrix</span></code></a>(symbol_to_motif[, match_score, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#trviz.utils.calculate_total_cost" title="trviz.utils.calculate_total_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_total_cost</span></code></a>(alinged_vntrs, dist_matrix)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.utils.sort_by_simulated_annealing_optimized" title="trviz.utils.sort_by_simulated_annealing_optimized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort_by_simulated_annealing_optimized</span></code></a>(seq_list, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#trviz.utils.add_padding" title="trviz.utils.add_padding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_padding</span></code></a>(encoded_trs)</p></td>
+<td><p>This function takes a list of encoded traces as input and returns a list of padded traces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.utils.print_progress_bar" title="trviz.utils.print_progress_bar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_progress_bar</span></code></a>(iteration, total[, prefix, suffix, ...])</p></td>
+<td><p>Call in a loop to create terminal progress bar</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.utils.LOWERCASE_LETTERS" title="trviz.utils.LOWERCASE_LETTERS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LOWERCASE_LETTERS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#trviz.utils.UPPERCASE_LETTERS" title="trviz.utils.UPPERCASE_LETTERS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UPPERCASE_LETTERS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.utils.DIGITS" title="trviz.utils.DIGITS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DIGITS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#trviz.utils.skipping_characters" title="trviz.utils.skipping_characters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skipping_characters</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.utils.PRIVATE_MOTIF_LABEL" title="trviz.utils.PRIVATE_MOTIF_LABEL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PRIVATE_MOTIF_LABEL</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#trviz.utils.INDEX_TO_CHR" title="trviz.utils.INDEX_TO_CHR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">INDEX_TO_CHR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#trviz.utils.DNA_CHARACTERS" title="trviz.utils.DNA_CHARACTERS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DNA_CHARACTERS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="trviz.utils.LOWERCASE_LETTERS">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">LOWERCASE_LETTERS</span></span><a class="headerlink" href="#trviz.utils.LOWERCASE_LETTERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="trviz.utils.UPPERCASE_LETTERS">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">UPPERCASE_LETTERS</span></span><a class="headerlink" href="#trviz.utils.UPPERCASE_LETTERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="trviz.utils.DIGITS">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">DIGITS</span></span><a class="headerlink" href="#trviz.utils.DIGITS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="trviz.utils.skipping_characters">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">skipping_characters</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['(',</span> <span class="pre">'=',</span> <span class="pre">'&lt;',</span> <span class="pre">'&gt;',</span> <span class="pre">'?',</span> <span class="pre">'-']</span></em><a class="headerlink" href="#trviz.utils.skipping_characters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="trviz.utils.PRIVATE_MOTIF_LABEL">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">PRIVATE_MOTIF_LABEL</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">?</span></em><a class="headerlink" href="#trviz.utils.PRIVATE_MOTIF_LABEL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="trviz.utils.INDEX_TO_CHR">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">INDEX_TO_CHR</span></span><a class="headerlink" href="#trviz.utils.INDEX_TO_CHR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="trviz.utils.DNA_CHARACTERS">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">DNA_CHARACTERS</span></span><a class="headerlink" href="#trviz.utils.DNA_CHARACTERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.read_fasta">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">read_fasta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fasta_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.read_fasta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read fasta file and output headers and sequences</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.get_motif_counter">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">get_motif_counter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decomposed_vntrs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.get_motif_counter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a counter for each motif</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.is_emitting_state">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">is_emitting_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.is_emitting_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the given state is emitting state, that is insertion or matching state</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.get_repeating_pattern_lengths">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">get_repeating_pattern_lengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visited_states</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.get_repeating_pattern_lengths" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.get_motifs_from_visited_states_and_region">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">get_motifs_from_visited_states_and_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visited_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.get_motifs_from_visited_states_and_region" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.is_valid_sequence">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">is_valid_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.is_valid_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the given sequence is DNA sequence</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.sort">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aligned_vntrs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol_to_motif</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lexicographically'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.sort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort the aligned and encoded tandem repeats</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.get_levenshtein_distance">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">get_levenshtein_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.get_levenshtein_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes two strings and returns the Levenshtein distance between them.
+The Levenshtein distance is the minimum number of single-character edits (insertions, deletions or substitutions)
+required to change one string into the other.
+For example, the Levenshtein distance between &quot;kitten&quot; and &quot;sitting&quot; is 3, since the following three edits change
+one into the other, and there is no way to do it with fewer than three edits:
+kitten → sitten (substitution of &quot;s&quot; for &quot;k&quot;)
+sitten → sittin (substitution of &quot;i&quot; for &quot;e&quot;)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils._calculate_cost">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">_calculate_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet_to_motif</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils._calculate_cost" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.calculate_cost_with_dist_matrix">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">calculate_cost_with_dist_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aligned_encoded_vntr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aligned_encoded_vntr2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_copy_change</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.calculate_cost_with_dist_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.calculate_cost">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">calculate_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alinged_vntrs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet_to_motif</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.calculate_cost" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.get_distance_matrix">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">get_distance_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol_to_motif</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.get_distance_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the edit distance between a motif and another motif.
+if two motifs are the same (e.g. dist_matrix[motif_x][motif_x]) it stores the length of the motif.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>symbol_to_motif</strong> -- a dictionary mapping symbols to motifs</p></li>
+<li><p><strong>score</strong> -- if True, it outputs score matrix (1 - distance/max_dist)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.get_score_matrix">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">get_score_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol_to_motif</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match_score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mismatch_score_for_edit_dist_of_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mismatch_score_for_edit_dist_greater_than_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap_open_penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap_extension_penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.get_score_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.calculate_total_cost">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">calculate_total_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alinged_vntrs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist_matrix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.calculate_total_cost" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.sort_by_simulated_annealing_optimized">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">sort_by_simulated_annealing_optimized</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol_to_motif</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.sort_by_simulated_annealing_optimized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.add_padding">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">add_padding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoded_trs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.add_padding" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a list of encoded traces as input and returns a list of padded traces.
+The padding is done by adding '-' to the end of each trace.
+The number of '-' added to each trace is equal to the difference between the length of the longest trace and
+the length of the trace.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="trviz.utils.print_progress_bar">
+<span class="sig-prename descclassname"><span class="pre">trviz.utils.</span></span><span class="sig-name descname"><span class="pre">print_progress_bar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iteration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'█'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\r'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#trviz.utils.print_progress_bar" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Call in a loop to create terminal progress bar
+&#64;params:</p>
+<blockquote>
+<div><p>iteration   - Required  : current iteration (Int)
+total       - Required  : total iterations (Int)
+prefix      - Optional  : prefix string (Str)
+suffix      - Optional  : suffix string (Str)
+decimals    - Optional  : positive number of decimals in percent complete (Int)
+length      - Optional  : character length of bar (Int)
+fill        - Optional  : bar fill character (Str)
+printEnd    - Optional  : end character (e.g. &quot;</p>
+</div></blockquote>
+</div></blockquote>
+<p>&quot;, &quot;
+&quot;) (Str)</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">trviz</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../samples.html">Code samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Jonghun Park.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/autoapi/trviz/utils/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

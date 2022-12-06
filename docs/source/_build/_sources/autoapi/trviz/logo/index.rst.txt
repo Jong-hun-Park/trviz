@@ -1,0 +1,59 @@
+:py:mod:`trviz.logo`
+====================
+
+.. py:module:: trviz.logo
+
+
+Module Contents
+---------------
+
+.. py:data:: alignments
+   :annotation: = []
+
+   
+
+.. py:data:: headers
+   :annotation: = []
+
+   
+
+.. py:data:: seq
+   :annotation: = 
+
+   
+
+.. py:data:: header
+   
+
+   
+
+.. py:data:: counts_mat
+   
+
+   
+
+.. py:data:: motifs
+   :annotation: = []
+
+   
+
+.. py:data:: split
+   
+
+   
+
+.. py:data:: ids
+   
+
+   
+
+.. py:data:: alinger
+   
+
+   
+
+.. py:data:: counts_mat
+   
+
+   
+
