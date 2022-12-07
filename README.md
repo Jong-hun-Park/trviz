@@ -9,8 +9,7 @@
 ```
 TRviz is a python library for analyzing tandem repeat sequences. TRviz includes modules for 
 decomposing, encoding, aligning, and visualizing tandem repeat sequences.  
-
-See full documentation at [readthedocs]()
+Full documentation is available at [readthedocs](https://trviz.readthedocs.io/)
 
 ## Examples
 <p float="left">
@@ -71,7 +70,7 @@ sample_ids, tr_sequences = read_fasta(input_fasta)
 vntr_id = "CACNA1C"
 motifs = ['GACCCTGACCTGACTAGTTTACAATCACAC']
 
-tr_visualizer.generate_tr_plot(vntr_id, sample_ids, tr_sequences, motifs)
+tr_visualizer.generate_trplot(vntr_id, sample_ids, tr_sequences, motifs)
 ``` 
 
 ### Motif Decomposition
