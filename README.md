@@ -47,8 +47,9 @@ decomposed motifs, and finally generate a plot to show the aligned motifs.
 
 ### Output
 1. Motif map, a set of motifs detected in the samples and their labels and frequencies
-2. Aligned labeled motifs
-3. Plot
+2. Aligned and labeled motifs
+3. Plot showing the motif composition of the input sequences
+4. Plot mapping color to the motif sequences
 
 
 ## Code samples and examples
@@ -63,7 +64,7 @@ See full documentation at [readthedocs]()
 ### Generating a TR plot
 ```python
 from trviz.main import TandemRepeatVizWorker
-from trviz.utils import read_fasta
+from trviz.utils import read_fasta  # TODO change to biopython
 
 tr_visualizer = TandemRepeatVizWorker()
 sample_ids, tr_sequences = read_fasta(input_fasta)
