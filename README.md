@@ -62,12 +62,13 @@ TRViz has four modules:
 See full documentation at [readthedocs]()
 
 ### Generating a TR plot
+
 ```python
 from trviz.main import TandemRepeatVizWorker
-from trviz.utils import read_fasta  # TODO change to biopython
+from trviz.utils import get_sample_and_sequence_from_fasta
 
 tr_visualizer = TandemRepeatVizWorker()
-sample_ids, tr_sequences = read_fasta(input_fasta)
+sample_ids, tr_sequences = get_sample_and_sequence_from_fasta(fasta_file_path)
 vntr_id = "CACNA1C"
 motifs = ['GACCCTGACCTGACTAGTTTACAATCACAC']
 

@@ -3,6 +3,7 @@ from collections import Counter
 
 import numpy as np
 import itertools
+from Bio import SeqIO
 
 LOWERCASE_LETTERS = string.ascii_lowercase
 UPPERCASE_LETTERS = string.ascii_uppercase
@@ -16,27 +17,16 @@ INDEX_TO_CHR.extend([chr(x) for x in range(33, 127) if chr(x) not in skipping_ch
 DNA_CHARACTERS = {'A', 'C', 'G', 'T'}
 
 
-def read_fasta(fasta_file):
+def get_sample_and_sequence_from_fasta(fasta_file):
     """ Read fasta file and output headers and sequences """
     headers = []
     sequences = []
-    sequence = ""
-    header = ""
-    with open(fasta_file) as f:
-        for line in f:
-            if line.startswith(">"):
-                if len(sequence) > 0:
-                    headers.append(header)
-                    sequences.append(sequence)
-                header = line.strip()[1:]
-                sequence = ""
-            else:
-                sequence += line.strip().upper()
-        headers.append(header)
-        sequences.append(sequence)
+    with open("example.fasta") as handle:
+        for record in SeqIO.parse(handle, "fasta"):
+            headers.append(record.id)
+            sequences.append(str(record.seq.upper()))
 
     return headers, sequences
-
 
 def get_motif_counter(decomposed_vntrs):
     """ Return a counter for each motif """
