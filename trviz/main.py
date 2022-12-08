@@ -21,7 +21,7 @@ class TandemRepeatVizWorker:
         self.visualizer = TandemRepeatVisualizer()
 
     def generate_trplot(self,
-                        vntr_id: str,
+                        tr_id: str,
                         sample_ids: List[str],
                         tr_sequences: List[str],
                         motifs: List[str],
@@ -42,7 +42,7 @@ class TandemRepeatVizWorker:
         5. Visualization
         For detail, please check out each module
 
-        :param vntr_id: a ID for the tandem repeat
+        :param tr_id: a ID for the tandem repeat
         :param sample_ids: a list of sample IDs corresponding to the tandem repeat sequences
         :param tr_sequences: a list of tandem repeat sequences
         :param motifs: a list of motifs to be used for decomposition
@@ -55,7 +55,7 @@ class TandemRepeatVizWorker:
         """
 
         if verbose:
-            print("VID: {}".format(vntr_id))
+            print("VID: {}".format(tr_id))
             print("Motifs: {}".format(motifs))
             print(f"Loaded {len(tr_sequences)} tandem repeat sequences")
             print("Decomposing TR sequences")
@@ -72,7 +72,7 @@ class TandemRepeatVizWorker:
         if verbose:
             print("Encoding")
         encoded_trs = self.motif_encoder.encode(decomposed_trs,
-                                                motif_map_file=f"{output_dir}/{vntr_id}_motif_map.txt",
+                                                motif_map_file=f"{output_dir}/{tr_id}_motif_map.txt",
                                                 auto=True)
 
         # 3. Align motifs
@@ -86,7 +86,7 @@ class TandemRepeatVizWorker:
             score_matrix = get_score_matrix(self.motif_encoder.symbol_to_motif)
             sorted_sample_ids, aligned_trs = self.motif_aligner.align(sample_ids,
                                                                       encoded_trs,
-                                                                      vntr_id,
+                                                                      tr_id,
                                                                       score_matrix=score_matrix,
                                                                       output_dir=output_dir)
 
@@ -103,7 +103,7 @@ class TandemRepeatVizWorker:
         self.visualizer.trplot(aligned_labeled_repeats=aligned_trs,
                                sample_ids=sorted_sample_ids,
                                figure_size=figure_size,
-                               output_name=f"{output_dir}/{str(vntr_id)}",
+                               output_name=f"{output_dir}/{str(tr_id)}",
                                dpi=500,
                                xtick_degrees=90,
                                sort_by_clustering=True if rearrangement_method == 'clustering' else False,
@@ -115,5 +115,5 @@ class TandemRepeatVizWorker:
         self.visualizer.plot_motif_color_map(self.motif_encoder.symbol_to_motif,
                                              self.motif_encoder.motif_counter,
                                              self.visualizer.symbol_to_color,
-                                             f"{output_dir}/{str(vntr_id)}_motif_map.png",
+                                             f"{output_dir}/{str(tr_id)}_motif_map.png",
                                              )
