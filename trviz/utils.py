@@ -21,7 +21,7 @@ def get_sample_and_sequence_from_fasta(fasta_file):
     """ Read fasta file and output headers and sequences """
     headers = []
     sequences = []
-    with open("example.fasta") as handle:
+    with open(fasta_file) as handle:
         for record in SeqIO.parse(handle, "fasta"):
             headers.append(record.id)
             sequences.append(str(record.seq.upper()))
