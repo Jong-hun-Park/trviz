@@ -122,8 +122,8 @@ class MotifAligner:
                                            aln_input,
                                            aln_output))
             else:
-                # os.system("mafft --quiet --auto --reorder "
-                os.system("mafft --localpair --maxiterate 1000 --reorder "
+                os.system("mafft --quiet --auto --reorder "
+                # os.system("mafft --localpair --maxiterate 1000 --reorder "
                           "--textmatrix {} --op {} --ep {} "
                           "{} > {}".format(score_matrix_file,
                                            score_matrix['gap_open'],
