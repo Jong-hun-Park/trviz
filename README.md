@@ -69,10 +69,10 @@ from trviz.utils import get_sample_and_sequence_from_fasta
 
 tr_visualizer = TandemRepeatVizWorker()
 sample_ids, tr_sequences = get_sample_and_sequence_from_fasta(fasta_file_path)
-vntr_id = "CACNA1C"
+tr_id = "CACNA1C"
 motifs = ['GACCCTGACCTGACTAGTTTACAATCACAC']
 
-tr_visualizer.generate_trplot(vntr_id, sample_ids, tr_sequences, motifs)
+tr_visualizer.generate_trplot(tr_id, sample_ids, tr_sequences, motifs)
 ``` 
 
 ### Motif Decomposition
