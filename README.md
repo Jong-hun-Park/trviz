@@ -17,7 +17,7 @@ Full documentation is available at [readthedocs](https://trviz.readthedocs.io/)
 
 [//]: # (<img src="https://github.com/Jong-hun-Park/trviz/blob/main/examples/figures/example_figure1_SORL1.png" width="42%" height="300">)
 [//]: # (<img src="https://github.com/Jong-hun-Park/trviz/blob/main/examples/figures/example_figure2_VPS53.png" width="42%" height="300">)
-<img src="https://github.com/Jong-hun-Park/trviz/blob/main/examples/figures/Trviz_main_figure.png" width="99%" height="300">
+<img src="https://github.com/Jong-hun-Park/trviz/blob/main/examples/figures/TRviz_main_figure.png" width="99%" height="300">
 </p>
 
 # Getting Started
