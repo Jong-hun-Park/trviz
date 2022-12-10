@@ -12,12 +12,9 @@ decomposing, encoding, aligning, and visualizing tandem repeat sequences.
 
 Full documentation is available at [readthedocs](https://trviz.readthedocs.io/)
 
-# Examples of visualization
+# Overview of TRviz
 <p float="left">
-
-[//]: # (<img src="https://github.com/Jong-hun-Park/trviz/blob/main/examples/figures/example_figure1_SORL1.png" width="42%" height="300">)
-[//]: # (<img src="https://github.com/Jong-hun-Park/trviz/blob/main/examples/figures/example_figure2_VPS53.png" width="42%" height="300">)
-<img src="https://github.com/Jong-hun-Park/trviz/blob/main/examples/figures/TRviz_main_figure.png" width="99%" height="300">
+<img src="https://github.com/Jong-hun-Park/trviz/blob/main/examples/figures/TRviz_main_figure.png" width="100%" height="250">
 </p>
 
 # Getting Started
