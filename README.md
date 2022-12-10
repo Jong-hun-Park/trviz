@@ -8,52 +8,54 @@
 
 ```
 TRviz is a python library for analyzing tandem repeat sequences. TRviz includes modules for 
-decomposing, encoding, aligning, and visualizing tandem repeat sequences.  
+decomposing, encoding, aligning, and visualizing tandem repeat sequences.
+
 Full documentation is available at [readthedocs](https://trviz.readthedocs.io/)
 
-## Examples
+# Examples of visualization
 <p float="left">
-<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/figures/example_figure1_SORL1.png" width="42%" height="300">
-<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/figures/example_figure2_VPS53.png" width="42%" height="300">
+
+[//]: # (<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/figures/example_figure1_SORL1.png" width="42%" height="300">)
+[//]: # (<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/figures/example_figure2_VPS53.png" width="42%" height="300">)
+<img src="https://github.com/Jong-hun-Park/TandemRepeatViz/blob/main/examples/figures/Trviz_main_figure.png" width="99%" height="300">
 </p>
 
-## Getting Started
+# Getting Started
 
-### Prerequisite
+## Prerequisite
 TRviz requires [MAFFT](https://mafft.cbrc.jp/alignment/software/).
 
 Install the library with pip or from source.
-### with pip
+## with pip
 ```
 pip install trviz
 ```
 
-### from source
+## from source
 ```
 git clone https://github.com/Jong-hun-Park/trviz.git
 cd trviz/
 pip install .
 ```
 
-## Motivation
+# Motivation
 There have been many approaches to visualize the variations in tandem repeats. 
 However, there is no tool available for that.
 TRViz automatically decompose tandem repeat sequence into motifs, and align the
 decomposed motifs, and finally generate a plot to show the aligned motifs.
 
-### Input
+## Input
 1. Tandem repeat sequences in FASTA format
 2. A set of motifs for decomposition
 
-### Output
+## Output
 1. Motif map, a set of motifs detected in the samples and their labels and frequencies
 2. Aligned and labeled motifs
 3. Plot showing the motif composition of the input sequences
 4. Plot mapping color to the motif sequences
 
-
-## Code samples and examples
-TRViz has four modules:
+# Code samples and examples
+TRviz has four modules:
 1. Decomposition
 2. Encoding
 3. Alignment
@@ -61,7 +63,7 @@ TRViz has four modules:
 
 See full documentation at [readthedocs]()
 
-### Generating a TR plot
+## Generating a TR plot
 
 ```python
 from trviz.main import TandemRepeatVizWorker
@@ -75,7 +77,7 @@ motifs = ['GACCCTGACCTGACTAGTTTACAATCACAC']
 tr_visualizer.generate_trplot(tr_id, sample_ids, tr_sequences, motifs)
 ``` 
 
-### Motif Decomposition
+## Motif Decomposition
 ```python
 from trviz.decomposer import Decomposer
 
@@ -85,3 +87,6 @@ motifs = ["ACCTTG"]
 tr_decomposer.decompose(tr_sequence, motifs)
 # >>> ["ACCTTG", "ACCTTG", "ACCTTG", "ACCTTG"]
 ``` 
+
+# Contact Us
+Please submit an issue on the [TRviz github](https://github.com/Jong-hun-Park/trviz/issues)
