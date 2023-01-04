@@ -115,5 +115,5 @@ class TandemRepeatVizWorker:
         self.visualizer.plot_motif_color_map(self.motif_encoder.symbol_to_motif,
                                              self.motif_encoder.motif_counter,
                                              self.visualizer.symbol_to_color,
-                                             f"{output_dir}/{str(tr_id)}_motif_map.png",
+                                             file_name=f"{output_dir}/{str(tr_id)}_motif_map.png",
                                              )
