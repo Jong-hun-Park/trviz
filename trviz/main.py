@@ -54,6 +54,9 @@ class TandemRepeatVizWorker:
         :param verbose: if true, output detailed information
         """
 
+        if len(sample_ids) != len(tr_sequences):
+            raise ValueError("The number of sample IDs and the number of sequences are different.")
+
         if verbose:
             print("VID: {}".format(tr_id))
             print("Motifs: {}".format(motifs))
