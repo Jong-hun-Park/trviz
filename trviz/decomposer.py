@@ -24,6 +24,23 @@ class Decomposer:
         :param kwargs: keyword arguments for decomposer
         :return: decomposed sequence
         """
+        if not isinstance(sequence, str):
+            TypeError("Sequence must be a string")
+        if isinstance(motifs, str):
+            motifs = [motifs]  # only one string is given
+        if not isinstance(motifs, list):
+            TypeError("Motifs must be a list of strings")
+
+        sequence = sequence.upper()
+        motifs = [m.upper() for m in motifs]
+
+        if not is_valid_sequence(sequence):
+            raise ValueError(f"Sequence has invalid characters: {sequence}")
+
+        for motif in motifs:
+            if not is_valid_sequence(motif):
+                raise ValueError(f"The motif has invalid characters: {motif}")
+
         if self.mode == "DP":
             return self._decompose_dp(sequence, motifs, **kwargs)
         else:
@@ -40,25 +57,14 @@ class Decomposer:
 
         :param sequence: a string of VNTR sequence
         :param motifs: a list of motif strings composed of nucleotide strings
-
-        :param **kwargs: valids key words are
-
+        :param **kwargs:
+        valid keywords are the following:
         match_score: a score for match
         mismatch_score: a score for mismatch
         min_score_threshold: a minimum score of the alignment.
 
         :return: A list of decomposed motifs
         """
-
-        if not is_valid_sequence(sequence):
-            raise ValueError(f"Sequence has invalid characters: {sequence}")
-
-        if isinstance(motifs, str):
-            motifs = [motifs]  # only one string is given
-
-        for motif in motifs:
-            if not is_valid_sequence(motif):
-                raise ValueError("Consensus motif has invalid characters")
 
         """
         Let s[i,m,j] be the best parse of the sequence prefix s[1..i],
@@ -384,13 +390,6 @@ class Decomposer:
 
         :return: A list of decomposed motifs
         """
-
-        if not is_valid_sequence(sequence):
-            raise ValueError("Sequence has invalid characters")
-
-        if consensus_motif is not None and not is_valid_sequence(consensus_motif):
-            raise ValueError("Consensus motif has invalid characters")
-
 
         def _check_if_hmm_parameters_are_valid(**kwargs):
             valid_keys = {"repeat_count", "has_flanking_sequence", "verbose"}
