@@ -77,7 +77,7 @@ class TandemRepeatVisualizer:
 
         ax.yaxis.tick_right()
         ax.set_ylim(top=len(symbol_to_color) - 1)
-        ax.set_yticks([y + 0.5 for y in range(len(symbol_to_color) - 1)])  # minus 1 for gap symbol, '-'
+        ax.set_yticks([y * box_size + box_size*0.5 for y in range(len(symbol_to_color) - 1)])  # minus 1 for gap, '-'
         ax.set_yticklabels(yticklabels)
 
         # font size
@@ -124,6 +124,8 @@ class TandemRepeatVisualizer:
                hide_dendrogram: bool = False,
                population_data = None,
                sample_as_row = False,
+               xlable_size = 8,
+               ylable_size = 8,
                private_motif_color: str = 'black',
                frame_on = {'top': False, 'bottom': True, 'right': False, 'left': True},
                debug: bool = False
@@ -192,6 +194,7 @@ class TandemRepeatVisualizer:
                                            facecolor=fcolor,
                                            edgecolor="white"))
 
+        # population_data = "../../HPRC_metadata/sample_metadata.tsv"
         if population_data is not None:
             ax_bottom = fig.add_axes([0.125, 0.07, 0.775, 0.03])  # xmin, ymin, dx, dy
             box_height = 1.0
@@ -234,11 +237,11 @@ class TandemRepeatVisualizer:
             ax_main.set_yticklabels(([y for y in range(1, max_repeat_count + 1)]))
 
         ax_main.tick_params(axis='y', which='major', pad=6.5)
-        ax_main.tick_params(axis='both', which='major', labelsize=8)
-        ax_main.tick_params(axis='y', which='major', labelsize=9)
-        ax_main.tick_params(axis='y', which='minor', labelsize=9)
-        ax_main.tick_params(axis='x', which='major', labelsize=9)
-        ax_main.tick_params(axis='x', which='minor', labelsize=9)
+        # ax_main.tick_params(axis='both', which='major', labelsize=8)
+        ax_main.tick_params(axis='y', which='major', labelsize=ylable_size)
+        ax_main.tick_params(axis='y', which='minor', labelsize=ylable_size)
+        # ax_main.tick_params(axis='x', which='major', labelsize=xlabel_size)
+        # ax_main.tick_params(axis='x', which='minor', labelsize=xlabel_size)
 
         if hide_xticks:
             ax_main.set_xticks([])
@@ -256,7 +259,7 @@ class TandemRepeatVisualizer:
             # if re.match(".*", tweet):
             #     fig.savefig(f"{output_name}", dpi=dpi, bbox_inches='tight')
             # else:
-            fig.savefig(f"{output_name}.pdf", dpi=dpi, bbox_inches='tight')
+            fig.savefig(f"{output_name}.png", dpi=800, bbox_inches='tight')
         else:
             fig.savefig("test_trplot.png", dpi=dpi, bbox_inches='tight')
 
