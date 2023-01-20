@@ -1,4 +1,5 @@
 import sys
+import os
 from typing import List, Tuple
 
 sys.path.insert(0, './')
@@ -27,7 +28,9 @@ class TandemRepeatVizWorker:
                         motifs: List[str],
                         figure_size: Tuple[int, int] = None,
                         rearrangement_method: str = 'clustering',
+                        sample_order_file: str = None,
                         hide_dendrogram: bool = False,
+                        population_data_file: str = None,
                         skip_alignment: bool = False,
                         output_dir: str = "./",
                         verbose: bool = True,
@@ -47,7 +50,9 @@ class TandemRepeatVizWorker:
         :param tr_sequences: a list of tandem repeat sequences
         :param motifs: a list of motifs to be used for decomposition
         :param figure_size: figure size
-        :param rearrangement_method: options: {'clustering' (default), 'lexicographically', 'simulated_annealing'}
+        :param rearrangement_method: options: {'clustering' (default), 'lexicographically',
+                                               'simulated_annealing', 'manually'}
+        :param sample_order_file: a file containing sample order
         :param hide_dendrogram: if True, hide dendrogram
         :param skip_alignment: if true, skip the multiple sequence alignment
         :param output_dir: base directory for output files
@@ -56,6 +61,12 @@ class TandemRepeatVizWorker:
 
         if len(sample_ids) != len(tr_sequences):
             raise ValueError("The number of sample IDs and the number of sequences are different.")
+
+        if rearrangement_method == 'manually':
+            if sample_order_file is None:
+                raise ValueError("Please specify the sample order file for manual rearrangement.")
+            if not os.path.exists(sample_order_file):
+                raise ValueError("The specified sample order file does not exist.")
 
         if verbose:
             print("VID: {}".format(tr_id))
@@ -98,6 +109,7 @@ class TandemRepeatVizWorker:
             sorted_sample_ids, aligned_trs = sort(aligned_trs,
                                                   sorted_sample_ids,
                                                   self.motif_encoder.symbol_to_motif,
+                                                  sample_order_file,
                                                   rearrangement_method)
 
         # 5. Visualization
@@ -112,6 +124,7 @@ class TandemRepeatVizWorker:
                                sort_by_clustering=True if rearrangement_method == 'clustering' else False,
                                hide_dendrogram=hide_dendrogram,
                                symbol_to_motif=self.motif_encoder.symbol_to_motif,
+                               population_data=population_data_file,
                                )
 
         # 6. Motif map

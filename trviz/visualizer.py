@@ -161,14 +161,18 @@ class TandemRepeatVisualizer:
 
         # Add clustering
         if sort_by_clustering:
-            if debug:
-                print("Sort by clustering")
             sorted_sample_ids, sorted_aligned_labeled_repeats = self.add_dendrogram(fig,
                                                                                     aligned_labeled_repeats,
                                                                                     sample_ids,
                                                                                     symbol_to_motif,
                                                                                     hide_dendrogram)
+            if debug:
+                print("Sort by clustering")
+                print('\n'.join(sorted_sample_ids))
+
         else:
+            # Already sorted in some way
+            sorted_sample_ids, sorted_aligned_labeled_repeats = sample_ids, aligned_labeled_repeats
             if debug:
                 print("No clustering")
 
@@ -259,7 +263,7 @@ class TandemRepeatVisualizer:
             # if re.match(".*", tweet):
             #     fig.savefig(f"{output_name}", dpi=dpi, bbox_inches='tight')
             # else:
-            fig.savefig(f"{output_name}.png", dpi=800, bbox_inches='tight')
+            fig.savefig(f"{output_name}.pdf", dpi=800, bbox_inches='tight')
         else:
             fig.savefig("test_trplot.png", dpi=dpi, bbox_inches='tight')
 

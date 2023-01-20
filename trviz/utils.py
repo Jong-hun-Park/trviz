@@ -78,12 +78,29 @@ def is_valid_sequence(sequence):
     return True
 
 
-def sort(aligned_vntrs, sample_ids, symbol_to_motif, method='lexicographically'):
+def sort_by_manually(aligned_vntrs, sample_ids, sample_order_file):
+    """ Sort the aligned and encoded tandem repeats based on the given order """
+    with open(sample_order_file) as f:
+        sample_order = [line.strip() for line in f.readlines()]
+
+    sorted_sample_ids = []
+    sorted_aligned_vntrs = []
+    for sample_id in sample_order:
+        if sample_id in sample_ids:
+            sorted_sample_ids.append(sample_id)
+            sorted_aligned_vntrs.append(aligned_vntrs[sample_ids.index(sample_id)])
+
+    return sorted_sample_ids, sorted_aligned_vntrs
+
+
+def sort(aligned_vntrs, sample_ids, symbol_to_motif, sample_order_file, method='lexicographically'):
     """ Sort the aligned and encoded tandem repeats """
     if method == 'lexicographically':
         return zip(*sorted(list(zip(sample_ids, aligned_vntrs)), key=lambda x: x[0]))
     if method == 'simulated_annealing':
         return sort_by_simulated_annealing_optimized(aligned_vntrs, sample_ids, symbol_to_motif)
+    if method == 'manually':
+        return sort_by_manually(aligned_vntrs, sample_ids, sample_order_file)
     else:
         raise ValueError("Please check the rearrangement method. {}".format(method))
 
