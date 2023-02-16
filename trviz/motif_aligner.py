@@ -14,6 +14,8 @@ from Bio.Align.Applications import ClustalOmegaCommandline
 from Bio.Align.Applications import MafftCommandline
 from Bio import AlignIO
 
+import shutil
+
 
 class MotifAligner:
     def align(self,
@@ -75,6 +77,10 @@ class MotifAligner:
 
     @staticmethod
     def _align_motifs_with_mafft(sample_ids, labeled_vntrs, vid, score_matrix, output_dir, preserve_order=False):
+        # Check if MAFFT is installed
+        if not shutil.which("mafft"):
+            raise ValueError("MAFFT is not installed. Please install MAFFT and try again.")
+
         aln_input = f"{output_dir}/alignment_input.fa"
         aln_output = f"{output_dir}/alignment_output.fa"
         if vid is not None:
