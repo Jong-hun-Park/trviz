@@ -20,7 +20,7 @@ Full documentation is available at [readthedocs](https://trviz.readthedocs.io/)
 # Getting Started
 
 ## Prerequisite
-TRviz requires [MAFFT](https://mafft.cbrc.jp/alignment/software/).
+TRviz requires [MAFFT](https://mafft.cbrc.jp/alignment/software/). Tested with MAFFT v7.505.
 
 Install the library with pip or from source.
 ## with pip
