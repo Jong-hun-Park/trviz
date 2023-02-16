@@ -23,7 +23,7 @@ class MotifAligner:
               encoded_vntrs: List[str],
               vid: str = None,
               score_matrix: Dict[Dict, int] = None,
-              output_dir: str = None,
+              output_dir: str = "./",
               tool: str = "mafft",
               ) -> Tuple[List, List]:
         """
