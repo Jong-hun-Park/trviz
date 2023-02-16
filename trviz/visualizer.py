@@ -110,7 +110,7 @@ class TandemRepeatVisualizer:
 
     def trplot(self,
                aligned_labeled_repeats: List[str],
-               sample_ids: List[str] = None,
+               sample_ids: List[str],
                figure_size: Tuple[int, int] = None,
                output_name: str = None,
                dpi: int = 500,
@@ -161,6 +161,9 @@ class TandemRepeatVisualizer:
 
         # Add clustering
         if sort_by_clustering:
+            if symbol_to_motif is None:
+                raise ValueError("symbol_to_motif must be provided when sort_by_clustering is True")
+                
             sorted_sample_ids, sorted_aligned_labeled_repeats = self.add_dendrogram(fig,
                                                                                     aligned_labeled_repeats,
                                                                                     sample_ids,
