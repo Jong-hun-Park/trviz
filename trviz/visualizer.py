@@ -47,6 +47,9 @@ class TandemRepeatVisualizer:
         if box_margin < 0 or box_margin > box_size:
             raise ValueError(f"Box margin should be between 0 and {box_size}.")
 
+        if symbol_to_color is None:
+            raise ValueError("Symbol to color is not set.")
+
         fig, ax = plt.subplots()
         if figure_size is not None:
             fig, ax = plt.subplots(figsize=figure_size)
@@ -163,7 +166,7 @@ class TandemRepeatVisualizer:
         if sort_by_clustering:
             if symbol_to_motif is None:
                 raise ValueError("symbol_to_motif must be provided when sort_by_clustering is True")
-                
+
             sorted_sample_ids, sorted_aligned_labeled_repeats = self.add_dendrogram(fig,
                                                                                     aligned_labeled_repeats,
                                                                                     sample_ids,
