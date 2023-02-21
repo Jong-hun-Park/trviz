@@ -60,8 +60,10 @@ class TandemRepeatVisualizer:
         # TODO: figure and font size
         yticklabels = []
         y_base_position = 0
+        has_gap_in_symbol_to_color = False
         for (symbol, color) in symbol_to_color.items():
             if symbol == '-':
+                has_gap_in_symbol_to_color = True
                 continue
             box_position = [box_margin, y_base_position + box_margin]
             box_width = box_size - 2 * box_margin
@@ -80,7 +82,10 @@ class TandemRepeatVisualizer:
 
         ax.yaxis.tick_right()
         ax.set_ylim(top=len(symbol_to_color) - 1)
-        ax.set_yticks([y * box_size + box_size*0.5 for y in range(len(symbol_to_color) - 1)])  # minus 1 for gap, '-'
+        yticks_count = len(symbol_to_color)
+        if has_gap_in_symbol_to_color:
+            yticks_count = len(symbol_to_color) - 1
+        ax.set_yticks([y * box_size + box_size*0.5 for y in range(yticks_count)])  # minus 1 for gap, '-'
         ax.set_yticklabels(yticklabels)
 
         # font size
