@@ -116,10 +116,10 @@ class Decomposer:
         _check_if_dp_parameters_are_valid(**kwargs)
 
         # Parameter setting
-        match_score = kwargs.get("match_score", 2)
-        mismatch_score = kwargs.get("mismatch_score", -1)
-        insertion_score = kwargs.get("insertion_score", -1)
-        deletion_score = kwargs.get("deletion_score", -1)
+        match_score = kwargs.get("match_score", 5)
+        mismatch_score = kwargs.get("mismatch_score", -4)
+        insertion_score = kwargs.get("insertion_score", -4)
+        deletion_score = kwargs.get("deletion_score", -4)
         min_score_threshold = kwargs.get("min_score_threshold", float("-inf"))
         verbose = kwargs.get("verbose", False)
 
