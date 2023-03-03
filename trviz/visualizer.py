@@ -50,9 +50,15 @@ class TandemRepeatVisualizer:
         if symbol_to_color is None:
             raise ValueError("Symbol to color is not set.")
 
-        fig, ax = plt.subplots()
         if figure_size is not None:
             fig, ax = plt.subplots(figsize=figure_size)
+        else:
+            max_motif_length = len(max(symbol_to_motif.values(), key=len))
+            w = len(symbol_to_motif) // 10 + 5 if len(symbol_to_motif) > 50 else len(symbol_to_motif) // 5 + 1
+            h = max_motif_length // 10 + max_motif_length if max_motif_length > 50 else max_motif_length // 5 + 1
+            if h * dpi > 2 ** 16:
+                h = 2 ** 15 // dpi * 0.75  # "Weight and Height must be less than 2^16"
+            fig, ax = plt.subplots(figsize=(w, h))
         ax.set_aspect('equal')
 
         max_motif_length = len(max(symbol_to_motif.values(), key=len))
