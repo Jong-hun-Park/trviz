@@ -13,7 +13,7 @@ decomposing, encoding, aligning, and visualizing tandem repeat sequences.
 Full documentation is available at [readthedocs](https://trviz.readthedocs.io/)
 
 # Overview of TRviz
-<img height="250" src="https://github.com/Jong-hun-Park/trviz/blob/main/examples/figures/TRviz_main_figure.png?raw=true" width="100"/>
+![](https://github.com/Jong-hun-Park/trviz/blob/main/examples/figures/TRviz_main_figure.png?raw=true)
 
 # Getting Started
 
