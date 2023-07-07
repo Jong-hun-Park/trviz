@@ -93,9 +93,9 @@ def sort_by_manually(aligned_vntrs, sample_ids, sample_order_file):
     return sorted_sample_ids, sorted_aligned_vntrs
 
 
-def sort(aligned_vntrs, sample_ids, symbol_to_motif, sample_order_file, method='lexicographically'):
+def sort(aligned_vntrs, sample_ids, symbol_to_motif, sample_order_file, method='motif_count'):
     """ Sort the aligned and encoded tandem repeats """
-    if method == 'lexicographically':
+    if method == 'name':
         return zip(*sorted(list(zip(sample_ids, aligned_vntrs)), key=lambda x: x[0]))
     elif method == 'motif_count':
         return zip(*sorted(list(zip(sample_ids, aligned_vntrs)), key=lambda x: len(x[1].replace('-', ''))))
