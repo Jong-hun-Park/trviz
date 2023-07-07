@@ -83,5 +83,8 @@ tr_decomposer.decompose(tr_sequence, motifs)
 # >>> ["ACCTTG", "ACCTTG", "ACCTTG", "ACCTTG"]
 ``` 
 
+## Citation:
+Jonghun Park and others, [TRviz: a Python library for decomposing and visualizing tandem repeat sequences](https://doi.org/10.1093/bioadv/vbad058), Bioinformatics Advances, Volume 3, Issue 1, 2023, vbad058 
+
 # Contact Us
 Please submit an issue on the [TRviz github](https://github.com/Jong-hun-Park/trviz/issues)
