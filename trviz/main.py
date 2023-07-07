@@ -33,7 +33,7 @@ class TandemRepeatVizWorker:
                         population_data_file: str = None,
                         skip_alignment: bool = False,
                         output_dir: str = "./",
-                        dpi = 300,
+                        dpi: int = 300,
                         verbose: bool = True,
                         ):
         """
@@ -55,8 +55,10 @@ class TandemRepeatVizWorker:
                                                'simulated_annealing', 'manually'}
         :param sample_order_file: a file containing sample order
         :param hide_dendrogram: if True, hide dendrogram
+        :param population_data_file: a file containing population data
         :param skip_alignment: if true, skip the multiple sequence alignment
         :param output_dir: base directory for output files
+        :param dpi: dpi for the output figure
         :param verbose: if true, output detailed information
         """
 
