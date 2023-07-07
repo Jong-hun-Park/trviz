@@ -33,6 +33,7 @@ class TandemRepeatVizWorker:
                         population_data_file: str = None,
                         skip_alignment: bool = False,
                         output_dir: str = "./",
+                        dpi = 300,
                         verbose: bool = True,
                         ):
         """
@@ -120,7 +121,7 @@ class TandemRepeatVizWorker:
                                sample_ids=sorted_sample_ids,
                                figure_size=figure_size,
                                output_name=f"{output_dir}/{str(tr_id)}",
-                               dpi=500,
+                               dpi=dpi,
                                xtick_degrees=90,
                                sort_by_clustering=True if rearrangement_method == 'clustering' else False,
                                hide_dendrogram=hide_dendrogram,
