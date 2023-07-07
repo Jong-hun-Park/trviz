@@ -1,0 +1,20 @@
+cff-version: 1.0.0
+message: "If you use this software, please cite it as below."
+type: article
+authors:
+- family-names: "Park"
+  given-names: "Jonghun"
+- family-names: "Kaufman",
+  given-names: "Eli"
+- family-names: " Valdmanis",
+  given-names: "Paul"
+- family-names: "Bafna",
+  given-names: "Vineet"
+title: "TRviz: a Python library for decomposing and visualizing tandem repeat sequences"
+version: 0.1.3
+doi: 10.1093/bioadv/vbad058
+journal: "Bioinformatics Advances"
+volume: 3
+issue: 1
+year: 2023
+url: "https://academic.oup.com/bioinformaticsadvances/article/3/1/vbad058/7143378"
