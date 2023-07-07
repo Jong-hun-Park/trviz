@@ -94,6 +94,7 @@ class TandemRepeatVizWorker:
             if verbose:
                 print("Skip alignment step")
             aligned_trs = add_padding(encoded_trs)
+            sorted_sample_ids = sample_ids
         else:
             if verbose:
                 print("Alignment")
