@@ -97,9 +97,11 @@ def sort(aligned_vntrs, sample_ids, symbol_to_motif, sample_order_file, method='
     """ Sort the aligned and encoded tandem repeats """
     if method == 'lexicographically':
         return zip(*sorted(list(zip(sample_ids, aligned_vntrs)), key=lambda x: x[0]))
-    if method == 'simulated_annealing':
+    elif method == 'motif_count':
+        return zip(*sorted(list(zip(sample_ids, aligned_vntrs)), key=lambda x: len(x[1].replace('-', ''))))
+    elif method == 'simulated_annealing':
         return sort_by_simulated_annealing_optimized(aligned_vntrs, sample_ids, symbol_to_motif)
-    if method == 'manually':
+    elif method == 'manually':
         return sort_by_manually(aligned_vntrs, sample_ids, sample_order_file)
     else:
         raise ValueError("Please check the rearrangement method. {}".format(method))

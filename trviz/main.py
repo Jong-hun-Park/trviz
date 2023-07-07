@@ -51,7 +51,7 @@ class TandemRepeatVizWorker:
         :param tr_sequences: a list of tandem repeat sequences
         :param motifs: a list of motifs to be used for decomposition
         :param figure_size: figure size
-        :param rearrangement_method: options: {'clustering' (default), 'lexicographically',
+        :param rearrangement_method: options: {'clustering' (default), 'lexicographically', 'motif_count'
                                                'simulated_annealing', 'manually'}
         :param sample_order_file: a file containing sample order
         :param hide_dendrogram: if True, hide dendrogram
