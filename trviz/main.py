@@ -1,6 +1,6 @@
 import sys
 import os
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
 sys.path.insert(0, './')
 
@@ -26,15 +26,29 @@ class TandemRepeatVizWorker:
                         sample_ids: List[str],
                         tr_sequences: List[str],
                         motifs: List[str],
-                        figure_size: Tuple[int, int] = None,
+
+                        skip_alignment: bool = False,
                         rearrangement_method: str = 'clustering',
                         sample_order_file: str = None,
-                        hide_dendrogram: bool = False,
-                        population_data_file: str = None,
-                        skip_alignment: bool = False,
                         output_dir: str = "./",
+
+                        # Figure parameters
+                        figure_size: Tuple[int, int] = None,
+                        output_name: str = None,
                         dpi: int = 300,
+                        hide_xticks: bool = False,
+                        hide_yticks: bool = False,
+                        hide_dendrogram: bool = False,
+                        population_data: str = None,
+                        allele_as_row: bool = True,
+                        xlabel_size: int = 8,
+                        ylabel_size: int = 8,
+                        xlabel_rotation: int = 0,
+                        ylabel_rotation: int = 0,
+                        private_motif_color: str = 'black',
+                        frame_on: Dict[str, bool] = None,
                         verbose: bool = True,
+                        debug: bool = False
                         ):
         """
         A method to generate a plot of tandem repeat motif composition.
@@ -50,15 +64,28 @@ class TandemRepeatVizWorker:
         :param sample_ids: a list of sample IDs corresponding to the tandem repeat sequences
         :param tr_sequences: a list of tandem repeat sequences
         :param motifs: a list of motifs to be used for decomposition
-        :param figure_size: figure size
-        :param rearrangement_method: options: {'clustering' (default), 'name', 'motif_count'
+
+        :param skip_alignment: if true, skip the multiple sequence alignment
+        :param rearrangement_method: options: {'clustering' (default), 'name', 'motif_count',
                                                'simulated_annealing', 'manually'}
         :param sample_order_file: a file containing sample order
-        :param hide_dendrogram: if True, hide dendrogram
-        :param population_data_file: a file containing population data
-        :param skip_alignment: if true, skip the multiple sequence alignment
         :param output_dir: base directory for output files
-        :param dpi: dpi for the output figure
+
+        :param figure_size: figure size
+        :param output_name: output file name
+        :param dpi: DPI for the plot
+        :param hide_xticks: if true, hide xticks
+        :param hide_yticks: if true, hide yticks
+        :param hide_dendrogram: if true, hide the dendrogram
+        :param population_data: population data file name
+        :param allele_as_row: if true, plot allele as row (default is true)
+        :param xlabel_size: x label size (default is 8)
+        :param ylabel_size: y label size (default is 8)
+        :param xlabel_rotation: x label rotation (default is 0)
+        :param ylabel_rotation: y label rotation (default is 0)
+        :param private_motif_color: the color for private motifs. Default is black
+        :param frame_on: a dictionary mapping sample to frame on.
+                         Default is {'top': False, 'bottom': True, 'right': False, 'left': True}
         :param verbose: if true, output detailed information
         """
 
@@ -122,13 +149,21 @@ class TandemRepeatVizWorker:
         self.visualizer.trplot(aligned_labeled_repeats=aligned_trs,
                                sample_ids=sorted_sample_ids,
                                figure_size=figure_size,
-                               output_name=f"{output_dir}/{str(tr_id)}",
+                               output_name=f"{output_dir}/{str(tr_id)}.pdf" if output_name is None else output_name,
                                dpi=dpi,
-                               xtick_degrees=90,
                                sort_by_clustering=True if rearrangement_method == 'clustering' else False,
+                               hide_xticks=hide_xticks,
+                               hide_yticks=hide_yticks,
+                               allele_as_row=allele_as_row,
+                               xlabel_size=xlabel_size,
+                               ylabel_size=ylabel_size,
                                hide_dendrogram=hide_dendrogram,
                                symbol_to_motif=self.motif_encoder.symbol_to_motif,
-                               population_data=population_data_file,
+                               xlabel_rotation=xlabel_rotation,
+                               ylabel_rotation=ylabel_rotation,
+                               population_data=population_data,
+                               private_motif_color=private_motif_color,
+                               frame_on=frame_on
                                )
 
         # 6. Motif map

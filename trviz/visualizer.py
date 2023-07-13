@@ -1,5 +1,4 @@
 from typing import List, Tuple, Dict
-import re
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import ListedColormap
@@ -55,7 +54,7 @@ class TandemRepeatVisualizer:
         else:
             max_motif_length = len(max(symbol_to_motif.values(), key=len))
             w = len(symbol_to_motif) // 10 + 5 if len(symbol_to_motif) > 50 else len(symbol_to_motif) // 5 + 1
-            h = max_motif_length // 10 + max_motif_length if max_motif_length > 50 else max_motif_length // 5 + 1
+            h = max_motif_length // 4 + 1 if max_motif_length > 50 else max_motif_length // 3 + 1
             if h * dpi > 2 ** 16:
                 h = 2 ** 15 // dpi * 0.75  # "Weight and Height must be less than 2^16"
             fig, ax = plt.subplots(figsize=(w, h))
@@ -113,10 +112,6 @@ class TandemRepeatVisualizer:
 
         # No frame
         ax.set_frame_on(False)
-        # ax.spines['top'].set_visible(False)
-        # ax.spines['right'].set_visible(False)
-        # ax.spines['bottom'].set_visible(False)
-        # ax.spines['left'].set_visible(False)
 
         fig.tight_layout()
         fig.savefig(file_name, dpi=dpi, bbox_inches='tight', pad_inches=0)
@@ -127,21 +122,23 @@ class TandemRepeatVisualizer:
                sample_ids: List[str],
                figure_size: Tuple[int, int] = None,
                output_name: str = None,
-               dpi: int = 500,
+               dpi: int = 300,
                alpha: float = 0.6,
                box_line_width: float = 0,
-               xtick_degrees: int = 90,
                hide_xticks: bool = False,
                hide_yticks: bool = False,
-               symbol_to_motif: Dict = None,
+               symbol_to_motif: Dict[str, str] = None,
                sort_by_clustering: bool = True,
                hide_dendrogram: bool = False,
-               population_data = None,
-               sample_as_row = False,
-               xlable_size = 8,
-               ylable_size = 8,
+               population_data: str = None,
+               motif_marks: Dict[str, str] = None,
+               allele_as_row: bool = True,
+               xlabel_size: int = 8,
+               ylabel_size: int = 8,
+               xlabel_rotation: int = 0,
+               ylabel_rotation: int = 0,
                private_motif_color: str = 'black',
-               frame_on = {'top': False, 'bottom': True, 'right': False, 'left': True},
+               frame_on: Dict[str, bool] = None,
                debug: bool = False
                ):
         """
@@ -156,19 +153,37 @@ class TandemRepeatVisualizer:
         :param dpi: DPI for the plot
         :param alpha: alpha value for the plot
         :param box_line_width: line width for box edges
-        :param xtick_degrees: xtick degree (default is 90)
         :param hide_xticks: if true, hide xticks
         :param hide_yticks: if true, hide yticks
+        :param symbol_to_motif: a dictionary mapping symbols to motifs
+        :param sort_by_clustering: if true, sort the samples by clustering
+        :param hide_dendrogram: if true, hide the dendrogram
+        :param population_data: population data file name
+        :param motif_marks: a dictionary mapping sample to motif marks
+        :param allele_as_row: if true, plot allele as row (default is true)
+        :param xlabel_size: x label size (default is 8)
+        :param ylabel_size: y label size (default is 8)
+        :param xlabel_rotation: x label rotation (default is 0)
+        :param ylabel_rotation: y label rotation (default is 0)
         :param private_motif_color: the color for private motifs. Default is black
-        :param debug: if true, print verbse information.
+        :param frame_on: a dictionary mapping sample to frame on.
+                         Default is {'top': False, 'bottom': True, 'right': False, 'left': True}
+        :param debug: if true, print verbose information.
         """
 
-        fig, ax_main = plt.subplots(figsize=figure_size)  # width and height in inch
+        if motif_marks is not None:
+            if len(motif_marks) != len(sample_ids):
+                raise ValueError("The length of motif_marks must be the same as the number of samples")
 
+        fig, ax_main = plt.subplots(figsize=figure_size)  # width and height in inch
         max_repeat_count = len(aligned_labeled_repeats[0])
         if figure_size is None:
-            w = len(sample_ids) // 10 + 5 if len(sample_ids) > 50 else 5
-            h = max_repeat_count // 10 + max_repeat_count if max_repeat_count > 50 else max_repeat_count // 5 + 2
+            if allele_as_row:
+                h = len(sample_ids) // 5 + 2 if len(sample_ids) > 50 else 5
+                w = max_repeat_count // 5 + 2 if max_repeat_count > 50 else max_repeat_count // 5 + 2
+            else:
+                w = len(sample_ids) // 5 + 2 if len(sample_ids) > 50 else 5
+                h = max_repeat_count // 5 + 2 if max_repeat_count > 50 else max_repeat_count // 5 + 2
             if h * dpi > 2**16:
                 h = 2**15 // dpi * 0.75  # "Weight and Height must be less than 2^16"
             fig, ax_main = plt.subplots(figsize=(w, h))
@@ -177,7 +192,6 @@ class TandemRepeatVisualizer:
         if sort_by_clustering:
             if symbol_to_motif is None:
                 raise ValueError("symbol_to_motif must be provided when sort_by_clustering is True")
-
             sorted_sample_ids, sorted_aligned_labeled_repeats = self.add_dendrogram(fig,
                                                                                     aligned_labeled_repeats,
                                                                                     sample_ids,
@@ -186,7 +200,6 @@ class TandemRepeatVisualizer:
             if debug:
                 print("Sort by clustering")
                 print('\n'.join(sorted_sample_ids))
-
         else:
             # Already sorted in some way
             sorted_sample_ids, sorted_aligned_labeled_repeats = sample_ids, aligned_labeled_repeats
@@ -202,21 +215,40 @@ class TandemRepeatVisualizer:
         box_height = 1.0
         box_width = 1.0
         for allele_index, allele in enumerate(sorted_aligned_labeled_repeats):
-            box_position = [allele_index, 0]
+            motif_index = 0
+            if allele_as_row:
+                box_position = [allele_index, len(sorted_aligned_labeled_repeats) - allele_index - 1]
+            else:  # each column is an allele
+                box_position = [allele_index, 0]
+
             for box_index, symbol in enumerate(allele):
-                box_position[1] = box_height * box_index
+                if allele_as_row:
+                    box_position[0] = box_width * box_index  # move x position
+                else:
+                    box_position[1] = box_height * box_index
                 fcolor = symbol_to_color[symbol]
+                hatch_pattern = None
+
                 if symbol == '-':  # For gaps, color them as white blocks
                     fcolor = (1, 1, 1, 1)
+                else:  # Not a gap
+                    if motif_marks is not None:
+                        motif_mark = motif_marks[sorted_sample_ids[allele_index]][motif_index]
+                        if motif_mark == 'I':  # introns
+                            hatch_pattern = 'xxx'
+                    motif_index += 1
+
                 if symbol == PRIVATE_MOTIF_LABEL:
                     fcolor = private_motif_color
                 ax_main.add_patch(plt.Rectangle(box_position, box_width, box_height,
-                                           linewidth=box_line_width + 0.1,
-                                           facecolor=fcolor,
-                                           edgecolor="white"))
+                                                linewidth=box_line_width + 0.1,
+                                                facecolor=fcolor,
+                                                edgecolor="white",
+                                                hatch=hatch_pattern, ))
 
         # population_data = "../../HPRC_metadata/sample_metadata.tsv"
         if population_data is not None:
+            # TODO: need to be fixed when allele_as_row is True (the below works only for allele as column)
             ax_bottom = fig.add_axes([0.125, 0.07, 0.775, 0.03])  # xmin, ymin, dx, dy
             box_height = 1.0
             box_width = 1.0
@@ -241,28 +273,26 @@ class TandemRepeatVisualizer:
 
             ax_main.set_xlim(right=len(sorted_aligned_labeled_repeats))
             ax_main.set_xticks([])
+
+        if allele_as_row:
+            ax_main.set_ylim(top=len(sorted_aligned_labeled_repeats))
+            ax_main.set_yticks([x + 0.5 for x in range(len(aligned_labeled_repeats))])
+            ax_main.set_yticklabels(sorted_sample_ids[::-1], ha='right', rotation=ylabel_rotation)
+
+            labels = [x for x in range(1, max_repeat_count + 1)]
+            ax_main.set_xticks(labels, labels, rotation=xlabel_rotation)
         else:
             ax_main.set_xlim(right=len(sorted_aligned_labeled_repeats))
             ax_main.set_xticks([x + 0.5 for x in range(len(aligned_labeled_repeats))])
-            ax_main.set_xticklabels(sorted_sample_ids, ha='center', rotation=xtick_degrees)
+            ax_main.set_xticklabels(sorted_sample_ids, ha='center', rotation=xlabel_rotation)
 
-        ax_main.set_yticks([y for y in range(1, max_repeat_count + 1)])
-        sample_as_row = True
-        if sample_as_row:
-            # y-tick right and rotate
-            ax_main.set_yticklabels(([y for y in range(1, max_repeat_count + 1)]), rotation=90, ha='center')
-            ax_main.yaxis.tick_right()
-            frame_on['right'] = True
-            frame_on['left'] = False
-        else:
-            ax_main.set_yticklabels(([y for y in range(1, max_repeat_count + 1)]))
+            labels = [y for y in range(1, max_repeat_count + 1)]
+            ax_main.set_yticks(labels, labels=labels, rotation=ylabel_rotation)
 
-        ax_main.tick_params(axis='y', which='major', pad=6.5)
-        # ax_main.tick_params(axis='both', which='major', labelsize=8)
-        ax_main.tick_params(axis='y', which='major', labelsize=ylable_size)
-        ax_main.tick_params(axis='y', which='minor', labelsize=ylable_size)
-        # ax_main.tick_params(axis='x', which='major', labelsize=xlabel_size)
-        # ax_main.tick_params(axis='x', which='minor', labelsize=xlabel_size)
+        ax_main.tick_params(axis='y', which='major', labelsize=ylabel_size)
+        ax_main.tick_params(axis='y', which='minor', labelsize=ylabel_size)
+        ax_main.tick_params(axis='x', which='major', labelsize=xlabel_size)
+        ax_main.tick_params(axis='x', which='minor', labelsize=xlabel_size)
 
         if hide_xticks:
             ax_main.set_xticks([])
@@ -270,17 +300,19 @@ class TandemRepeatVisualizer:
             ax_main.set_yticks([])
 
         # Frame
+        if frame_on is None:  # Set default
+            frame_on = {'top': False, 'bottom': True, 'right': False, 'left': True}
+
         ax_main.spines['top'].set_visible(frame_on['top'])
         ax_main.spines['right'].set_visible(frame_on['right'])
         ax_main.spines['bottom'].set_visible(frame_on['bottom'])
         ax_main.spines['left'].set_visible(frame_on['left'])
 
         if output_name is not None:
-            # fig.set_size_inches(w, h)  # Because the figure size is changed after adding axes
-            # if re.match(".*", tweet):
-            #     fig.savefig(f"{output_name}", dpi=dpi, bbox_inches='tight')
-            # else:
-            fig.savefig(f"{output_name}.pdf", dpi=800, bbox_inches='tight')
+            if '.' not in output_name:
+                fig.savefig(f"{output_name}.pdf", dpi=dpi, bbox_inches='tight')
+            else:
+                fig.savefig(f"{output_name}", dpi=dpi, bbox_inches='tight')
         else:
             fig.savefig("test_trplot.png", dpi=dpi, bbox_inches='tight')
 
@@ -353,12 +385,9 @@ class TandemRepeatVisualizer:
                                    (0.835, 0.369, 0),
                                    (0.8, 0.475, 0.655)])
         else:
-            cmap = plt.cm.get_cmap('hsv', unique_symbol_count + 1)
-            # Setting alpha values
-            temp_cmap = cmap(np.arange(cmap.N))
-            temp_cmap[:, -1] = alpha
-            # Update color map
-            cmap = ListedColormap(temp_cmap)
+            import distinctipy
+            cmap = distinctipy.get_colors(unique_symbol_count, pastel_factor=0.9, rng=777)
+            cmap = ListedColormap(cmap)
 
         symbol_to_color = {r: cmap(i) for i, r in enumerate(list(unique_symbols))}
         return symbol_to_color
