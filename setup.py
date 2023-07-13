@@ -5,7 +5,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setuptools.setup(
     name='trviz',
-    version="1.0.0",
+    version="1.0.1",
     author='Jonghun Park',
     author_email='jop002@eng.ucsd.edu',
     description='A python library for decomposing and visualizing tandem repeat sequences',
