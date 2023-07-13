@@ -38,7 +38,7 @@ class TandemRepeatVizWorker:
                         dpi: int = 300,
                         hide_xticks: bool = False,
                         hide_yticks: bool = False,
-                        hide_dendrogram: bool = False,
+                        hide_dendrogram: bool = True,
                         population_data: str = None,
                         allele_as_row: bool = True,
                         xlabel_size: int = 8,
@@ -48,7 +48,6 @@ class TandemRepeatVizWorker:
                         private_motif_color: str = 'black',
                         frame_on: Dict[str, bool] = None,
                         verbose: bool = True,
-                        debug: bool = False
                         ):
         """
         A method to generate a plot of tandem repeat motif composition.

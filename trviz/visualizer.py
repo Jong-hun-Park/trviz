@@ -129,7 +129,7 @@ class TandemRepeatVisualizer:
                hide_yticks: bool = False,
                symbol_to_motif: Dict[str, str] = None,
                sort_by_clustering: bool = True,
-               hide_dendrogram: bool = False,
+               hide_dendrogram: bool = True,
                population_data: str = None,
                motif_marks: Dict[str, str] = None,
                allele_as_row: bool = True,
