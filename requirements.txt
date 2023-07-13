@@ -3,6 +3,7 @@ matplotlib>=3.2.1
 biopython==1.79
 numpy>=1.23.1
 scipy>=1.9.3
+distinctipy>=1.2.2
 
 #click==7.1.2
 flake8
