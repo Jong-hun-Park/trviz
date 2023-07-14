@@ -76,7 +76,7 @@ class MotifAligner:
         return sample_ids, aligned_vntrs  # TODO sample_ids are not correctly sorted
 
     @staticmethod
-    def _align_motifs_with_mafft(sample_ids, labeled_vntrs, vid, score_matrix, output_dir, preserve_order=False):
+    def _align_motifs_with_mafft(sample_ids, labeled_vntrs, vid, score_matrix, output_dir, preserve_order=True):
         # Check if MAFFT is installed
         if not shutil.which("mafft"):
             raise ValueError("MAFFT is not installed. Please install MAFFT and try again.")

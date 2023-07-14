@@ -1,3 +1,4 @@
+from typing import List, Dict
 import string
 from collections import Counter
 
@@ -80,9 +81,12 @@ def is_valid_sequence(sequence):
 
 def sort_by_manually(aligned_vntrs, sample_ids, sample_order_file):
     """ Sort the aligned and encoded tandem repeats based on the given order """
+    if sample_order_file is None:
+        print("Sample order file is not provided. Follow the given sample order.")
+        return sample_ids, aligned_vntrs
+
     with open(sample_order_file) as f:
         sample_order = [line.strip() for line in f.readlines()]
-
     sorted_sample_ids = []
     sorted_aligned_vntrs = []
     for sample_id in sample_order:
@@ -359,7 +363,7 @@ def add_padding(encoded_trs):
     return padded_trs
 
 
-def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', print_end = "\r"):
+def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', print_end="\r"):
     """
     Call in a loop to create terminal progress bar
     @params:
@@ -379,3 +383,61 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
     # Print New Line on Complete
     if iteration == total:
         print()
+
+
+def get_motif_marks(sample_ids: List[str], decomposed_trs: List[List[str]], region_prediction_file: str) \
+        -> Dict[str, str]:
+    """
+    Parse the region prediction file and store the result in a dictionary
+    The format of the file
+    >sample_id
+    region1,start,end \t region2,start,end
+
+    e.g.)
+    >sample_1
+    match,2,4258	cds,2,2000	intron,2001,3554	cds,3555,4258
+
+    :param sample_ids:
+    :param decomposed_trs:
+    :param region_prediction_file:
+    :return:
+    """
+    region_prediction = {}
+    with open(region_prediction_file, 'r') as f:
+        for line in f:
+            line = line.strip()
+            if line.startswith('>'):
+                sample_id = line.strip()[1:]  # remove the '>' sign
+                continue
+            else:
+                region_prediction[sample_id] = []
+                regions = line.strip().split('\t')
+                for region in regions:
+                    region, start, end = region.split(',')
+                    region_prediction[sample_id].append((region, start, end))
+
+    # get the motif marks
+    motif_marks = {}
+    for sample_id, decomposed_tr in zip(sample_ids, decomposed_trs):
+        motif_mark = ""
+        cumulative_length = 0
+
+        for motif_seq in decomposed_tr:
+            motif_start = cumulative_length
+            motif_end = cumulative_length + len(motif_seq)
+            for region, start, end in region_prediction[sample_id]:
+                if region == "intron":
+                    # Check if the motif sequence has overlap with any intron regions
+                    # any overlap is considered as intron
+                    if int(start) <= motif_start <= int(end) or int(start) <= motif_end <= int(end)\
+                            or motif_start <= int(start) <= int(end) <= motif_end:
+                        motif_mark += "I"
+                        break
+            else:
+                motif_mark += "X"
+
+            cumulative_length += len(motif_seq)
+
+        motif_marks[sample_id] = motif_mark
+        assert len(motif_mark) == len(decomposed_tr), "The length of the motif mark is not equal to the number of motifs"
+    return motif_marks
