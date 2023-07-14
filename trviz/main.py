@@ -67,8 +67,10 @@ class TandemRepeatVizWorker:
         :param motifs: a list of motifs to be used for decomposition
 
         :param skip_alignment: if true, skip the multiple sequence alignment
-        :param rearrangement_method: options: {'clustering' (default), 'name', 'motif_count',
+        :param rearrangement_method: options: {'clustering' (default), 'name', 'motif_count', 'None',
                                                'simulated_annealing', 'manually'}
+                                               if 'None', skip the rearrangement step. If 'manually', the sample order
+                                               should be specified by the sample_order_file.
         :param sample_order_file: a file containing sample order
         :param output_dir: base directory for output files
 
