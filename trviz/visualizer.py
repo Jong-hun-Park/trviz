@@ -157,6 +157,7 @@ class TandemRepeatVisualizer:
         :param hide_yticks: if true, hide yticks
         :param symbol_to_motif: a dictionary mapping symbols to motifs
         :param sort_by_clustering: if true, sort the samples by clustering
+        :param motif_marks: a dictionary mapping sample to motif marks
         :param hide_dendrogram: if true, hide the dendrogram
         :param population_data: population data file name
         :param motif_marks: a dictionary mapping sample to motif marks
@@ -170,10 +171,6 @@ class TandemRepeatVisualizer:
                          Default is {'top': False, 'bottom': True, 'right': False, 'left': True}
         :param debug: if true, print verbose information.
         """
-
-        if motif_marks is not None:
-            if len(motif_marks) != len(sample_ids):
-                raise ValueError("The length of motif_marks must be the same as the number of samples")
 
         fig, ax_main = plt.subplots(figsize=figure_size)  # width and height in inch
         max_repeat_count = len(aligned_labeled_repeats[0])
@@ -232,7 +229,7 @@ class TandemRepeatVisualizer:
                 if symbol == '-':  # For gaps, color them as white blocks
                     fcolor = (1, 1, 1, 1)
                 else:  # Not a gap
-                    if motif_marks is not None:
+                    if motif_marks is not None and sorted_sample_ids[allele_index] in motif_marks:
                         motif_mark = motif_marks[sorted_sample_ids[allele_index]][motif_index]
                         if motif_mark == 'I':  # introns
                             hatch_pattern = 'xxx'

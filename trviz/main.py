@@ -11,6 +11,7 @@ from trviz.visualizer import TandemRepeatVisualizer
 from trviz.utils import sort
 from trviz.utils import add_padding
 from trviz.utils import get_score_matrix
+from trviz.utils import get_motif_marks
 
 
 class TandemRepeatVizWorker:
@@ -31,6 +32,7 @@ class TandemRepeatVizWorker:
                         rearrangement_method: str = 'clustering',
                         sample_order_file: str = None,
                         output_dir: str = "./",
+                        region_prediction_file: str = None,
 
                         # Figure parameters
                         figure_size: Tuple[int, int] = None,
@@ -69,6 +71,8 @@ class TandemRepeatVizWorker:
                                                'simulated_annealing', 'manually'}
         :param sample_order_file: a file containing sample order
         :param output_dir: base directory for output files
+
+        :param region_prediction_file: a file containing region prediction results
 
         :param figure_size: figure size
         :param output_name: output file name
@@ -142,6 +146,11 @@ class TandemRepeatVizWorker:
                                                   sample_order_file,
                                                   rearrangement_method)
 
+        motif_marks = None
+        if region_prediction_file is not None:
+            # it should be dictionary motif_mark {sample_id: motif_mark}
+            motif_marks = get_motif_marks(sample_ids, decomposed_trs, region_prediction_file)
+
         # 5. Visualization
         if verbose:
             print("Visualization")
@@ -151,6 +160,7 @@ class TandemRepeatVizWorker:
                                output_name=f"{output_dir}/{str(tr_id)}.pdf" if output_name is None else output_name,
                                dpi=dpi,
                                sort_by_clustering=True if rearrangement_method == 'clustering' else False,
+                               motif_marks=motif_marks,
                                hide_xticks=hide_xticks,
                                hide_yticks=hide_yticks,
                                allele_as_row=allele_as_row,

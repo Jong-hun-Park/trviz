@@ -422,6 +422,10 @@ def get_motif_marks(sample_ids: List[str], decomposed_trs: List[List[str]], regi
         motif_mark = ""
         cumulative_length = 0
 
+        if sample_id not in region_prediction:
+            print("Sample {} is not in the region prediction file".format(sample_id))
+            continue
+
         for motif_seq in decomposed_tr:
             motif_start = cumulative_length
             motif_end = cumulative_length + len(motif_seq)
