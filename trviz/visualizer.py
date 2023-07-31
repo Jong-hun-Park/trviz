@@ -30,7 +30,8 @@ class TandemRepeatVisualizer:
         unique_repeats = set()
         for rs in aligned_repeats:
             for r in rs:
-                unique_repeats.add(r)
+                if r != '-':
+                    unique_repeats.add(r)
 
         return sorted(unique_repeats)
 
@@ -86,7 +87,7 @@ class TandemRepeatVisualizer:
             yticklabels.append(text)
 
         ax.yaxis.tick_right()
-        ax.set_ylim(top=len(symbol_to_color) - 1)
+        ax.set_ylim(top=len(symbol_to_color))
         yticks_count = len(symbol_to_color)
         if has_gap_in_symbol_to_color:
             yticks_count = len(symbol_to_color) - 1
@@ -223,18 +224,18 @@ class TandemRepeatVisualizer:
                     box_position[0] = box_width * box_index  # move x position
                 else:
                     box_position[1] = box_height * box_index
-                fcolor = symbol_to_color[symbol]
+
                 hatch_pattern = None
 
                 if symbol == '-':  # For gaps, color them as white blocks
                     fcolor = (1, 1, 1, 1)
-                else:  # Not a gap
+                else:  # Not a gap or private motif
                     if motif_marks is not None and sorted_sample_ids[allele_index] in motif_marks:
                         motif_mark = motif_marks[sorted_sample_ids[allele_index]][motif_index]
                         if motif_mark == 'I':  # introns
                             hatch_pattern = 'xxx'
+                    fcolor = symbol_to_color[symbol]
                     motif_index += 1
-
                 if symbol == PRIVATE_MOTIF_LABEL:
                     fcolor = private_motif_color
                 ax_main.add_patch(plt.Rectangle(box_position, box_width, box_height,
