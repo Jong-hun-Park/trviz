@@ -113,10 +113,9 @@ class TandemRepeatVisualizer:
 
         # No frame
         ax.set_frame_on(False)
-
-        fig.tight_layout()
         fig.savefig(file_name, dpi=dpi, bbox_inches='tight', pad_inches=0)
-        plt.close(fig)
+
+        plt.close('all')
 
     def trplot(self,
                aligned_labeled_repeats: List[str],
@@ -314,7 +313,7 @@ class TandemRepeatVisualizer:
         else:
             fig.savefig("test_trplot.png", dpi=dpi, bbox_inches='tight')
 
-        plt.close(fig)
+        plt.close('all')
 
     def add_dendrogram(self, fig, aligned_labeled_repeats, sample_ids, symbol_to_motif, hide_clustering):
         """
