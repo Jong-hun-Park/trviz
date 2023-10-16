@@ -7,7 +7,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 extensions = [
     Extension(
-        "trviz.decompose",
+        "trviz.cy.decompose",
         ["trviz/cy/decompose.pyx"],
         extra_compile_args=["-O3", '-march=native'],
         include_dirs=[numpy.get_include()],
