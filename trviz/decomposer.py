@@ -2,14 +2,16 @@ from typing import List
 
 from trviz.utils import is_valid_sequence
 from trviz.utils import get_motifs_from_visited_states_and_region
-
+from trviz.cy.decompose import decompose_cy
 import numpy as np
 
 
 class Decomposer:
 
-    def __init__(self, mode="DP"):
-        if mode == "DP":
+    def __init__(self, mode="DP_CY"):
+        if mode == "DP_CY":
+            self.mode = mode
+        elif mode == "DP":
             self.mode = mode
         elif mode == "HMM":
             self.mode = mode
@@ -41,7 +43,9 @@ class Decomposer:
             if not is_valid_sequence(motif):
                 raise ValueError(f"The motif has invalid characters: {motif}")
 
-        if self.mode == "DP":
+        if self.mode == "DP_CY":
+            return decompose_cy(sequence, motifs, kwargs)
+        elif self.mode == "DP":
             return self._decompose_dp(sequence, motifs, **kwargs)
         else:
             return self._decompose_hmm(sequence, motifs, **kwargs)

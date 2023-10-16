@@ -1,13 +1,24 @@
-import setuptools
+from setuptools import Extension, setup, find_packages
+from Cython.Build import cythonize
+import numpy
 
 with open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
-setuptools.setup(
+extensions = [
+    Extension(
+        "trviz.decompose",
+        ["trviz/cy/decompose.pyx"],
+        extra_compile_args=["-O3", '-march=native'],
+        include_dirs=[numpy.get_include()],
+    )
+]
+
+setup(
     name='trviz',
     version="1.0.1",
     author='Jonghun Park',
-    author_email='jop002@eng.ucsd.edu',
+    author_email='jop002@ucsd.edu',
     description='A python library for decomposing and visualizing tandem repeat sequences',
     url="https://github.com/Jong-hun-Park/trviz",
     long_description=long_description,
@@ -17,7 +28,7 @@ setuptools.setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
     ],
-    packages=setuptools.find_packages(),
+    packages=find_packages(),
     include_package_data=True,
     install_requires=[
         'matplotlib',
@@ -25,4 +36,5 @@ setuptools.setup(
         'biopython',
     ],
     python_requires='>=3.8',
+    ext_modules=cythonize(extensions),
 )
