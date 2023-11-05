@@ -106,7 +106,7 @@ class TandemRepeatVizWorker:
                 raise ValueError("The specified sample order file does not exist.")
 
         if verbose:
-            print("VID: {}".format(tr_id))
+            print("ID: {}".format(tr_id))
             print("Motifs: {}".format(motifs))
             print(f"Loaded {len(tr_sequences)} tandem repeat sequences")
             print("Decomposing TR sequences")
