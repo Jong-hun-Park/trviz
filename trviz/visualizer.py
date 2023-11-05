@@ -41,6 +41,7 @@ class TandemRepeatVisualizer:
                              box_size=1,
                              box_margin=0.1,
                              label_size=None,
+                             show_figure=False,
                              dpi=300):
         """ Generate a plot for motif color map """
 
@@ -114,8 +115,9 @@ class TandemRepeatVisualizer:
         # No frame
         ax.set_frame_on(False)
         fig.savefig(file_name, dpi=dpi, bbox_inches='tight', pad_inches=0)
-
-        plt.close('all')
+        if show_figure:
+            plt.show()
+        plt.close(fig)
 
     def trplot(self,
                aligned_labeled_repeats: List[str],
@@ -139,6 +141,7 @@ class TandemRepeatVisualizer:
                ylabel_rotation: int = 0,
                private_motif_color: str = 'black',
                frame_on: Dict[str, bool] = None,
+               show_figure: bool = False,
                debug: bool = False
                ):
         """
@@ -169,6 +172,7 @@ class TandemRepeatVisualizer:
         :param private_motif_color: the color for private motifs. Default is black
         :param frame_on: a dictionary mapping sample to frame on.
                          Default is {'top': False, 'bottom': True, 'right': False, 'left': True}
+        :param show_figure: if true, show the figure
         :param debug: if true, print verbose information.
         """
 
@@ -183,6 +187,7 @@ class TandemRepeatVisualizer:
                 h = max_repeat_count // 5 + 2 if max_repeat_count > 50 else max_repeat_count // 5 + 2
             if h * dpi > 2**16:
                 h = 2**15 // dpi * 0.75  # "Weight and Height must be less than 2^16"
+            plt.close()
             fig, ax_main = plt.subplots(figsize=(w, h))
 
         # Add clustering
@@ -235,8 +240,18 @@ class TandemRepeatVisualizer:
                             hatch_pattern = 'xxx'
                     fcolor = symbol_to_color[symbol]
                     motif_index += 1
+
                 if symbol == PRIVATE_MOTIF_LABEL:
                     fcolor = private_motif_color
+
+                # if symbol != '-' and len(symbol_to_motif[symbol]) % 3 != 0:
+                #     ax_main.add_patch(plt.Rectangle(box_position, box_width, box_height,
+                #                                         linewidth=box_line_width + 0.1 + 2,
+                #                                         facecolor=fcolor,
+                #                                         edgecolor="black",
+                #                                         hatch=hatch_pattern,))
+                #     continue
+
                 ax_main.add_patch(plt.Rectangle(box_position, box_width, box_height,
                                                 linewidth=box_line_width + 0.1,
                                                 facecolor=fcolor,
@@ -313,7 +328,9 @@ class TandemRepeatVisualizer:
         else:
             fig.savefig("test_trplot.png", dpi=dpi, bbox_inches='tight')
 
-        plt.close('all')
+        if show_figure:
+            plt.show()
+        plt.close(fig)
 
     def add_dendrogram(self, fig, aligned_labeled_repeats, sample_ids, symbol_to_motif, hide_clustering):
         """
