@@ -49,6 +49,7 @@ class TandemRepeatVizWorker:
                         ylabel_rotation: int = 0,
                         private_motif_color: str = 'black',
                         frame_on: Dict[str, bool] = None,
+                        show_figure: bool = False,
                         verbose: bool = True,
                         ):
         """
@@ -91,6 +92,7 @@ class TandemRepeatVizWorker:
         :param private_motif_color: the color for private motifs. Default is black
         :param frame_on: a dictionary mapping sample to frame on.
                          Default is {'top': False, 'bottom': True, 'right': False, 'left': True}
+        :param show_figure: if true, show the figure
         :param verbose: if true, output detailed information
         """
 
@@ -138,7 +140,8 @@ class TandemRepeatVizWorker:
                                                                       encoded_trs,
                                                                       tr_id,
                                                                       score_matrix=score_matrix,
-                                                                      output_dir=output_dir)
+                                                                      output_dir=output_dir,
+                                                                      tool='star' if region_prediction_file is not None else 'mafft')
 
         # 4. Re-arrangement
         if rearrangement_method is not None and rearrangement_method != 'clustering':
@@ -159,7 +162,7 @@ class TandemRepeatVizWorker:
         self.visualizer.trplot(aligned_labeled_repeats=aligned_trs,
                                sample_ids=sorted_sample_ids,
                                figure_size=figure_size,
-                               output_name=f"{output_dir}/{str(tr_id)}.pdf" if output_name is None else output_name,
+                               output_name=f"{output_dir}/{str(tr_id)}.png" if output_name is None else output_name,
                                dpi=dpi,
                                sort_by_clustering=True if rearrangement_method == 'clustering' else False,
                                motif_marks=motif_marks,
@@ -174,6 +177,7 @@ class TandemRepeatVizWorker:
                                ylabel_rotation=ylabel_rotation,
                                population_data=population_data,
                                private_motif_color=private_motif_color,
+                               show_figure=show_figure,
                                frame_on=frame_on
                                )
 
@@ -181,5 +185,6 @@ class TandemRepeatVizWorker:
         self.visualizer.plot_motif_color_map(self.motif_encoder.symbol_to_motif,
                                              self.motif_encoder.motif_counter,
                                              self.visualizer.symbol_to_color,
+                                             show_figure=show_figure,
                                              file_name=f"{output_dir}/{str(tr_id)}_motif_map.png",
                                              )

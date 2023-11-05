@@ -414,7 +414,7 @@ def get_motif_marks(sample_ids: List[str], decomposed_trs: List[List[str]], regi
                 regions = line.strip().split('\t')
                 for region in regions:
                     region, start, end = region.split(',')
-                    region_prediction[sample_id].append((region, start, end))
+                    region_prediction[sample_id].append((region, start, end))  # start is inclusive, end is exclusive
 
     # get the motif marks
     motif_marks = {}
@@ -433,8 +433,8 @@ def get_motif_marks(sample_ids: List[str], decomposed_trs: List[List[str]], regi
                 if region == "intron":
                     # Check if the motif sequence has overlap with any intron regions
                     # any overlap is considered as intron
-                    if int(start) <= motif_start <= int(end) or int(start) <= motif_end <= int(end)\
-                            or motif_start <= int(start) <= int(end) <= motif_end:
+                    if int(start) <= motif_start < int(end) or int(start) <= motif_end < int(end)\
+                            or motif_start <= int(start) <= int(end) < motif_end:
                         motif_mark += "I"
                         break
             else:

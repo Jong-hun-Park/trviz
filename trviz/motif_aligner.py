@@ -46,8 +46,11 @@ class MotifAligner:
             return self._align_motifs_with_muscle
         elif tool == 'clustalo':
             return self._align_motifs_with_clustalo
+        elif tool == 'star':
+            return self._align_motifs_with_star
         else:
             ValueError(tool)
+
 
     @staticmethod
     def _align_motifs_with_muscle(sample_ids, labeled_vntrs, vid, score_matrix, output_dir):
@@ -187,3 +190,87 @@ class MotifAligner:
         if len(aligned_trs) == 0:
             raise ValueError(f"No aligned VNTRs in {aln_output}")
         return alinged_sample_ids, aligned_trs
+
+    @staticmethod
+    def _align_motifs_with_star(sample_ids, labeled_vntrs, vid, score_matrix, output_dir):
+        """
+        Perform center-star alignment.
+
+        :param sample_ids:
+        :param labeled_vntrs:
+        :param vid:
+        :param score_matrix:
+        :param output_dir:
+        :return:
+        """
+
+        def align_centers(msa_center, pairwise_center):
+            msa_gap_added_indices, pairwise_gap_added_indices = list(), list()
+            i = 0
+            while msa_center != pairwise_center:
+                if i > len(msa_center) - 1:
+                    msa_center += pairwise_center[i:]
+                    msa_gap_added_indices.extend(range(i, i + len(pairwise_center[i:])))
+                    continue
+                if i > len(pairwise_center) - 1:
+                    pairwise_center += msa_center[i:]
+                    pairwise_gap_added_indices.extend(range(i, i + len(msa_center[i:])))
+                    continue
+                if msa_center[i] != pairwise_center[i]:
+                    if msa_center[i] == '-':
+                        pairwise_center = pairwise_center[0:i] + '-' + pairwise_center[i:]
+                        pairwise_gap_added_indices.append(i)
+                    else:
+                        msa_center = msa_center[0:i] + '-' + msa_center[i:]
+                        msa_gap_added_indices.append(i)
+                i += 1
+            return sorted(msa_gap_added_indices), sorted(pairwise_gap_added_indices)
+
+        def adjust(string_list, indices):
+            for i, string in enumerate(string_list):
+                for index in indices:
+                    string = string[:index] + '-' + string[index:]
+                string_list[i] = string
+
+        # Center should be the first element in the list
+        center_id = sample_ids[0]
+        center_seq = labeled_vntrs[0]
+        results = []
+        for i in range(1, len(labeled_vntrs)):
+            results.append(MotifAligner._align_motifs_with_mafft([center_id, sample_ids[i]],
+                                                                 [center_seq, labeled_vntrs[i]],
+                                                                 vid,
+                                                                 score_matrix,
+                                                                 output_dir,
+                                                                 preserve_order=True))
+
+        def _merge(msa_result, alignment_pair):
+            """
+            Merge the alignment result with the current MSA result
+            :param msa_result: 
+            :param alignment_pair: 
+            :return: 
+            """
+            msa_center_seq = msa_result[0]
+            pairwise_center_seq, pairwise_sample_seq = alignment_pair[1]
+
+            msa_gap_added_indices, pairwise_gap_added_indices = align_centers(msa_center_seq, pairwise_center_seq)
+            adjust(msa_result, msa_gap_added_indices)
+            new = [pairwise_sample_seq]
+            adjust(new, pairwise_gap_added_indices)
+            msa_result.extend(new)
+
+        # TODO maybe sort by the result length?
+        # results.sort(key=lambda x: len(x[1][0]))
+
+        msa_result = results[0][1].copy()  # center seq, and an aligned seq
+        aligned_samples = results[0][0].copy()
+        for alignment_pair in results[1:]:
+            _, sample_id = alignment_pair[0]
+            _merge(msa_result, alignment_pair)
+            aligned_samples.append(sample_id)
+
+        for sample, seq in zip(aligned_samples, msa_result):
+            print(f"{sample}\t{seq}")
+
+        return aligned_samples, msa_result
