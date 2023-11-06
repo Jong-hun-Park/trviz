@@ -50,6 +50,7 @@ class TandemRepeatVizWorker:
                         private_motif_color: str = 'black',
                         frame_on: Dict[str, bool] = None,
                         show_figure: bool = False,
+                        style: str = 'seattle',
                         verbose: bool = True,
                         ):
         """
@@ -93,6 +94,7 @@ class TandemRepeatVizWorker:
         :param frame_on: a dictionary mapping sample to frame on.
                          Default is {'top': False, 'bottom': True, 'right': False, 'left': True}
         :param show_figure: if true, show the figure
+        :param style: 'waterfall' or 'seattle'
         :param verbose: if true, output detailed information
         """
 
@@ -104,6 +106,9 @@ class TandemRepeatVizWorker:
                 raise ValueError("Please specify the sample order file for manual rearrangement.")
             if not os.path.exists(sample_order_file):
                 raise ValueError("The specified sample order file does not exist.")
+
+        if style not in ['waterfall', 'seattle']:
+            raise ValueError("The style should be either 'waterfall' or 'seattle'.")
 
         if verbose:
             print("ID: {}".format(tr_id))
@@ -125,6 +130,11 @@ class TandemRepeatVizWorker:
         encoded_trs = self.motif_encoder.encode(decomposed_trs,
                                                 motif_map_file=f"{output_dir}/{tr_id}_motif_map.txt",
                                                 auto=True)
+
+        if style == 'waterfall':
+            skip_alignment = True
+            rearrangement_method = 'motif_count'
+            allele_as_row = True
 
         # 3. Align motifs
         if skip_alignment:
