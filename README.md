@@ -33,23 +33,19 @@ cd trviz/
 pip install .
 ```
 
-# Motivation
-There have been many approaches to visualize the variations in tandem repeats. 
-However, there is no tool available for that.
-TRViz automatically decompose tandem repeat sequence into motifs, and align the
-decomposed motifs, and finally generate a plot to show the aligned motifs.
-
 ## Input
-1. Tandem repeat sequences in FASTA format
+1. Tandem repeat sequences
 2. A set of motifs for decomposition
 
 ## Output
 1. Motif map, a set of motifs detected in the samples and their labels and frequencies
 2. Aligned and labeled motifs
-3. Plot showing the motif composition of the input sequences
-4. Plot mapping color to the motif sequences
+3. A plot showing the motif composition of the input sequences
+4. A plot mapping color to motif 
 
 # Code samples and examples
+**A jupyter notebook with examples is available in the [examples](https://github.com/Jong-hun-Park/trviz/blob/main/examples/sample_code.ipynb)**
+
 TRviz has four modules:
 1. Decomposition
 2. Encoding
@@ -58,7 +54,7 @@ TRviz has four modules:
 
 See full documentation at [readthedocs](https://trviz.readthedocs.io/en/latest/)
 
-## Generating a TR plot
+## Generating a plot
 
 ```python
 from trviz.main import TandemRepeatVizWorker
@@ -72,7 +68,7 @@ motifs = ['GACCCTGACCTGACTAGTTTACAATCACAC']
 tr_visualizer.generate_trplot(tr_id, sample_ids, tr_sequences, motifs)
 ``` 
 
-## Motif Decomposition
+## Motif decomposition
 ```python
 from trviz.decomposer import Decomposer
 
