@@ -34,6 +34,8 @@ setup(
         'matplotlib',
         'numpy',
         'biopython',
+        'scipy',
+        'distinctipy',
     ],
     python_requires='>=3.8',
     ext_modules=cythonize(extensions),
