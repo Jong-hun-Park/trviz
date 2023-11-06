@@ -56,7 +56,7 @@ TRviz has four modules:
 3. Alignment
 4. Visualization
 
-See full documentation at [readthedocs]()
+See full documentation at [readthedocs](https://trviz.readthedocs.io/en/latest/)
 
 ## Generating a TR plot
 
