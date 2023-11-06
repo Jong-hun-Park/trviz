@@ -132,11 +132,11 @@ class TandemRepeatVisualizer:
                symbol_to_motif: Dict[str, str] = None,
                sort_by_clustering: bool = True,
                hide_dendrogram: bool = True,
-               population_data: str = None,
+               sample_to_label: Dict[str, str] = None,
                motif_marks: Dict[str, str] = None,
                allele_as_row: bool = True,
-               xlabel_size: int = 8,
-               ylabel_size: int = 8,
+               xlabel_size: int = 9,
+               ylabel_size: int = 9,
                xlabel_rotation: int = 0,
                ylabel_rotation: int = 0,
                private_motif_color: str = 'black',
@@ -162,7 +162,7 @@ class TandemRepeatVisualizer:
         :param sort_by_clustering: if true, sort the samples by clustering
         :param motif_marks: a dictionary mapping sample to motif marks
         :param hide_dendrogram: if true, hide the dendrogram
-        :param population_data: population data file name
+        :param sample_to_label: sample to label dictionary (default is None)
         :param motif_marks: a dictionary mapping sample to motif marks
         :param allele_as_row: if true, plot allele as row (default is true)
         :param xlabel_size: x label size (default is 8)
@@ -176,29 +176,28 @@ class TandemRepeatVisualizer:
         :param debug: if true, print verbose information.
         """
 
-        fig, ax_main = plt.subplots(figsize=figure_size)  # width and height in inch
         max_repeat_count = len(aligned_labeled_repeats[0])
         if figure_size is None:
-            if allele_as_row:
-                h = len(sample_ids) // 5 + 2 if len(sample_ids) > 50 else 5
-                w = max_repeat_count // 5 + 2 if max_repeat_count > 50 else max_repeat_count // 5 + 2
-            else:
-                w = len(sample_ids) // 5 + 2 if len(sample_ids) > 50 else 5
-                h = max_repeat_count // 5 + 2 if max_repeat_count > 50 else max_repeat_count // 5 + 2
+            h = len(sample_ids) // 5 + 2 if len(sample_ids) > 50 else 5
+            w = max_repeat_count // 5 + 2 if max_repeat_count > 50 else max_repeat_count // 5 + 2
+            if not allele_as_row:
+                w, h = h, w
             if h * dpi > 2**16:
                 h = 2**15 // dpi * 0.75  # "Weight and Height must be less than 2^16"
-            plt.close()
             fig, ax_main = plt.subplots(figsize=(w, h))
+        else:
+            fig, ax_main = plt.subplots(figsize=figure_size)  # width and height in inch
 
         # Add clustering
         if sort_by_clustering:
             if symbol_to_motif is None:
                 raise ValueError("symbol_to_motif must be provided when sort_by_clustering is True")
-            sorted_sample_ids, sorted_aligned_labeled_repeats = self.add_dendrogram(fig,
-                                                                                    aligned_labeled_repeats,
-                                                                                    sample_ids,
-                                                                                    symbol_to_motif,
-                                                                                    hide_dendrogram)
+            sorted_sample_ids, sorted_aligned_labeled_repeats = self.sort_by_clustering(ax_main,
+                                                                                        aligned_labeled_repeats,
+                                                                                        sample_ids,
+                                                                                        symbol_to_motif,
+                                                                                        allele_as_row,
+                                                                                        hide_dendrogram)
             if debug:
                 print("Sort by clustering")
                 print('\n'.join(sorted_sample_ids))
@@ -218,19 +217,17 @@ class TandemRepeatVisualizer:
         box_width = 1.0
         for allele_index, allele in enumerate(sorted_aligned_labeled_repeats):
             motif_index = 0
+            # each column is an allele
+            box_position = [allele_index, 0]
             if allele_as_row:
-                box_position = [allele_index, len(sorted_aligned_labeled_repeats) - allele_index - 1]
-            else:  # each column is an allele
-                box_position = [allele_index, 0]
+                box_position = [0, allele_index]
 
             for box_index, symbol in enumerate(allele):
                 if allele_as_row:
                     box_position[0] = box_width * box_index  # move x position
                 else:
                     box_position[1] = box_height * box_index
-
                 hatch_pattern = None
-
                 if symbol == '-':  # For gaps, color them as white blocks
                     fcolor = (1, 1, 1, 1)
                 else:  # Not a gap or private motif
@@ -244,62 +241,41 @@ class TandemRepeatVisualizer:
                 if symbol == PRIVATE_MOTIF_LABEL:
                     fcolor = private_motif_color
 
-                # if symbol != '-' and len(symbol_to_motif[symbol]) % 3 != 0:
-                #     ax_main.add_patch(plt.Rectangle(box_position, box_width, box_height,
-                #                                         linewidth=box_line_width + 0.1 + 2,
-                #                                         facecolor=fcolor,
-                #                                         edgecolor="black",
-                #                                         hatch=hatch_pattern,))
-                #     continue
-
                 ax_main.add_patch(plt.Rectangle(box_position, box_width, box_height,
                                                 linewidth=box_line_width + 0.1,
                                                 facecolor=fcolor,
                                                 edgecolor="white",
                                                 hatch=hatch_pattern, ))
 
-        # population_data = "../../HPRC_metadata/sample_metadata.tsv"
-        if population_data is not None:
-            # TODO: need to be fixed when allele_as_row is True (the below works only for allele as column)
-            ax_bottom = fig.add_axes([0.125, 0.07, 0.775, 0.03])  # xmin, ymin, dx, dy
-            box_height = 1.0
-            box_width = 1.0
-            population_color_map = self.get_population_colormap(population_data)
-            for allele_index, allele in enumerate(sorted_aligned_labeled_repeats):
-                sample_id = sorted_sample_ids[allele_index]
-                if sample_id.find('-') != -1:
-                    sample_id = sample_id[:sample_id.index('-')]
-                box_position = [allele_index, 0]
-                fcolor = population_color_map.get(sample_id, '#dbdbdb')  # grey default
-                ax_bottom.add_patch(plt.Rectangle(box_position, box_width, box_height,
-                                                  linewidth=box_line_width + 0.1,
-                                                  facecolor=fcolor,
-                                                  edgecolor="white"))
-
-            ax_bottom.set_xlim(right=len(aligned_labeled_repeats))
-            ax_bottom.set_xticks([x + 0.5 for x in range(len(aligned_labeled_repeats))])
-            ax_bottom.set_xticklabels(sorted_sample_ids, ha='center', rotation=xtick_degrees)
-            ax_bottom.set_yticks([])
-            ax_bottom.set_frame_on(False)
-            # ax_bottom.tick_params(axis='x', which='both', length=0)  # if don't want the ticks
-
-            ax_main.set_xlim(right=len(sorted_aligned_labeled_repeats))
-            ax_main.set_xticks([])
+        # Add colors based on  sample labels
+        self.add_label_color_axis(aligned_labeled_repeats, allele_as_row, ax_main, box_line_width, sample_to_label,
+                                  sorted_aligned_labeled_repeats, sorted_sample_ids, xlabel_rotation, xlabel_size,
+                                  ylabel_rotation, ylabel_size)
 
         if allele_as_row:
             ax_main.set_ylim(top=len(sorted_aligned_labeled_repeats))
-            ax_main.set_yticks([x + 0.5 for x in range(len(aligned_labeled_repeats))])
-            ax_main.set_yticklabels(sorted_sample_ids[::-1], ha='right', rotation=ylabel_rotation)
+            if sample_to_label is None:
+                ax_main.set_yticks([x + 0.5 for x in range(len(aligned_labeled_repeats))])
+                ax_main.set_yticklabels(sorted_sample_ids[::-1], ha='right', rotation=ylabel_rotation)
+            else:
+                ax_main.set_yticks([])
 
+            label_positions = [x + 0.5 for x in range(max_repeat_count)]
             labels = [x for x in range(1, max_repeat_count + 1)]
-            ax_main.set_xticks(labels, labels, rotation=xlabel_rotation)
+            ax_main.set_xticks(label_positions, labels=labels, rotation=xlabel_rotation)
+            ax_main.set_xlim(right=max_repeat_count)
         else:
             ax_main.set_xlim(right=len(sorted_aligned_labeled_repeats))
-            ax_main.set_xticks([x + 0.5 for x in range(len(aligned_labeled_repeats))])
-            ax_main.set_xticklabels(sorted_sample_ids, ha='center', rotation=xlabel_rotation)
+            if sample_to_label is None:
+                ax_main.set_xticks([x + 0.5 for x in range(len(aligned_labeled_repeats))])
+                ax_main.set_xticklabels(sorted_sample_ids[::-1], rotation=ylabel_rotation)
+            else:
+                ax_main.set_xticks([])
 
+            label_positions = [y + 0.5 for y in range(max_repeat_count)]
             labels = [y for y in range(1, max_repeat_count + 1)]
-            ax_main.set_yticks(labels, labels=labels, rotation=ylabel_rotation)
+            ax_main.set_yticks(label_positions, labels=labels, rotation=ylabel_rotation)
+            ax_main.set_ylim(top=max_repeat_count)
 
         ax_main.tick_params(axis='y', which='major', labelsize=ylabel_size)
         ax_main.tick_params(axis='y', which='minor', labelsize=ylabel_size)
@@ -332,14 +308,61 @@ class TandemRepeatVisualizer:
             plt.show()
         plt.close(fig)
 
-    def add_dendrogram(self, fig, aligned_labeled_repeats, sample_ids, symbol_to_motif, hide_clustering):
+    def add_label_color_axis(self, aligned_labeled_repeats, allele_as_row, ax_main, box_line_width, sample_to_label,
+                             sorted_aligned_labeled_repeats, sorted_sample_ids, xlabel_rotation, xlabel_size,
+                             ylabel_rotation, ylabel_size):
+        if sample_to_label is not None:
+            box_height = 1.0
+            box_width = 1.0
+            population_color_map = self.get_sample_to_colormap(sample_to_label)
+            if allele_as_row:
+                ax_left = ax_main.inset_axes([-0.05, 0, 0.05, 1])
+
+                for allele_index, allele in enumerate(sorted_aligned_labeled_repeats):
+                    sample_id = sorted_sample_ids[allele_index]
+                    if sample_id.find('-') != -1:
+                        sample_id = sample_id[:sample_id.index('-')]
+                    box_position = [0, allele_index]
+                    fcolor = population_color_map.get(sample_id, '#dbdbdb')  # grey default
+                    ax_left.add_patch(plt.Rectangle(box_position, box_width, box_height,
+                                                    linewidth=box_line_width + 0.1,
+                                                    facecolor=fcolor,
+                                                    edgecolor="black"))
+
+                ax_left.set_ylim(top=len(aligned_labeled_repeats))
+                ax_left.set_yticks([x + 0.5 for x in range(len(aligned_labeled_repeats))])
+                ax_left.set_yticklabels(sorted_sample_ids, rotation=ylabel_rotation, fontsize=ylabel_size)
+                ax_left.set_xticks([])
+                ax_left.set_frame_on(False)
+                # ax_left.tick_params(axis='y', which='both', length=0)  # if don't want the ticks
+            else:
+                ax_bottom = ax_main.inset_axes([0, -0.05, 1.0, 0.05])
+                for allele_index, allele in enumerate(sorted_aligned_labeled_repeats):
+                    sample_id = sorted_sample_ids[allele_index]
+                    if sample_id.find('-') != -1:
+                        sample_id = sample_id[:sample_id.index('-')]
+                    box_position = [allele_index, 0]
+                    fcolor = population_color_map.get(sample_id, '#dbdbdb')  # grey default
+                    ax_bottom.add_patch(plt.Rectangle(box_position, box_width, box_height,
+                                                      linewidth=box_line_width + 0.1,
+                                                      facecolor=fcolor,
+                                                      edgecolor="white"))
+
+                ax_bottom.set_xlim(right=len(aligned_labeled_repeats))
+                ax_bottom.set_xticks([x + 0.5 for x in range(len(aligned_labeled_repeats))])
+                ax_bottom.set_xticklabels(sorted_sample_ids, rotation=xlabel_rotation, fontsize=xlabel_size)
+                ax_bottom.set_yticks([])
+                ax_bottom.set_frame_on(False)
+                # ax_bottom.tick_params(axis='x', which='both', length=0)  # if don't want the ticks
+
+    def sort_by_clustering(self, ax_main, aligned_labeled_repeats, sample_ids, symbol_to_motif, allele_as_row, hide_clustering):
         """
-        Add dendrogram to the figure.
+        Perform hierarchical clustering and sort the samples based on the clustering.
 
         Parameters
         ----------
-        fig : matplotlib.figure.Figure
-            Figure to add dendrogram to.
+        ax_main : matplotlib.axes.Axes object
+            The main axes object.
         aligned_labeled_repeats : list of list of str
             List of aligned labeled repeats.
         sample_ids : list of str
@@ -371,14 +394,21 @@ class TandemRepeatVisualizer:
         condensed_dist_mat = squareform(dist_mat)
 
         Y = sch.linkage(condensed_dist_mat, method='single', optimal_ordering=True)
-        if hide_clustering:
-            Z = sch.dendrogram(Y, orientation='top', get_leaves=True, no_plot=True)
+        if not hide_clustering:
+            if allele_as_row:
+                ax_dendro = ax_main.inset_axes([1, 0, 0.2, 1])  # right
+                Z = sch.dendrogram(Y, orientation='right', get_leaves=True, ax=ax_dendro)
+            else:
+                ax_dendro = ax_main.inset_axes([0, 1, 1, 0.2])  # top
+                Z = sch.dendrogram(Y, orientation='top', get_leaves=True, ax=ax_dendro)
+            ax_dendro.set_xticks([])
+            ax_dendro.set_yticks([])
+            ax_dendro.set_frame_on(False)
         else:
-            ax_top = fig.add_axes([0.125, 0.883, 0.775, 0.2])
-            Z = sch.dendrogram(Y, orientation='top', get_leaves=True)
-            ax_top.set_xticks([])
-            ax_top.set_yticks([])
-            ax_top.set_frame_on(False)
+            if allele_as_row:
+                Z = sch.dendrogram(Y, orientation='right', get_leaves=True, no_plot=True)
+            else:
+                Z = sch.dendrogram(Y, orientation='top', get_leaves=True, no_plot=True)
 
         idx2 = Z['leaves']
         sorted_aligned_labeled_repeats = [aligned_labeled_repeats[i] for i in idx2]
@@ -409,8 +439,13 @@ class TandemRepeatVisualizer:
     def set_symbol_to_color_map(self, symbol_to_color):
         self.symbol_to_color = symbol_to_color
 
-    def get_population_colormap(self, population_data):
-        """ Allowed super populations: {AMR, AFR, EAS, SAS, EUR} """
+    def get_sample_to_colormap(self, sample_to_label: Dict[str, str], default_color='#dbdbdb') -> Dict[str, str]:
+        """ Allowed labels are super populations: {AMR, AFR, EAS, SAS, EUR} """
+
+        superpopulation_list_allowed = ('AMR', 'AFR', 'EAS', 'SAS', 'EUR')
+
+        # TODO Allow any labels and assign a distinct color to each distinct label
+        # TODO other color map options
 
         # Course et al. 2020 color map
         # popultation_colormap = {'SAS': (117, 213, 253, 100),  # light blue
@@ -419,13 +454,6 @@ class TandemRepeatVisualizer:
         #                         'AMR': (252, 211, 119, 100),  # light orange
         #                         'AFR': (255, 137, 215, 100)}  # light pink
 
-        population_colormap = {'SAS': '#fed23f',  # (254, 210, 63)
-                               'EAS': '#b5d33d',  # (181, 211, 61)
-                               'EUR': '#6ca2ea',  # (108, 162, 234),
-                               'AMR': '#442288',  # (68, 34, 136),
-                               'AFR': '#eb7d5b',  # (235, 125, 91)
-                               }
-
         population_colormap = {'SAS': '#1982c4',  # blue
                                'EAS': '#8ac926',  # green
                                'EUR': '#ffca3a',  # yellow
@@ -433,14 +461,12 @@ class TandemRepeatVisualizer:
                                'AFR': '#ff595e',  # red
                                }
 
-        superpopulation_list = ('AMR', 'AFR', 'EAS', 'SAS', 'EUR')
 
         sample_to_colormap = {}
-        with open(population_data, "r") as f:
-            for line in f:
-                split = line.strip().split("\t")
-                sample, population = split[0], split[5]
-                sample_to_colormap[sample] = population_colormap.get(population, '#dbdbdb')  # grey color
+        for sample in sample_to_label:
+            label = sample_to_label[sample]
+            color = population_colormap.get(label, default_color)  # default color is grey
+            sample_to_colormap[sample] = color
 
         return sample_to_colormap
 

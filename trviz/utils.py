@@ -445,3 +445,24 @@ def get_motif_marks(sample_ids: List[str], decomposed_trs: List[List[str]], regi
         motif_marks[sample_id] = motif_mark
         assert len(motif_mark) == len(decomposed_tr), "The length of the motif mark is not equal to the number of motifs"
     return motif_marks
+
+
+def get_sample_to_population(population_data, sep='\t', sample_index=0, population_index=5):
+    """
+    Parse the population data file and store the result in a dictionary
+    :param population_data: A file containing sample to population information with separated by "sep" parameter
+    :param sep: separator
+    :param sample_index: the index of sample id
+    :param population_index: the index of population
+
+    :return: a dictionary mapping sample id to population
+    """
+
+    sample_to_population = {}
+    with open(population_data, "r") as f:
+        for line in f:
+            split = line.strip().split(sep)
+            sample, population = split[sample_index], split[population_index]
+            sample_to_population[sample] = population
+
+    return sample_to_population

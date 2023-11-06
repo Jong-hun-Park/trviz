@@ -41,7 +41,7 @@ class TandemRepeatVizWorker:
                         hide_xticks: bool = False,
                         hide_yticks: bool = False,
                         hide_dendrogram: bool = True,
-                        population_data: str = None,
+                        sample_to_label: Dict[str, str] = None,
                         allele_as_row: bool = True,
                         xlabel_size: int = 8,
                         ylabel_size: int = 8,
@@ -83,7 +83,7 @@ class TandemRepeatVizWorker:
         :param hide_xticks: if true, hide xticks
         :param hide_yticks: if true, hide yticks
         :param hide_dendrogram: if true, hide the dendrogram
-        :param population_data: population data file name
+        :param sample_to_label: population data file name
         :param allele_as_row: if true, plot allele as row (default is true)
         :param xlabel_size: x label size (default is 8)
         :param ylabel_size: y label size (default is 8)
@@ -175,7 +175,7 @@ class TandemRepeatVizWorker:
                                symbol_to_motif=self.motif_encoder.symbol_to_motif,
                                xlabel_rotation=xlabel_rotation,
                                ylabel_rotation=ylabel_rotation,
-                               population_data=population_data,
+                               sample_to_label=sample_to_label,
                                private_motif_color=private_motif_color,
                                show_figure=show_figure,
                                frame_on=frame_on
