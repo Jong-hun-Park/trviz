@@ -142,6 +142,7 @@ class TandemRepeatVisualizer:
                private_motif_color: str = 'black',
                frame_on: Dict[str, bool] = None,
                show_figure: bool = False,
+               no_edge: bool = False,
                debug: bool = False
                ):
         """
@@ -173,6 +174,7 @@ class TandemRepeatVisualizer:
         :param frame_on: a dictionary mapping sample to frame on.
                          Default is {'top': False, 'bottom': True, 'right': False, 'left': True}
         :param show_figure: if true, show the figure
+        :param no_edge: if true, hide the edge of the boxes
         :param debug: if true, print verbose information.
         """
 
@@ -244,7 +246,7 @@ class TandemRepeatVisualizer:
                 ax_main.add_patch(plt.Rectangle(box_position, box_width, box_height,
                                                 linewidth=box_line_width + 0.1,
                                                 facecolor=fcolor,
-                                                edgecolor="white",
+                                                edgecolor=fcolor if no_edge else "white",
                                                 hatch=hatch_pattern, ))
 
         # Add colors based on  sample labels

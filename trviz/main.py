@@ -51,6 +51,7 @@ class TandemRepeatVizWorker:
                         frame_on: Dict[str, bool] = None,
                         show_figure: bool = False,
                         style: str = 'seattle',
+                        no_edge: bool = False,
                         verbose: bool = True,
                         ):
         """
@@ -95,6 +96,7 @@ class TandemRepeatVizWorker:
                          Default is {'top': False, 'bottom': True, 'right': False, 'left': True}
         :param show_figure: if true, show the figure
         :param style: 'waterfall' or 'seattle'
+        :param no_edge: if true, do not draw the edge of the boxes
         :param verbose: if true, output detailed information
         """
 
@@ -188,6 +190,7 @@ class TandemRepeatVizWorker:
                                sample_to_label=sample_to_label,
                                private_motif_color=private_motif_color,
                                show_figure=show_figure,
+                               no_edge=no_edge,
                                frame_on=frame_on
                                )
 
