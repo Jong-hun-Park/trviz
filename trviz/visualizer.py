@@ -256,7 +256,7 @@ class TandemRepeatVisualizer:
             ax_main.set_ylim(top=len(sorted_aligned_labeled_repeats))
             if sample_to_label is None:
                 ax_main.set_yticks([x + 0.5 for x in range(len(aligned_labeled_repeats))])
-                ax_main.set_yticklabels(sorted_sample_ids[::-1], ha='right', rotation=ylabel_rotation)
+                ax_main.set_yticklabels(sorted_sample_ids, ha='right', rotation=ylabel_rotation)
             else:
                 ax_main.set_yticks([])
 
@@ -268,7 +268,7 @@ class TandemRepeatVisualizer:
             ax_main.set_xlim(right=len(sorted_aligned_labeled_repeats))
             if sample_to_label is None:
                 ax_main.set_xticks([x + 0.5 for x in range(len(aligned_labeled_repeats))])
-                ax_main.set_xticklabels(sorted_sample_ids[::-1], rotation=ylabel_rotation)
+                ax_main.set_xticklabels(sorted_sample_ids, rotation=ylabel_rotation)
             else:
                 ax_main.set_xticks([])
 
