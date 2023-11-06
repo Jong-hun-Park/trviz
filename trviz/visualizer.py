@@ -316,9 +316,11 @@ class TandemRepeatVisualizer:
         if sample_to_label is not None:
             box_height = 1.0
             box_width = 1.0
+            motif_size = box_width / len(aligned_labeled_repeats[0])
             population_color_map = self.get_sample_to_colormap(sample_to_label)
             if allele_as_row:
-                ax_left = ax_main.inset_axes([-0.05, 0, 0.05, 1])
+                # the half size of one motif.
+                ax_left = ax_main.inset_axes([-motif_size/2, 0, motif_size/2, 1])
 
                 for allele_index, allele in enumerate(sorted_aligned_labeled_repeats):
                     sample_id = sorted_sample_ids[allele_index]
@@ -338,7 +340,7 @@ class TandemRepeatVisualizer:
                 ax_left.set_frame_on(False)
                 # ax_left.tick_params(axis='y', which='both', length=0)  # if don't want the ticks
             else:
-                ax_bottom = ax_main.inset_axes([0, -0.05, 1.0, 0.05])
+                ax_bottom = ax_main.inset_axes([0, -motif_size/2, 1.0, motif_size/2])
                 for allele_index, allele in enumerate(sorted_aligned_labeled_repeats):
                     sample_id = sorted_sample_ids[allele_index]
                     if sample_id.find('-') != -1:
