@@ -16,7 +16,7 @@ extensions = [
 
 setup(
     name='trviz',
-    version="1.0.1",
+    version="1.1.0",
     author='Jonghun Park',
     author_email='jop002@ucsd.edu',
     description='A python library for decomposing and visualizing tandem repeat sequences',
