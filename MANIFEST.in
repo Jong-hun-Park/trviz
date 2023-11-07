@@ -1,5 +1,8 @@
 include LICENSE.md
 
+include pyproject.toml
+include trviz/cy/*.pyx trviz/cy/*.pxd trviz/cy/*.c
+
 include README.md
 include setup.py
 include setup.cfg
