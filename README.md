@@ -18,7 +18,8 @@ Full documentation is available at [readthedocs](https://trviz.readthedocs.io/)
 # Getting Started
 
 ## Prerequisite
-TRviz requires [MAFFT](https://mafft.cbrc.jp/alignment/software/). Tested with MAFFT v7.505.
+> **Note**
+> TRviz requires [MAFFT](https://mafft.cbrc.jp/alignment/software/). Tested with MAFFT v7.505.
 
 Install the library with pip or from source.
 ## with pip
@@ -34,19 +35,18 @@ pip install .
 ```
 
 ## Input
-1. Tandem repeat sequences
+1. Tandem repeat sequences (alleles)
 2. A set of motifs for decomposition
 
 ## Output
-1. Motif map, a set of motifs detected in the samples and their labels and frequencies
-2. Aligned and labeled motifs
-3. A plot showing the motif composition of the input sequences
-4. A plot mapping color to motif 
+1. A plot showing the motif composition of the input sequences
+2. A plot mapping color to motif
+3. Aligned and labeled motifs
+4. Motif map, a set of motifs detected in the samples and their labels and frequencies 
 
 # Code samples and examples
 > **Note**
 > Please see the [jupyter notebook](https://github.com/Jong-hun-Park/trviz/blob/main/examples/sample_code.ipynb) for code examples.
-
 
 TRviz has four modules:
 1. Decomposition
