@@ -5,6 +5,7 @@ numpy>=1.23.1
 scipy>=1.9.3
 distinctipy>=1.2.2
 
+cython>=3.0.0
 #click==7.1.2
 flake8
 
