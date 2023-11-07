@@ -44,7 +44,9 @@ pip install .
 4. A plot mapping color to motif 
 
 # Code samples and examples
-**A jupyter notebook with examples is available in the [examples](https://github.com/Jong-hun-Park/trviz/blob/main/examples/sample_code.ipynb)**
+> **Note**
+> Please see the [jupyter notebook](https://github.com/Jong-hun-Park/trviz/blob/main/examples/sample_code.ipynb) for code examples.
+
 
 TRviz has four modules:
 1. Decomposition
