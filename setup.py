@@ -27,7 +27,7 @@ if USE_CYTHON:
 
 setup(
     name='trviz',
-    version="1.1.0",
+    version="1.2.0",
     author='Jonghun Park',
     author_email='jop002@ucsd.edu',
     description='A python library for decomposing and visualizing tandem repeat sequences',
