@@ -143,6 +143,9 @@ class TandemRepeatVisualizer:
                frame_on: Dict[str, bool] = None,
                show_figure: bool = False,
                no_edge: bool = False,
+               color_palette: str = None,
+               colormap: ListedColormap = None,
+               motif_style: str = "box",
                debug: bool = False
                ):
         """
@@ -175,6 +178,9 @@ class TandemRepeatVisualizer:
                          Default is {'top': False, 'bottom': True, 'right': False, 'left': True}
         :param show_figure: if true, show the figure
         :param no_edge: if true, hide the edge of the boxes
+        :param color_palette: color palette name (see https://matplotlib.org/stable/users/explain/colors/colormaps.html)
+        :param colormap: Matplotlib ListedColormap object
+        :param motif_style: motif style. One of "box", "arrow", "triangle"
         :param debug: if true, print verbose information.
         """
 
@@ -212,7 +218,9 @@ class TandemRepeatVisualizer:
         # Set symbol to color map
         unique_labels = self._get_unique_labels(aligned_labeled_repeats)
         unique_label_count = len(unique_labels)
-        symbol_to_color = self.get_symbol_to_color_map(alpha, unique_label_count, unique_labels)
+        symbol_to_color = self.get_symbol_to_color_map(alpha, unique_label_count, unique_labels,
+                                                       color_palette=color_palette,
+                                                       colormap=colormap)
         self.set_symbol_to_color_map(symbol_to_color)
 
         box_height = 1.0
@@ -243,11 +251,30 @@ class TandemRepeatVisualizer:
                 if symbol == PRIVATE_MOTIF_LABEL:
                     fcolor = private_motif_color
 
-                ax_main.add_patch(plt.Rectangle(box_position, box_width, box_height,
-                                                linewidth=box_line_width + 0.1,
-                                                facecolor=fcolor,
-                                                edgecolor=fcolor if no_edge else "white",
-                                                hatch=hatch_pattern, ))
+                if motif_style == "box":
+                    ax_main.add_patch(plt.Rectangle(box_position, box_width, box_height,
+                                                    linewidth=box_line_width + 0.1,
+                                                    facecolor=fcolor,
+                                                    edgecolor=fcolor if no_edge else "white",
+                                                    hatch=hatch_pattern, ))
+                elif motif_style == "arrow":
+                    ax_main.add_patch(plt.Arrow(box_position[0], box_position[1]+box_height/2, box_width, 0,
+                                                    width=1,
+                                                    linewidth=box_line_width + 0.1,
+                                                    facecolor=fcolor,
+                                                    edgecolor=fcolor if no_edge else "white",
+                                                    hatch=hatch_pattern, ))
+
+                elif motif_style == "triangle":
+                    ax_main.add_patch(plt.Polygon([(box_position[0], box_position[1]),
+                                                  (box_position[0], box_position[1] + box_height),
+                                                  (box_position[0] + box_width, box_position[1] + box_height/2)],
+                                                  color=fcolor,
+                                                  linewidth=box_line_width + 0.1,
+                                                  ))
+                else:
+                    raise ValueError(f"Unknown motif style: {motif_style}")
+
 
         # Add colors based on  sample labels
         self.add_label_color_axis(aligned_labeled_repeats, allele_as_row, ax_main, box_line_width, sample_to_label,
@@ -421,21 +448,27 @@ class TandemRepeatVisualizer:
         return sorted_sample_ids, sorted_aligned_labeled_repeats
 
     @staticmethod
-    def get_symbol_to_color_map(alpha, unique_symbol_count, unique_symbols):
+    def get_symbol_to_color_map(alpha, unique_symbol_count, unique_symbols, color_palette=None, colormap=None):
 
-        # Color-blind friendly colors (Okabe-Ito)
-        if unique_symbol_count <= 7:
-            cmap = ListedColormap([(0.902, 0.624, 0),
-                                   (0.337, 0.706, 0.914),
-                                   (0, 0.620, 0.451),
-                                   (0.941, 0.894, 0.259),
-                                   (0, 0.447, 0.698),
-                                   (0.835, 0.369, 0),
-                                   (0.8, 0.475, 0.655)])
+        if colormap is not None:
+            cmap = colormap
         else:
-            import distinctipy
-            cmap = distinctipy.get_colors(unique_symbol_count, pastel_factor=0.9, rng=777)
-            cmap = ListedColormap(cmap)
+            # Color-blind friendly colors (Okabe-Ito)
+            if unique_symbol_count <= 7:
+                cmap = ListedColormap([(0.902, 0.624, 0),
+                                       (0.337, 0.706, 0.914),
+                                       (0, 0.620, 0.451),
+                                       (0.941, 0.894, 0.259),
+                                       (0, 0.447, 0.698),
+                                       (0.835, 0.369, 0),
+                                       (0.8, 0.475, 0.655)])
+            else:
+                import distinctipy
+                cmap = distinctipy.get_colors(unique_symbol_count, pastel_factor=0.9, rng=777)
+                cmap = ListedColormap(cmap)
+
+            if color_palette is not None:
+                cmap = plt.get_cmap(color_palette)
 
         symbol_to_color = {r: cmap(i) for i, r in enumerate(list(unique_symbols))}
         return symbol_to_color
@@ -447,7 +480,6 @@ class TandemRepeatVisualizer:
         """ Allowed labels are super populations: {AMR, AFR, EAS, SAS, EUR} """
 
         superpopulation_list_allowed = ('AMR', 'AFR', 'EAS', 'SAS', 'EUR')
-
         # TODO Allow any labels and assign a distinct color to each distinct label
         # TODO other color map options
 
@@ -464,7 +496,6 @@ class TandemRepeatVisualizer:
                                'AMR': '#6a4c93',  # purple
                                'AFR': '#ff595e',  # red
                                }
-
 
         sample_to_colormap = {}
         for sample in sample_to_label:

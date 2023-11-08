@@ -1,6 +1,7 @@
 import sys
 import os
 from typing import List, Tuple, Dict
+from matplotlib.colors import ListedColormap
 
 sys.path.insert(0, './')
 
@@ -52,6 +53,9 @@ class TandemRepeatVizWorker:
                         show_figure: bool = False,
                         style: str = 'seattle',
                         no_edge: bool = False,
+                        color_palette: str = None,
+                        colormap: ListedColormap = None,
+                        motif_style: str = 'box',
                         verbose: bool = True,
                         ):
         """
@@ -97,6 +101,9 @@ class TandemRepeatVizWorker:
         :param show_figure: if true, show the figure
         :param style: 'waterfall' or 'seattle'
         :param no_edge: if true, do not draw the edge of the boxes
+        :param color_palette: str = None,
+        :param colormap: ListedColormap = None,
+        :param motif_style: 'box' (default), 'arrow', or 'triangle'.
         :param verbose: if true, output detailed information
         """
 
@@ -191,7 +198,10 @@ class TandemRepeatVizWorker:
                                private_motif_color=private_motif_color,
                                show_figure=show_figure,
                                no_edge=no_edge,
-                               frame_on=frame_on
+                               frame_on=frame_on,
+                               color_palette=color_palette,
+                               colormap=colormap,
+                               motif_style=motif_style,
                                )
 
         # 6. Motif map
