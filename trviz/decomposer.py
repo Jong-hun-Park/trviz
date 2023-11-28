@@ -2,13 +2,18 @@ from typing import List
 
 from trviz.utils import is_valid_sequence
 from trviz.utils import get_motifs_from_visited_states_and_region
-from trviz.cy.decompose import decompose_cy
 import numpy as np
+DP_MODULE = "DP_CY"
+try:
+    from trviz.cy.decompose import decompose_cy
+except ImportError:
+    print("Cython is not available. Using pure python implementation for decomposition")
+    DP_MODULE = "DP"
 
 
 class Decomposer:
 
-    def __init__(self, mode="DP_CY"):
+    def __init__(self, mode=DP_MODULE):
         if mode == "DP_CY":
             self.mode = mode
         elif mode == "DP":

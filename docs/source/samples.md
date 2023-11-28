@@ -1,6 +1,19 @@
 Code samples
 ============
 
+## Generating a TR plot
+```python
+from trviz.main import TandemRepeatVizWorker
+from trviz.utils import get_sample_and_sequence_from_fasta
+
+tr_visualizer = TandemRepeatVizWorker()
+sample_ids, tr_sequences = get_sample_and_sequence_from_fasta(fasta_file_path)
+tr_id = "TR_ID"
+motifs = ['ACTG', 'ACTT']
+
+tr_visualizer.generate_trplot(tr_id, sample_ids, tr_sequences, motifs)
+``` 
+
 ## Decomposition
 ```python
 from trviz.decomposer import Decomposer
@@ -37,6 +50,7 @@ motif_aligner.align(sample_ids = ['sample1', 'sample2', 'sample3'],
 ```
 
 ## Visualization
+
 ```python
 from trviz.visualizer import TandemRepeatVisualizer
 

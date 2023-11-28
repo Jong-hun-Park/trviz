@@ -1,5 +1,7 @@
 from setuptools import Extension, setup, find_packages
 import numpy
+import sys
+import platform
 
 try:
     from Cython.Build import cythonize
@@ -13,17 +15,27 @@ ext = 'pyx' if USE_CYTHON else 'c'
 with open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
+no_cython = '--no-cython' in sys.argv
+if '--no-cython' in sys.argv:
+    print("No cython")
+    sys.argv.remove('--no-cython')
+    USE_CYTHON = False
+
 extensions = [
     Extension(
         "trviz.cy.decompose",
         ["trviz/cy/decompose.{}".format(ext)],
-        extra_compile_args=["-O3", "-march=native"],
+        extra_compile_args=["-O3"],
         include_dirs=[numpy.get_include()],
     )
 ]
 
 if USE_CYTHON:
-    extensions = cythonize(extensions)
+    try:
+        extensions = cythonize(extensions)
+    except Exception as e:
+        print(e)
+        print("Cythonizing failed. Continue without cythonizing")
 
 setup(
     name='trviz',
@@ -51,5 +63,5 @@ setup(
         'distinctipy',
     ],
     python_requires='>=3.8',
-    ext_modules=extensions,
+    ext_modules=extensions if not no_cython else [],
 )
