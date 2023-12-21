@@ -102,7 +102,7 @@ def sort(aligned_vntrs, sample_ids, symbol_to_motif, sample_order_file, method='
     if method == 'name':
         return zip(*sorted(list(zip(sample_ids, aligned_vntrs)), key=lambda x: x[0]))
     elif method == 'motif_count':
-        return zip(*sorted(list(zip(sample_ids, aligned_vntrs)), key=lambda x: len(x[1].replace('-', ''))))
+        return zip(*sorted(list(zip(sample_ids, aligned_vntrs)), key=lambda x: len(x[1].replace('-', '')), reverse=True))
     elif method == 'simulated_annealing':
         return sort_by_simulated_annealing_optimized(aligned_vntrs, sample_ids, symbol_to_motif)
     elif method == 'manually':
