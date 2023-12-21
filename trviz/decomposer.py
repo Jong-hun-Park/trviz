@@ -3,12 +3,12 @@ from typing import List
 from trviz.utils import is_valid_sequence
 from trviz.utils import get_motifs_from_visited_states_and_region
 import numpy as np
-DP_MODULE = "DP_CY"
+DP_MODULE = "DP"
 try:
     from trviz.cy.decompose import decompose_cy
+    DP_MODULE = "DP_CY"
 except ImportError:
     print("Cython is not available. Using pure python implementation for decomposition")
-    DP_MODULE = "DP"
 
 
 class Decomposer:
