@@ -37,6 +37,7 @@ class TandemRepeatVizWorker:
 
                         # Figure parameters
                         figure_size: Tuple[int, int] = None,
+                        motif_map_size: Tuple[int, int] = None,
                         output_name: str = None,
                         dpi: int = 300,
                         hide_xticks: bool = False,
@@ -56,6 +57,13 @@ class TandemRepeatVizWorker:
                         color_palette: str = None,
                         colormap: ListedColormap = None,
                         motif_style: str = 'box',
+                        xtick_step: int = 1,
+                        ytick_step: int = 1,
+                        xtick_offset: int = 0,
+                        ytick_offset: int = 0,
+                        xlabel: str = None,
+                        ylabel: str = None,
+                        colored_motifs: List[str] = None,
                         verbose: bool = True,
                         ):
         """
@@ -104,6 +112,14 @@ class TandemRepeatVizWorker:
         :param color_palette: str = None,
         :param colormap: ListedColormap = None,
         :param motif_style: 'box' (default), 'arrow', or 'triangle'.
+        :param xtick_step: x tick step (default is 1)
+        :param ytick_step: y tick step (default is 1)
+        :param xtick_offset: x tick offset (default is 0)
+        :param ytick_offset: y tick offset (default is 0)
+        :param motif_map_size: motif map size
+        :param colored_motifs: only these motifs will be colored in the plot. Others will have the same color.
+        :param ylabel: y label in the plot
+        :param xlabel: x lable in the plot
         :param verbose: if true, output detailed information
         """
 
@@ -202,6 +218,13 @@ class TandemRepeatVizWorker:
                                color_palette=color_palette,
                                colormap=colormap,
                                motif_style=motif_style,
+                               xtick_step=xtick_step,
+                               ytick_step=ytick_step,
+                               xtick_offset=xtick_offset,
+                               ytick_offset=ytick_offset,
+                               xlabel=xlabel,
+                               ylabel=ylabel,
+                               colored_motifs=colored_motifs,
                                )
 
         # 6. Motif map
@@ -210,4 +233,5 @@ class TandemRepeatVizWorker:
                                              self.visualizer.symbol_to_color,
                                              show_figure=show_figure,
                                              file_name=f"{output_dir}/{str(tr_id)}_motif_map.png",
+                                             figure_size=motif_map_size,
                                              )
