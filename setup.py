@@ -15,10 +15,12 @@ ext = 'pyx' if USE_CYTHON else 'c'
 with open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
-no_cython = '--no-cython' in sys.argv
-if '--no-cython' in sys.argv:
-    print("No cython")
-    sys.argv.remove('--no-cython')
+use_cython = '--cython' in sys.argv
+if '--cython' in sys.argv:
+    print("Use cython")
+    sys.argv.remove('--cython')
+    USE_CYTHON = True
+else:
     USE_CYTHON = False
 
 extensions = [
@@ -63,5 +65,5 @@ setup(
         'distinctipy',
     ],
     python_requires='>=3.8',
-    ext_modules=extensions if not no_cython else [],
+    ext_modules=extensions if not use_cython else [],
 )
