@@ -13,6 +13,7 @@ from Bio.Align.Applications import MuscleCommandline
 from Bio.Align.Applications import ClustalOmegaCommandline
 from Bio.Align.Applications import MafftCommandline
 from Bio import AlignIO
+from Bio import SeqIO
 
 import shutil
 
@@ -97,22 +98,20 @@ class MotifAligner:
 
         def write_score_matrix_for_mafft(score_matrix, output_dir):
             score_matrix_file = "{}/matrixfile.txt".format(output_dir)
-            of = open(score_matrix_file, "w")
-            for symbol_1 in score_matrix:
-                if symbol_1.startswith("gap"):
-                    continue
-                hex_symbol_1 = hex(ord(symbol_1))
-                for symbol_2 in score_matrix[symbol_1]:
-                    if symbol_2.startswith("gap"):
+
+            with open(score_matrix_file, "w") as of:
+                for symbol_1 in score_matrix:
+                    if symbol_1.startswith("gap"):
                         continue
-                    hex_symbol_2 = hex(ord(symbol_2))
-                    if symbol_2 == symbol_1:
-                        # match
-                        of.write("{} {} {}\n".format(hex_symbol_1, hex_symbol_2, score_matrix[symbol_1][symbol_2]))
-                    else:
-                        # mismatch
-                        of.write("{} {} {}\n".format(hex_symbol_1, hex_symbol_2, score_matrix[symbol_1][symbol_2]))
-            of.close()
+                    hex_symbol_1 = hex(ord(symbol_1))
+
+                    for symbol_2 in score_matrix[symbol_1]:
+                        if symbol_2.startswith("gap"):
+                            continue
+                        hex_symbol_2 = hex(ord(symbol_2))
+
+                        of.write(f"{hex_symbol_1} {hex_symbol_2} {score_matrix[symbol_1][symbol_2]}\n")
+
             return score_matrix_file
 
         # TODO call mafft using pysam wrapper (
@@ -121,31 +120,30 @@ class MotifAligner:
 
         if score_matrix is not None:
             score_matrix_file = write_score_matrix_for_mafft(score_matrix, output_dir)
-            if preserve_order:
-                os.system("mafft --quiet --auto "
-                          "--textmatrix {} "
-                          "--op {} --ep {} "
-                          "{} > {}".format(score_matrix_file,
-                                           score_matrix['gap_open'],
-                                           score_matrix['gap_extension'],
-                                           aln_input,
-                                           aln_output))
+            mafft_command = "mafft --quiet --auto " \
+                            "--textmatrix {} " \
+                            "--op {} --ep {} " \
+                            "{} > {}".format(score_matrix_file,
+                                             score_matrix['gap_open'],
+                                             score_matrix['gap_extension'],
+                                             aln_input,
+                                             aln_output)
+
+            if not preserve_order:
+                mafft_command += " --reorder"
+
+            mafft_process = subprocess.Popen(mafft_command, shell=True)
+            mafft_process.wait()  # Wait for the process to finish
+
+            # Check if the MAFFT command executed successfully
+            if mafft_process.returncode == 0:
+                os.remove(score_matrix_file)
             else:
-                os.system("mafft --quiet --auto --reorder "
-                # os.system("mafft --localpair --maxiterate 1000 --reorder "
-                          "--textmatrix {} --op {} --ep {} "
-                          "{} > {}".format(score_matrix_file,
-                                           score_matrix['gap_open'],
-                                           score_matrix['gap_extension'],
-                                           aln_input,
-                                           aln_output))
-            os.remove(score_matrix_file)
+                print("Error: MAFFT command failed to execute. File not removed.")
         else:
             print("Score matrix file is not given. Default scoring parameters are used (not recommended).")
-            if preserve_order:
-                os.system("mafft --quiet --text --auto {} > {}".format(aln_input, aln_output))
-            else:
-                os.system("mafft --quiet --text --auto --reorder {} > {}".format(aln_input, aln_output))
+            mafft_command = f"mafft --quiet --text --auto {'--reorder' if not preserve_order else ''} {aln_input} > {aln_output}"
+            os.system(mafft_command)
 
         if not os.path.exists(aln_output):
             # os.system("mafft --text --auto {} > {}".format(aln_input, aln_output))  # to print out error
@@ -174,22 +172,17 @@ class MotifAligner:
         """
 
         aligned_trs = []
-        alinged_sample_ids = []
-        tr_seq = ""
-        with open(aln_output, "r") as f:
-            for line in f:
-                if line.startswith(">"):
-                    alinged_sample_ids.append(line.strip()[1:])
-                    if len(tr_seq) > 0:
-                        aligned_trs.append(tr_seq)
-                    tr_seq = ""
-                else:
-                    tr_seq += line.strip()
-        if len(tr_seq) > 0:
-            aligned_trs.append(tr_seq)
+        aligned_sample_ids = []
+
+        with open(aln_output, "r") as handle:
+            for record in SeqIO.parse(handle, "fasta"):
+                aligned_sample_ids.append(record.id)
+                aligned_trs.append(str(record.seq))
+
         if len(aligned_trs) == 0:
-            raise ValueError(f"No aligned VNTRs in {aln_output}")
-        return alinged_sample_ids, aligned_trs
+            raise ValueError(f"No aligned alleles found in {aln_output}")
+
+        return aligned_sample_ids, aligned_trs
 
     @staticmethod
     def _align_motifs_with_star(sample_ids, labeled_vntrs, vid, score_matrix, output_dir):
