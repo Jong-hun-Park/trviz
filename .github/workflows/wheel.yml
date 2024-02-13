@@ -28,7 +28,7 @@ jobs:
           CIBW_ARCHS_MACOS: "x86_64 arm64"
           CIBW_ARCHS_WINDOWS: "AMD64"
           CIBW_TEST_SKIP: "*_arm64"
-          CIBW_TEST_COMMAND: python {package}/tests/test_decomposer.py
+          CIBW_TEST_COMMAND: python {package}/tests/test_trviz.py
 
       - uses: actions/upload-artifact@v4
         with:
