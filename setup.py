@@ -41,7 +41,7 @@ if USE_CYTHON:
 
 setup(
     name='trviz',
-    version="1.2.0",
+    version="1.3.0",
     author='Jonghun Park',
     author_email='jop002@ucsd.edu',
     description='A python library for decomposing and visualizing tandem repeat sequences',
@@ -52,6 +52,8 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
     ],
