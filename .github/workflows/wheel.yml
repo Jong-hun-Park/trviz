@@ -12,7 +12,7 @@ jobs:
         os: ["macos-latest", "ubuntu-latest"]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - uses: actions/setup-python@v3
 
@@ -30,6 +30,6 @@ jobs:
           CIBW_TEST_SKIP: "*_arm64"
           CIBW_TEST_COMMAND: python {package}/tests/test_trviz.py
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@3
         with:
           path: ./wheelhouse/*.whl
