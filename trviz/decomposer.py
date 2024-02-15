@@ -1,7 +1,9 @@
 from typing import List
+from collections import Counter, defaultdict
 
 from trviz.utils import is_valid_sequence
 from trviz.utils import get_motifs_from_visited_states_and_region
+
 import numpy as np
 DP_MODULE = "DP"
 try:
@@ -22,6 +24,66 @@ class Decomposer:
             self.mode = mode
         else:
             raise ValueError(f"{mode} is invalid mode for tandem repeat decomposer.")
+
+    @staticmethod
+    def refine(decomposed_trs: List[List[str]], verbose=False) -> List[List[str]]:
+        """
+        There can be multiple optimal ways to decompose a string into motifs.
+        A simple example would be an insertion of a sequence in the boundary of motifs.
+        The sequence can be inserted either in the first motif or the second motif.
+        The decomposition algorithm may choose either of them.
+        This method refines the decomposed TRs to remove redundant motifs.
+
+        Algorithm:
+        1. For every pair of consecutive motifs, check if there is another pair of motifs such that
+        the concatenation of the two motifs is the same as the concatenation of the consecutive motifs.
+        2. If there is such a pair, replace the low frequency pair with the higher frequency pair.
+
+        :param decomposed_trs: A list of decomposed TRs
+        :param verbose: If True, print the debugging messages
+        :return: A list of refined decomposed TRs
+        """
+        motif_pair_counter = Counter()
+        motif_pair_str_counter = Counter()
+        motif_pair_str_to_motif_pair = defaultdict(set)
+
+        # Count motif pairs
+        for tr in decomposed_trs:
+            for i in range(len(tr) - 1):
+                first_motif, second_motif = tr[i], tr[i+1]
+                motif_pair = (first_motif, second_motif)
+                motif_pair_str = ''.join(motif_pair)
+
+                motif_pair_counter[motif_pair] += 1
+                motif_pair_str_counter[motif_pair_str] += 1
+                motif_pair_str_to_motif_pair[motif_pair_str].add(motif_pair)
+
+        refined_trs = []
+        for tr in decomposed_trs:
+            for i in range(len(tr) - 1):
+                first_motif, second_motif = tr[i], tr[i+1]
+                motif_pair = (first_motif, second_motif)
+
+                # After replacement, a new pair can be created. In this case, we just skip
+                if motif_pair_counter[motif_pair] == 0:
+                    continue
+
+                # find the most frequent pair and replace the low frequency pair with the high frequency pair
+                if motif_pair_counter[motif_pair] < motif_pair_str_counter[''.join(motif_pair)]:
+                    max_frequency = 0
+                    max_frequency_motif_pair = None
+                    for motif_pair in motif_pair_str_to_motif_pair[''.join(motif_pair)]:
+                        if motif_pair_counter[motif_pair] > max_frequency:
+                            max_frequency = motif_pair_counter[motif_pair]
+                            max_frequency_motif_pair = motif_pair
+                    if verbose:
+                        print("Multiple pairs found", motif_pair_str_to_motif_pair[''.join(motif_pair)])
+                        print("Max frequency motif pair:", max_frequency_motif_pair)
+
+                    tr[i], tr[i + 1] = max_frequency_motif_pair
+            refined_trs.append(tr)
+
+        return refined_trs
 
     def decompose(self, sequence, motifs, **kwargs):
         """

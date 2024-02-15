@@ -149,6 +149,9 @@ class TandemRepeatVizWorker:
                 print_progress_bar(i + 1, len(tr_sequences))
             decomposed_trs.append(self.decomposer.decompose(tr_sequence, motifs))
 
+        # Refinement of decomposition
+        decomposed_trs = self.decomposer.refine(decomposed_trs)
+
         # 2. Encoding
         if verbose:
             print("Encoding")
