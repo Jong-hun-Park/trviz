@@ -61,6 +61,7 @@ class TandemRepeatVizWorker:
                         ytick_step: int = 1,
                         xtick_offset: int = 0,
                         ytick_offset: int = 0,
+                        title: str = None,
                         xlabel: str = None,
                         ylabel: str = None,
                         colored_motifs: List[str] = None,
@@ -118,6 +119,7 @@ class TandemRepeatVizWorker:
         :param ytick_offset: y tick offset (default is 0)
         :param motif_map_size: motif map size
         :param colored_motifs: only these motifs will be colored in the plot. Others will have the same color.
+        :param title: title of the plot
         :param ylabel: y label in the plot
         :param xlabel: x lable in the plot
         :param verbose: if true, output detailed information
@@ -225,6 +227,7 @@ class TandemRepeatVizWorker:
                                ytick_step=ytick_step,
                                xtick_offset=xtick_offset,
                                ytick_offset=ytick_offset,
+                               title=title,
                                xlabel=xlabel,
                                ylabel=ylabel,
                                colored_motifs=colored_motifs,

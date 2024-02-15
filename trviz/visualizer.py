@@ -150,6 +150,7 @@ class TandemRepeatVisualizer:
                ytick_step: int = 1,
                xtick_offset: int = 0,
                ytick_offset: int = 0,
+               title: str = None,
                xlabel: str = None,
                ylabel: str = None,
                colored_motifs: List[str] = None,
@@ -192,6 +193,10 @@ class TandemRepeatVisualizer:
         :param ytick_step: y tick step (default is 1)
         :param xtick_offset: x tick offset (default is 0)
         :param ytick_offset: y tick offset (default is 0)
+        :param title: title for the plot
+        :param xlabel: x label
+        :param ylabel: y label
+        :param colored_motifs: a list of motifs to be colored. Other motifs will be colored in grey.
         :param debug: if true, print verbose information.
         """
 
@@ -206,6 +211,9 @@ class TandemRepeatVisualizer:
             fig, ax_main = plt.subplots(figsize=(w, h))
         else:
             fig, ax_main = plt.subplots(figsize=figure_size)  # width and height in inch
+
+        if title is not None:
+            ax_main.set_title(title)
 
         # Sort by clustering and add dendrogram if needed
         if sort_by_clustering:
@@ -271,22 +279,20 @@ class TandemRepeatVisualizer:
             self.symbol_to_color = self.get_symbol_to_color_map(alpha, unique_label_count, unique_labels,
                                                                 color_palette=color_palette,
                                                                 colormap=colormap)
-        else:
-            # Only assign colors to unique motifs in the colored motifs
-            if colored_motifs is not None:
-                distinct_colors = distinctipy.get_colors(len(colored_motifs), pastel_factor=0.9, rng=777)
-                cmap = ListedColormap(distinct_colors)
-                if color_palette is not None:
-                    cmap = plt.get_cmap(color_palette)
+        else: # Only assign colors to unique motifs in the colored motifs
+            distinct_colors = distinctipy.get_colors(len(colored_motifs), pastel_factor=0.9, rng=777)
+            cmap = ListedColormap(distinct_colors)
+            if color_palette is not None:
+                cmap = plt.get_cmap(color_palette)
 
-                for i, unique_motif in enumerate(colored_motifs):
-                    for symbol, motif in symbol_to_motif.items():
-                        if unique_motif == motif:
-                            self.symbol_to_color[symbol] = cmap(i)
+            for i, unique_motif in enumerate(colored_motifs):
+                for symbol, motif in symbol_to_motif.items():
+                    if unique_motif == motif:
+                        self.symbol_to_color[symbol] = cmap(i)
 
-                other_motifs = set(unique_labels) - set(self.symbol_to_color.keys())
-                for motif in other_motifs:
-                    self.symbol_to_color[motif] = 'grey'
+            other_motifs = set(unique_labels) - set(self.symbol_to_color.keys())
+            for motif in other_motifs:
+                self.symbol_to_color[motif] = 'grey'
 
     def set_ticks_and_labels(self, aligned_labeled_repeats, allele_as_row, ax_main, hide_xticks, hide_yticks,
                              max_repeat_count, sample_to_label, sorted_aligned_labeled_repeats, sorted_sample_ids,
