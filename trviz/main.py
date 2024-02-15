@@ -128,7 +128,8 @@ class TandemRepeatVizWorker:
         if len(sample_ids) != len(tr_sequences):
             raise ValueError("The number of sample IDs and the number of sequences are different.")
 
-        if rearrangement_method == 'manually':
+        if sample_order_file is not None or rearrangement_method == 'manually':
+            rearrangement_method = 'manually'
             if sample_order_file is None:
                 raise ValueError("Please specify the sample order file for manual rearrangement.")
             if not os.path.exists(sample_order_file):
