@@ -29,7 +29,7 @@ jobs:
           CIBW_TEST_SKIP: "*_arm64"
           CIBW_TEST_COMMAND: python {package}/tests/test_trviz.py
 
-      - uses: actions/upload-artifact@4
+      - uses: actions/upload-artifact@v4
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
