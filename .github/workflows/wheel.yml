@@ -12,7 +12,7 @@ jobs:
         os: ["macos-latest", "ubuntu-latest"]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v3
 
@@ -26,10 +26,10 @@ jobs:
           CIBW_SKIP: "pp* *musllinux*"
           CIBW_ARCHS_LINUX: "x86_64"
           CIBW_ARCHS_MACOS: "x86_64 arm64"
-          CIBW_ARCHS_WINDOWS: "AMD64"
           CIBW_TEST_SKIP: "*_arm64"
           CIBW_TEST_COMMAND: python {package}/tests/test_trviz.py
 
-      - uses: actions/upload-artifact@3
+      - uses: actions/upload-artifact@4
         with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
