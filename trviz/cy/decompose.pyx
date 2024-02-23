@@ -34,10 +34,10 @@ cpdef list decompose_cy(
     check_if_dp_parameters_are_valid(kwargs)
 
     # Parameter setting
-    cdef int match_score = kwargs.get("match_score", 5)
-    cdef int mismatch_score = kwargs.get("mismatch_score", -4)
-    cdef int insertion_score = kwargs.get("insertion_score", -4)
-    cdef int deletion_score = kwargs.get("deletion_score", -4)
+    cdef int match_score = kwargs.get("match_score", 1)
+    cdef int mismatch_score = kwargs.get("mismatch_score", -1)
+    cdef int insertion_score = kwargs.get("insertion_score", -1)
+    cdef int deletion_score = kwargs.get("deletion_score", -1)
     cdef DTYPE_t min_score_threshold = kwargs.get("min_score_threshold", NEGATIVE_INF)
     cdef bint verbose = kwargs.get("verbose", False)
 
