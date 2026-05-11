@@ -24,6 +24,19 @@ cpdef void check_if_dp_parameters_are_valid(dict kwargs):
             if type(v) != bool:
                 raise ValueError(f"Invalid value type. {k}: {v}")
 
+# Equivalent to (int(np.argmax([a, b, c])), max(a, b, c)) — first index wins on
+# ties (>= comparisons). Tie-breaking is load-bearing: see the docstring inside
+# decompose_cy at the j==1, i>1 branch for the motif-end-vs-from_m_left example.
+cdef inline (int, DTYPE_t) _argmax_max3(DTYPE_t a, DTYPE_t b, DTYPE_t c):
+    if a >= b:
+        if a >= c:
+            return 0, a
+        return 2, c
+    if b >= c:
+        return 1, b
+    return 2, c
+
+
 @cython.boundscheck(False)
 @cython.wraparound(False)
 cpdef list decompose_cy(
@@ -87,7 +100,7 @@ cpdef list decompose_cy(
 
     # Normal cases, if i != 0
     # Note that sequence and motif are 1-based, but the DP table is 0-based.
-    cdef DTYPE_t diagonal, from_diagonal, from_left, from_up, from_m_left, from_m_up, max_from_motif_end, max_motif_val
+    cdef DTYPE_t diagonal, from_diagonal, from_left, from_up, from_m_left, from_m_up, max_from_motif_end, max_motif_val, max_val
     cdef int argmax_index, max_m_index, max_j_of_max_m
     cdef int mi
     cdef DTYPE_t m_end
@@ -119,22 +132,8 @@ cpdef list decompose_cy(
                         from_m_up = s[i, m, j - 1] + deletion_score
 
                         # s[1][m][1]
-                        # Equivalent to np.argmax([from_diagonal, from_m_left, from_m_up]) AND max([...]):
-                        # first index wins on ties (>= comparisons).
-                        if from_diagonal >= from_m_left:
-                            if from_diagonal >= from_m_up:
-                                s[i, m, j] = from_diagonal
-                                argmax_index = 0
-                            else:
-                                s[i, m, j] = from_m_up
-                                argmax_index = 2
-                        else:
-                            if from_m_left >= from_m_up:
-                                s[i, m, j] = from_m_left
-                                argmax_index = 1
-                            else:
-                                s[i, m, j] = from_m_up
-                                argmax_index = 2
+                        argmax_index, max_val = _argmax_max3(from_diagonal, from_m_left, from_m_up)
+                        s[i, m, j] = max_val
 
                         if argmax_index == 0:  # max from end
                             bt_i[i, m, j] = 0
@@ -164,22 +163,8 @@ cpdef list decompose_cy(
                             Decomposition 1) ACGT- AACGT
                             Decomposition 2) ACGTA -ACGT
                         '''
-                        # Equivalent to np.argmax([max_from_motif_end, from_m_left, from_m_up]) AND max([...]):
-                        # first index wins on ties — preserves the motif-end tie-break documented above.
-                        if max_from_motif_end >= from_m_left:
-                            if max_from_motif_end >= from_m_up:
-                                s[i, m, j] = max_from_motif_end
-                                argmax_index = 0
-                            else:
-                                s[i, m, j] = from_m_up
-                                argmax_index = 2
-                        else:
-                            if from_m_left >= from_m_up:
-                                s[i, m, j] = from_m_left
-                                argmax_index = 1
-                            else:
-                                s[i, m, j] = from_m_up
-                                argmax_index = 2
+                        argmax_index, max_val = _argmax_max3(max_from_motif_end, from_m_left, from_m_up)
+                        s[i, m, j] = max_val
 
                         if argmax_index == 0:  # max from motif end
                             bt_i[i, m, j] = i - 1
@@ -199,22 +184,8 @@ cpdef list decompose_cy(
                     from_left = s[i - 1, m, j] + insertion_score
                     from_up = s[i, m, j - 1] + deletion_score
 
-                    # Equivalent to np.argmax([diagonal, from_left, from_up]) AND max([...]):
-                    # first index wins on ties.
-                    if diagonal >= from_left:
-                        if diagonal >= from_up:
-                            s[i, m, j] = diagonal
-                            argmax_index = 0
-                        else:
-                            s[i, m, j] = from_up
-                            argmax_index = 2
-                    else:
-                        if from_left >= from_up:
-                            s[i, m, j] = from_left
-                            argmax_index = 1
-                        else:
-                            s[i, m, j] = from_up
-                            argmax_index = 2
+                    argmax_index, max_val = _argmax_max3(diagonal, from_left, from_up)
+                    s[i, m, j] = max_val
                     if argmax_index == 0:
                         bt_i[i, m, j] = i - 1
                         bt_m[i, m, j] = m

@@ -1228,6 +1228,20 @@ static CYTHON_INLINE __pyx_t_long_double_complex __pyx_t_long_double_complex_fro
 
 
 /*--- Type declarations ---*/
+struct __pyx_ctuple_int__and___dunderpyx_t_5trviz_2cy_9decompose_DTYPE_t;
+typedef struct __pyx_ctuple_int__and___dunderpyx_t_5trviz_2cy_9decompose_DTYPE_t __pyx_ctuple_int__and___dunderpyx_t_5trviz_2cy_9decompose_DTYPE_t;
+
+/* "trviz/cy/decompose.pyx":30
+ * # ties (>= comparisons). Tie-breaking is load-bearing: see the docstring inside
+ * # decompose_cy at the j==1, i>1 branch for the motif-end-vs-from_m_left example.
+ * cdef inline (int, DTYPE_t) _argmax_max3(DTYPE_t a, DTYPE_t b, DTYPE_t c):             # <<<<<<<<<<<<<<
+ *     if a >= b:
+ *         if a >= c:
+ */
+struct __pyx_ctuple_int__and___dunderpyx_t_5trviz_2cy_9decompose_DTYPE_t {
+  int f0;
+  __pyx_t_5trviz_2cy_9decompose_DTYPE_t f1;
+};
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -2037,6 +2051,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void); /*proto*/
 
 /* Module declarations from 'trviz.cy.decompose' */
 static void __pyx_f_5trviz_2cy_9decompose_check_if_dp_parameters_are_valid(PyObject *, int __pyx_skip_dispatch); /*proto*/
+static CYTHON_INLINE __pyx_ctuple_int__and___dunderpyx_t_5trviz_2cy_9decompose_DTYPE_t __pyx_f_5trviz_2cy_9decompose__argmax_max3(__pyx_t_5trviz_2cy_9decompose_DTYPE_t, __pyx_t_5trviz_2cy_9decompose_DTYPE_t, __pyx_t_5trviz_2cy_9decompose_DTYPE_t); /*proto*/
 static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
 static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5trviz_2cy_9decompose_DTYPE_t = { "DTYPE_t", NULL, sizeof(__pyx_t_5trviz_2cy_9decompose_DTYPE_t), { 0 }, 0, IS_UNSIGNED(__pyx_t_5trviz_2cy_9decompose_DTYPE_t) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_5trviz_2cy_9decompose_DTYPE_t), 0 };
 #define __Pyx_MODULE_NAME "trviz.cy.decompose"
@@ -2514,7 +2529,7 @@ static void __pyx_f_5trviz_2cy_9decompose_check_if_dp_parameters_are_valid(PyObj
  *             if type(v) != bool:
  *                 raise ValueError(f"Invalid value type. {k}: {v}")             # <<<<<<<<<<<<<<
  * 
- * @cython.boundscheck(False)
+ * # Equivalent to (int(np.argmax([a, b, c])), max(a, b, c))  first index wins on
  */
         __pyx_t_1 = PyTuple_New(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
@@ -2651,7 +2666,141 @@ static PyObject *__pyx_pf_5trviz_2cy_9decompose_check_if_dp_parameters_are_valid
   return __pyx_r;
 }
 
-/* "trviz/cy/decompose.pyx":29
+/* "trviz/cy/decompose.pyx":30
+ * # ties (>= comparisons). Tie-breaking is load-bearing: see the docstring inside
+ * # decompose_cy at the j==1, i>1 branch for the motif-end-vs-from_m_left example.
+ * cdef inline (int, DTYPE_t) _argmax_max3(DTYPE_t a, DTYPE_t b, DTYPE_t c):             # <<<<<<<<<<<<<<
+ *     if a >= b:
+ *         if a >= c:
+ */
+
+static CYTHON_INLINE __pyx_ctuple_int__and___dunderpyx_t_5trviz_2cy_9decompose_DTYPE_t __pyx_f_5trviz_2cy_9decompose__argmax_max3(__pyx_t_5trviz_2cy_9decompose_DTYPE_t __pyx_v_a, __pyx_t_5trviz_2cy_9decompose_DTYPE_t __pyx_v_b, __pyx_t_5trviz_2cy_9decompose_DTYPE_t __pyx_v_c) {
+  __pyx_ctuple_int__and___dunderpyx_t_5trviz_2cy_9decompose_DTYPE_t __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  __pyx_ctuple_int__and___dunderpyx_t_5trviz_2cy_9decompose_DTYPE_t __pyx_t_2;
+  __Pyx_RefNannySetupContext("_argmax_max3", 0);
+
+  /* "trviz/cy/decompose.pyx":31
+ * # decompose_cy at the j==1, i>1 branch for the motif-end-vs-from_m_left example.
+ * cdef inline (int, DTYPE_t) _argmax_max3(DTYPE_t a, DTYPE_t b, DTYPE_t c):
+ *     if a >= b:             # <<<<<<<<<<<<<<
+ *         if a >= c:
+ *             return 0, a
+ */
+  __pyx_t_1 = ((__pyx_v_a >= __pyx_v_b) != 0);
+  if (__pyx_t_1) {
+
+    /* "trviz/cy/decompose.pyx":32
+ * cdef inline (int, DTYPE_t) _argmax_max3(DTYPE_t a, DTYPE_t b, DTYPE_t c):
+ *     if a >= b:
+ *         if a >= c:             # <<<<<<<<<<<<<<
+ *             return 0, a
+ *         return 2, c
+ */
+    __pyx_t_1 = ((__pyx_v_a >= __pyx_v_c) != 0);
+    if (__pyx_t_1) {
+
+      /* "trviz/cy/decompose.pyx":33
+ *     if a >= b:
+ *         if a >= c:
+ *             return 0, a             # <<<<<<<<<<<<<<
+ *         return 2, c
+ *     if b >= c:
+ */
+      __pyx_t_2.f0 = 0;
+      __pyx_t_2.f1 = __pyx_v_a;
+      __pyx_r = __pyx_t_2;
+      goto __pyx_L0;
+
+      /* "trviz/cy/decompose.pyx":32
+ * cdef inline (int, DTYPE_t) _argmax_max3(DTYPE_t a, DTYPE_t b, DTYPE_t c):
+ *     if a >= b:
+ *         if a >= c:             # <<<<<<<<<<<<<<
+ *             return 0, a
+ *         return 2, c
+ */
+    }
+
+    /* "trviz/cy/decompose.pyx":34
+ *         if a >= c:
+ *             return 0, a
+ *         return 2, c             # <<<<<<<<<<<<<<
+ *     if b >= c:
+ *         return 1, b
+ */
+    __pyx_t_2.f0 = 2;
+    __pyx_t_2.f1 = __pyx_v_c;
+    __pyx_r = __pyx_t_2;
+    goto __pyx_L0;
+
+    /* "trviz/cy/decompose.pyx":31
+ * # decompose_cy at the j==1, i>1 branch for the motif-end-vs-from_m_left example.
+ * cdef inline (int, DTYPE_t) _argmax_max3(DTYPE_t a, DTYPE_t b, DTYPE_t c):
+ *     if a >= b:             # <<<<<<<<<<<<<<
+ *         if a >= c:
+ *             return 0, a
+ */
+  }
+
+  /* "trviz/cy/decompose.pyx":35
+ *             return 0, a
+ *         return 2, c
+ *     if b >= c:             # <<<<<<<<<<<<<<
+ *         return 1, b
+ *     return 2, c
+ */
+  __pyx_t_1 = ((__pyx_v_b >= __pyx_v_c) != 0);
+  if (__pyx_t_1) {
+
+    /* "trviz/cy/decompose.pyx":36
+ *         return 2, c
+ *     if b >= c:
+ *         return 1, b             # <<<<<<<<<<<<<<
+ *     return 2, c
+ * 
+ */
+    __pyx_t_2.f0 = 1;
+    __pyx_t_2.f1 = __pyx_v_b;
+    __pyx_r = __pyx_t_2;
+    goto __pyx_L0;
+
+    /* "trviz/cy/decompose.pyx":35
+ *             return 0, a
+ *         return 2, c
+ *     if b >= c:             # <<<<<<<<<<<<<<
+ *         return 1, b
+ *     return 2, c
+ */
+  }
+
+  /* "trviz/cy/decompose.pyx":37
+ *     if b >= c:
+ *         return 1, b
+ *     return 2, c             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_t_2.f0 = 2;
+  __pyx_t_2.f1 = __pyx_v_c;
+  __pyx_r = __pyx_t_2;
+  goto __pyx_L0;
+
+  /* "trviz/cy/decompose.pyx":30
+ * # ties (>= comparisons). Tie-breaking is load-bearing: see the docstring inside
+ * # decompose_cy at the j==1, i>1 branch for the motif-end-vs-from_m_left example.
+ * cdef inline (int, DTYPE_t) _argmax_max3(DTYPE_t a, DTYPE_t b, DTYPE_t c):             # <<<<<<<<<<<<<<
+ *     if a >= b:
+ *         if a >= c:
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "trviz/cy/decompose.pyx":42
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef list decompose_cy(             # <<<<<<<<<<<<<<
@@ -2688,6 +2837,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __pyx_t_5trviz_2cy_9decompose_DTYPE_t __pyx_v_from_m_up;
   __pyx_t_5trviz_2cy_9decompose_DTYPE_t __pyx_v_max_from_motif_end;
   __pyx_t_5trviz_2cy_9decompose_DTYPE_t __pyx_v_max_motif_val;
+  __pyx_t_5trviz_2cy_9decompose_DTYPE_t __pyx_v_max_val;
   int __pyx_v_argmax_index;
   int __pyx_v_max_m_index;
   int __pyx_v_max_j_of_max_m;
@@ -2754,8 +2904,10 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   unsigned char const *__pyx_t_30;
   long __pyx_t_31;
   long __pyx_t_32;
-  Py_UCS4 __pyx_t_33;
+  __pyx_ctuple_int__and___dunderpyx_t_5trviz_2cy_9decompose_DTYPE_t __pyx_t_33;
   int __pyx_t_34;
+  Py_UCS4 __pyx_t_35;
+  int __pyx_t_36;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2781,7 +2933,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __pyx_pybuffernd_bt_j.data = NULL;
   __pyx_pybuffernd_bt_j.rcbuffer = &__pyx_pybuffer_bt_j;
 
-  /* "trviz/cy/decompose.pyx":34
+  /* "trviz/cy/decompose.pyx":47
  *         dict kwargs):
  * 
  *     check_if_dp_parameters_are_valid(kwargs)             # <<<<<<<<<<<<<<
@@ -2790,7 +2942,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   __pyx_f_5trviz_2cy_9decompose_check_if_dp_parameters_are_valid(__pyx_v_kwargs, 0);
 
-  /* "trviz/cy/decompose.pyx":37
+  /* "trviz/cy/decompose.pyx":50
  * 
  *     # Parameter setting
  *     cdef int match_score = kwargs.get("match_score", 1)             # <<<<<<<<<<<<<<
@@ -2799,15 +2951,15 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "get");
-    __PYX_ERR(0, 37, __pyx_L1_error)
+    __PYX_ERR(0, 50, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_match_score, __pyx_int_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_match_score, __pyx_int_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_match_score = __pyx_t_2;
 
-  /* "trviz/cy/decompose.pyx":38
+  /* "trviz/cy/decompose.pyx":51
  *     # Parameter setting
  *     cdef int match_score = kwargs.get("match_score", 1)
  *     cdef int mismatch_score = kwargs.get("mismatch_score", -1)             # <<<<<<<<<<<<<<
@@ -2816,15 +2968,15 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "get");
-    __PYX_ERR(0, 38, __pyx_L1_error)
+    __PYX_ERR(0, 51, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_mismatch_score, __pyx_int_neg_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_mismatch_score, __pyx_int_neg_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_mismatch_score = __pyx_t_2;
 
-  /* "trviz/cy/decompose.pyx":39
+  /* "trviz/cy/decompose.pyx":52
  *     cdef int match_score = kwargs.get("match_score", 1)
  *     cdef int mismatch_score = kwargs.get("mismatch_score", -1)
  *     cdef int insertion_score = kwargs.get("insertion_score", -1)             # <<<<<<<<<<<<<<
@@ -2833,15 +2985,15 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "get");
-    __PYX_ERR(0, 39, __pyx_L1_error)
+    __PYX_ERR(0, 52, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_insertion_score, __pyx_int_neg_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_insertion_score, __pyx_int_neg_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_insertion_score = __pyx_t_2;
 
-  /* "trviz/cy/decompose.pyx":40
+  /* "trviz/cy/decompose.pyx":53
  *     cdef int mismatch_score = kwargs.get("mismatch_score", -1)
  *     cdef int insertion_score = kwargs.get("insertion_score", -1)
  *     cdef int deletion_score = kwargs.get("deletion_score", -1)             # <<<<<<<<<<<<<<
@@ -2850,15 +3002,15 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "get");
-    __PYX_ERR(0, 40, __pyx_L1_error)
+    __PYX_ERR(0, 53, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_deletion_score, __pyx_int_neg_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_deletion_score, __pyx_int_neg_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_deletion_score = __pyx_t_2;
 
-  /* "trviz/cy/decompose.pyx":41
+  /* "trviz/cy/decompose.pyx":54
  *     cdef int insertion_score = kwargs.get("insertion_score", -1)
  *     cdef int deletion_score = kwargs.get("deletion_score", -1)
  *     cdef DTYPE_t min_score_threshold = kwargs.get("min_score_threshold", NEGATIVE_INF)             # <<<<<<<<<<<<<<
@@ -2867,18 +3019,18 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "get");
-    __PYX_ERR(0, 41, __pyx_L1_error)
+    __PYX_ERR(0, 54, __pyx_L1_error)
   }
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_NEGATIVE_INF); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_NEGATIVE_INF); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_min_score_threshold, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 41, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_min_score_threshold, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_4 = __Pyx_PyInt_As_npy_int32(__pyx_t_3); if (unlikely((__pyx_t_4 == ((npy_int32)-1)) && PyErr_Occurred())) __PYX_ERR(0, 41, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_npy_int32(__pyx_t_3); if (unlikely((__pyx_t_4 == ((npy_int32)-1)) && PyErr_Occurred())) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_min_score_threshold = __pyx_t_4;
 
-  /* "trviz/cy/decompose.pyx":42
+  /* "trviz/cy/decompose.pyx":55
  *     cdef int deletion_score = kwargs.get("deletion_score", -1)
  *     cdef DTYPE_t min_score_threshold = kwargs.get("min_score_threshold", NEGATIVE_INF)
  *     cdef bint verbose = kwargs.get("verbose", False)             # <<<<<<<<<<<<<<
@@ -2887,28 +3039,28 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "get");
-    __PYX_ERR(0, 42, __pyx_L1_error)
+    __PYX_ERR(0, 55, __pyx_L1_error)
   }
-  __pyx_t_3 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_verbose, Py_False); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_verbose, Py_False); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_verbose = __pyx_t_5;
 
-  /* "trviz/cy/decompose.pyx":44
+  /* "trviz/cy/decompose.pyx":57
  *     cdef bint verbose = kwargs.get("verbose", False)
  * 
  *     cdef bytes sequence_bytes = sequence.encode('ascii')             # <<<<<<<<<<<<<<
  *     cdef const unsigned char* seq_ptr = sequence_bytes
  *     cdef list motif_bytes_list = [mt.encode('ascii') for mt in motifs]
  */
-  __pyx_t_3 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PyString_Type_encode, __pyx_v_sequence, __pyx_n_s_ascii); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PyString_Type_encode, __pyx_v_sequence, __pyx_n_s_ascii); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (!(likely(PyBytes_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 44, __pyx_L1_error)
+  if (!(likely(PyBytes_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 57, __pyx_L1_error)
   __pyx_v_sequence_bytes = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "trviz/cy/decompose.pyx":45
+  /* "trviz/cy/decompose.pyx":58
  * 
  *     cdef bytes sequence_bytes = sequence.encode('ascii')
  *     cdef const unsigned char* seq_ptr = sequence_bytes             # <<<<<<<<<<<<<<
@@ -2917,36 +3069,36 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   if (unlikely(__pyx_v_sequence_bytes == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
-    __PYX_ERR(0, 45, __pyx_L1_error)
+    __PYX_ERR(0, 58, __pyx_L1_error)
   }
-  __pyx_t_6 = __Pyx_PyBytes_AsUString(__pyx_v_sequence_bytes); if (unlikely((!__pyx_t_6) && PyErr_Occurred())) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyBytes_AsUString(__pyx_v_sequence_bytes); if (unlikely((!__pyx_t_6) && PyErr_Occurred())) __PYX_ERR(0, 58, __pyx_L1_error)
   __pyx_v_seq_ptr = __pyx_t_6;
 
-  /* "trviz/cy/decompose.pyx":46
+  /* "trviz/cy/decompose.pyx":59
  *     cdef bytes sequence_bytes = sequence.encode('ascii')
  *     cdef const unsigned char* seq_ptr = sequence_bytes
  *     cdef list motif_bytes_list = [mt.encode('ascii') for mt in motifs]             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_t, ndim=1] motif_lengths_arr = np.asarray(
  *         [len(mt) for mt in motifs], dtype=DTYPE)
  */
-  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (unlikely(__pyx_v_motifs == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 46, __pyx_L1_error)
+    __PYX_ERR(0, 59, __pyx_L1_error)
   }
   __pyx_t_1 = __pyx_v_motifs; __Pyx_INCREF(__pyx_t_1); __pyx_t_7 = 0;
   for (;;) {
     if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_8 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_8); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_8 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_7); __Pyx_INCREF(__pyx_t_8); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
     #else
-    __pyx_t_8 = PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_8 = PySequence_ITEM(__pyx_t_1, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 59, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_mt, __pyx_t_8);
     __pyx_t_8 = 0;
-    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_mt, __pyx_n_s_encode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_mt, __pyx_n_s_encode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 59, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __pyx_t_10 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_9))) {
@@ -2960,107 +3112,107 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     }
     __pyx_t_8 = (__pyx_t_10) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_10, __pyx_n_s_ascii) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_n_s_ascii);
     __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 46, __pyx_L1_error)
+    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 59, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_8))) __PYX_ERR(0, 46, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_8))) __PYX_ERR(0, 59, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_motif_bytes_list = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "trviz/cy/decompose.pyx":47
+  /* "trviz/cy/decompose.pyx":60
  *     cdef const unsigned char* seq_ptr = sequence_bytes
  *     cdef list motif_bytes_list = [mt.encode('ascii') for mt in motifs]
  *     cdef np.ndarray[DTYPE_t, ndim=1] motif_lengths_arr = np.asarray(             # <<<<<<<<<<<<<<
  *         [len(mt) for mt in motifs], dtype=DTYPE)
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_asarray); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_asarray); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "trviz/cy/decompose.pyx":48
+  /* "trviz/cy/decompose.pyx":61
  *     cdef list motif_bytes_list = [mt.encode('ascii') for mt in motifs]
  *     cdef np.ndarray[DTYPE_t, ndim=1] motif_lengths_arr = np.asarray(
  *         [len(mt) for mt in motifs], dtype=DTYPE)             # <<<<<<<<<<<<<<
  * 
  *     # Define s[i, m, j]
  */
-  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (unlikely(__pyx_v_motifs == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 48, __pyx_L1_error)
+    __PYX_ERR(0, 61, __pyx_L1_error)
   }
   __pyx_t_8 = __pyx_v_motifs; __Pyx_INCREF(__pyx_t_8); __pyx_t_7 = 0;
   for (;;) {
     if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_8)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_9 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_7); __Pyx_INCREF(__pyx_t_9); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 48, __pyx_L1_error)
+    __pyx_t_9 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_7); __Pyx_INCREF(__pyx_t_9); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 61, __pyx_L1_error)
     #else
-    __pyx_t_9 = PySequence_ITEM(__pyx_t_8, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 48, __pyx_L1_error)
+    __pyx_t_9 = PySequence_ITEM(__pyx_t_8, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 61, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_mt, __pyx_t_9);
     __pyx_t_9 = 0;
-    __pyx_t_11 = PyObject_Length(__pyx_v_mt); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 48, __pyx_L1_error)
-    __pyx_t_9 = PyInt_FromSsize_t(__pyx_t_11); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 48, __pyx_L1_error)
+    __pyx_t_11 = PyObject_Length(__pyx_v_mt); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_9 = PyInt_FromSsize_t(__pyx_t_11); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 61, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_9))) __PYX_ERR(0, 48, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_9))) __PYX_ERR(0, 61, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "trviz/cy/decompose.pyx":47
+  /* "trviz/cy/decompose.pyx":60
  *     cdef const unsigned char* seq_ptr = sequence_bytes
  *     cdef list motif_bytes_list = [mt.encode('ascii') for mt in motifs]
  *     cdef np.ndarray[DTYPE_t, ndim=1] motif_lengths_arr = np.asarray(             # <<<<<<<<<<<<<<
  *         [len(mt) for mt in motifs], dtype=DTYPE)
  * 
  */
-  __pyx_t_8 = PyTuple_New(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_8 = PyTuple_New(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "trviz/cy/decompose.pyx":48
+  /* "trviz/cy/decompose.pyx":61
  *     cdef list motif_bytes_list = [mt.encode('ascii') for mt in motifs]
  *     cdef np.ndarray[DTYPE_t, ndim=1] motif_lengths_arr = np.asarray(
  *         [len(mt) for mt in motifs], dtype=DTYPE)             # <<<<<<<<<<<<<<
  * 
  *     # Define s[i, m, j]
  */
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_DTYPE); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_DTYPE); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_9) < 0) __PYX_ERR(0, 48, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_9) < 0) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-  /* "trviz/cy/decompose.pyx":47
+  /* "trviz/cy/decompose.pyx":60
  *     cdef const unsigned char* seq_ptr = sequence_bytes
  *     cdef list motif_bytes_list = [mt.encode('ascii') for mt in motifs]
  *     cdef np.ndarray[DTYPE_t, ndim=1] motif_lengths_arr = np.asarray(             # <<<<<<<<<<<<<<
  *         [len(mt) for mt in motifs], dtype=DTYPE)
  * 
  */
-  __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_8, __pyx_t_3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_8, __pyx_t_3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_9) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_9, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (!(likely(((__pyx_t_9) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_9, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 60, __pyx_L1_error)
   __pyx_t_12 = ((PyArrayObject *)__pyx_t_9);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_motif_lengths_arr.rcbuffer->pybuffer, (PyObject*)__pyx_t_12, &__Pyx_TypeInfo_nn___pyx_t_5trviz_2cy_9decompose_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_motif_lengths_arr = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_motif_lengths_arr.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 47, __pyx_L1_error)
+      __PYX_ERR(0, 60, __pyx_L1_error)
     } else {__pyx_pybuffernd_motif_lengths_arr.diminfo[0].strides = __pyx_pybuffernd_motif_lengths_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_motif_lengths_arr.diminfo[0].shape = __pyx_pybuffernd_motif_lengths_arr.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -3068,33 +3220,33 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __pyx_v_motif_lengths_arr = ((PyArrayObject *)__pyx_t_9);
   __pyx_t_9 = 0;
 
-  /* "trviz/cy/decompose.pyx":56
+  /* "trviz/cy/decompose.pyx":69
  *     cdef np.ndarray[DTYPE_t, ndim=3] s
  *     cdef np.ndarray[DTYPE_t, ndim=3] bt_i, bt_m, bt_j
  *     cdef int max_motif_length = len(max(motifs, key=len))             # <<<<<<<<<<<<<<
  *     if verbose:
  *         print("Motifs used for decomposition: {}".format(','.join(motifs)))
  */
-  __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_INCREF(__pyx_v_motifs);
   __Pyx_GIVEREF(__pyx_v_motifs);
   PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_v_motifs);
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_8 = __Pyx_GetBuiltinName(__pyx_n_s_len); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_GetBuiltinName(__pyx_n_s_len); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_key, __pyx_t_8) < 0) __PYX_ERR(0, 56, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_key, __pyx_t_8) < 0) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_max, __pyx_t_9, __pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_max, __pyx_t_9, __pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_7 = PyObject_Length(__pyx_t_8); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_7 = PyObject_Length(__pyx_t_8); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_v_max_motif_length = __pyx_t_7;
 
-  /* "trviz/cy/decompose.pyx":57
+  /* "trviz/cy/decompose.pyx":70
  *     cdef np.ndarray[DTYPE_t, ndim=3] bt_i, bt_m, bt_j
  *     cdef int max_motif_length = len(max(motifs, key=len))
  *     if verbose:             # <<<<<<<<<<<<<<
@@ -3104,16 +3256,16 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __pyx_t_5 = (__pyx_v_verbose != 0);
   if (__pyx_t_5) {
 
-    /* "trviz/cy/decompose.pyx":58
+    /* "trviz/cy/decompose.pyx":71
  *     cdef int max_motif_length = len(max(motifs, key=len))
  *     if verbose:
  *         print("Motifs used for decomposition: {}".format(','.join(motifs)))             # <<<<<<<<<<<<<<
  *         print("Max motif length", max_motif_length)
  * 
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Motifs_used_for_decomposition, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Motifs_used_for_decomposition, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __Pyx_PyString_Join(__pyx_kp_s__2, __pyx_v_motifs); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyString_Join(__pyx_kp_s__2, __pyx_v_motifs); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __pyx_t_1 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -3128,22 +3280,22 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     __pyx_t_8 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_t_9) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_9);
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 58, __pyx_L1_error)
+    if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (__Pyx_PrintOne(0, __pyx_t_8) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
+    if (__Pyx_PrintOne(0, __pyx_t_8) < 0) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-    /* "trviz/cy/decompose.pyx":59
+    /* "trviz/cy/decompose.pyx":72
  *     if verbose:
  *         print("Motifs used for decomposition: {}".format(','.join(motifs)))
  *         print("Max motif length", max_motif_length)             # <<<<<<<<<<<<<<
  * 
  *     # Allocate memory for s and backtrack arrays
  */
-    __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_max_motif_length); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 59, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_max_motif_length); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 72, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_kp_s_Max_motif_length);
     __Pyx_GIVEREF(__pyx_kp_s_Max_motif_length);
@@ -3151,10 +3303,10 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     __Pyx_GIVEREF(__pyx_t_8);
     PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_8);
     __pyx_t_8 = 0;
-    if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 59, __pyx_L1_error)
+    if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "trviz/cy/decompose.pyx":57
+    /* "trviz/cy/decompose.pyx":70
  *     cdef np.ndarray[DTYPE_t, ndim=3] bt_i, bt_m, bt_j
  *     cdef int max_motif_length = len(max(motifs, key=len))
  *     if verbose:             # <<<<<<<<<<<<<<
@@ -3163,31 +3315,31 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   }
 
-  /* "trviz/cy/decompose.pyx":62
+  /* "trviz/cy/decompose.pyx":75
  * 
  *     # Allocate memory for s and backtrack arrays
  *     s = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)             # <<<<<<<<<<<<<<
  *     bt_i = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
  *     bt_m = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 62, __pyx_L1_error)
-  __pyx_t_3 = PyInt_FromSsize_t((__pyx_t_7 + 1)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_3 = PyInt_FromSsize_t((__pyx_t_7 + 1)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if (unlikely(__pyx_v_motifs == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 62, __pyx_L1_error)
+    __PYX_ERR(0, 75, __pyx_L1_error)
   }
-  __pyx_t_7 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 62, __pyx_L1_error)
-  __pyx_t_9 = PyInt_FromSsize_t(__pyx_t_7); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_7 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_9 = PyInt_FromSsize_t(__pyx_t_7); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_1 = __Pyx_PyInt_From_long((__pyx_v_max_motif_length + 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_long((__pyx_v_max_motif_length + 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_10 = PyTuple_New(3); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_10 = PyTuple_New(3); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_3);
@@ -3198,23 +3350,23 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __pyx_t_3 = 0;
   __pyx_t_9 = 0;
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_10);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_10);
   __pyx_t_10 = 0;
-  __pyx_t_10 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_DTYPE); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_DTYPE); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_dtype, __pyx_t_9) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_dtype, __pyx_t_9) < 0) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_1, __pyx_t_10); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_1, __pyx_t_10); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  if (!(likely(((__pyx_t_9) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_9, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 62, __pyx_L1_error)
+  if (!(likely(((__pyx_t_9) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_9, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 75, __pyx_L1_error)
   __pyx_t_13 = ((PyArrayObject *)__pyx_t_9);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -3231,37 +3383,37 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       __pyx_t_14 = __pyx_t_15 = __pyx_t_16 = 0;
     }
     __pyx_pybuffernd_s.diminfo[0].strides = __pyx_pybuffernd_s.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_s.diminfo[0].shape = __pyx_pybuffernd_s.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_s.diminfo[1].strides = __pyx_pybuffernd_s.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_s.diminfo[1].shape = __pyx_pybuffernd_s.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_s.diminfo[2].strides = __pyx_pybuffernd_s.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_s.diminfo[2].shape = __pyx_pybuffernd_s.rcbuffer->pybuffer.shape[2];
-    if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 62, __pyx_L1_error)
+    if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 75, __pyx_L1_error)
   }
   __pyx_t_13 = 0;
   __pyx_v_s = ((PyArrayObject *)__pyx_t_9);
   __pyx_t_9 = 0;
 
-  /* "trviz/cy/decompose.pyx":63
+  /* "trviz/cy/decompose.pyx":76
  *     # Allocate memory for s and backtrack arrays
  *     s = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
  *     bt_i = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)             # <<<<<<<<<<<<<<
  *     bt_m = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
  *     bt_j = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_np); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_np); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_zeros); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_zeros); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 63, __pyx_L1_error)
-  __pyx_t_9 = PyInt_FromSsize_t((__pyx_t_7 + 1)); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_9 = PyInt_FromSsize_t((__pyx_t_7 + 1)); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   if (unlikely(__pyx_v_motifs == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 63, __pyx_L1_error)
+    __PYX_ERR(0, 76, __pyx_L1_error)
   }
-  __pyx_t_7 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 63, __pyx_L1_error)
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_7 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_8 = __Pyx_PyInt_From_long((__pyx_v_max_motif_length + 1)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyInt_From_long((__pyx_v_max_motif_length + 1)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_3 = PyTuple_New(3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_9);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_9);
@@ -3272,23 +3424,23 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __pyx_t_9 = 0;
   __pyx_t_1 = 0;
   __pyx_t_8 = 0;
-  __pyx_t_8 = PyTuple_New(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_8 = PyTuple_New(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_DTYPE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_DTYPE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_1) < 0) __PYX_ERR(0, 63, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_1) < 0) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_8, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_8, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 63, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 76, __pyx_L1_error)
   __pyx_t_17 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -3305,37 +3457,37 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       __pyx_t_16 = __pyx_t_15 = __pyx_t_14 = 0;
     }
     __pyx_pybuffernd_bt_i.diminfo[0].strides = __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_bt_i.diminfo[0].shape = __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_bt_i.diminfo[1].strides = __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_bt_i.diminfo[1].shape = __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_bt_i.diminfo[2].strides = __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_bt_i.diminfo[2].shape = __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.shape[2];
-    if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 63, __pyx_L1_error)
+    if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 76, __pyx_L1_error)
   }
   __pyx_t_17 = 0;
   __pyx_v_bt_i = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "trviz/cy/decompose.pyx":64
+  /* "trviz/cy/decompose.pyx":77
  *     s = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
  *     bt_i = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
  *     bt_m = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)             # <<<<<<<<<<<<<<
  *     bt_j = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 64, __pyx_L1_error)
-  __pyx_t_1 = PyInt_FromSsize_t((__pyx_t_7 + 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t((__pyx_t_7 + 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (unlikely(__pyx_v_motifs == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 64, __pyx_L1_error)
+    __PYX_ERR(0, 77, __pyx_L1_error)
   }
-  __pyx_t_7 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 64, __pyx_L1_error)
-  __pyx_t_8 = PyInt_FromSsize_t(__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_7 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_8 = PyInt_FromSsize_t(__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_10 = __Pyx_PyInt_From_long((__pyx_v_max_motif_length + 1)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyInt_From_long((__pyx_v_max_motif_length + 1)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1);
@@ -3346,23 +3498,23 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __pyx_t_1 = 0;
   __pyx_t_8 = 0;
   __pyx_t_10 = 0;
-  __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_GIVEREF(__pyx_t_9);
   PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_9);
   __pyx_t_9 = 0;
-  __pyx_t_9 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_DTYPE); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_DTYPE); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_dtype, __pyx_t_8) < 0) __PYX_ERR(0, 64, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_dtype, __pyx_t_8) < 0) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_10, __pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_10, __pyx_t_9); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  if (!(likely(((__pyx_t_8) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_8, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 64, __pyx_L1_error)
+  if (!(likely(((__pyx_t_8) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_8, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 77, __pyx_L1_error)
   __pyx_t_17 = ((PyArrayObject *)__pyx_t_8);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -3379,37 +3531,37 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       __pyx_t_14 = __pyx_t_15 = __pyx_t_16 = 0;
     }
     __pyx_pybuffernd_bt_m.diminfo[0].strides = __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_bt_m.diminfo[0].shape = __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_bt_m.diminfo[1].strides = __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_bt_m.diminfo[1].shape = __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_bt_m.diminfo[2].strides = __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_bt_m.diminfo[2].shape = __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.shape[2];
-    if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 64, __pyx_L1_error)
+    if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 77, __pyx_L1_error)
   }
   __pyx_t_17 = 0;
   __pyx_v_bt_m = ((PyArrayObject *)__pyx_t_8);
   __pyx_t_8 = 0;
 
-  /* "trviz/cy/decompose.pyx":65
+  /* "trviz/cy/decompose.pyx":78
  *     bt_i = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
  *     bt_m = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
  *     bt_j = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)             # <<<<<<<<<<<<<<
  * 
  *     # Boundary cases, when i = 0 or j = 0
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_zeros); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_zeros); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 65, __pyx_L1_error)
-  __pyx_t_8 = PyInt_FromSsize_t((__pyx_t_7 + 1)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_8 = PyInt_FromSsize_t((__pyx_t_7 + 1)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   if (unlikely(__pyx_v_motifs == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 65, __pyx_L1_error)
+    __PYX_ERR(0, 78, __pyx_L1_error)
   }
-  __pyx_t_7 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 65, __pyx_L1_error)
-  __pyx_t_10 = PyInt_FromSsize_t(__pyx_t_7); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_7 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_10 = PyInt_FromSsize_t(__pyx_t_7); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_3 = __Pyx_PyInt_From_long((__pyx_v_max_motif_length + 1)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_long((__pyx_v_max_motif_length + 1)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_8);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_8);
@@ -3420,23 +3572,23 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __pyx_t_8 = 0;
   __pyx_t_10 = 0;
   __pyx_t_3 = 0;
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_DTYPE); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_DTYPE); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_10) < 0) __PYX_ERR(0, 65, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_10) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_10) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_10, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 65, __pyx_L1_error)
+  if (!(likely(((__pyx_t_10) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_10, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 78, __pyx_L1_error)
   __pyx_t_17 = ((PyArrayObject *)__pyx_t_10);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -3453,13 +3605,13 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       __pyx_t_16 = __pyx_t_15 = __pyx_t_14 = 0;
     }
     __pyx_pybuffernd_bt_j.diminfo[0].strides = __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_bt_j.diminfo[0].shape = __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_bt_j.diminfo[1].strides = __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_bt_j.diminfo[1].shape = __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_bt_j.diminfo[2].strides = __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_bt_j.diminfo[2].shape = __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.shape[2];
-    if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 65, __pyx_L1_error)
+    if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 78, __pyx_L1_error)
   }
   __pyx_t_17 = 0;
   __pyx_v_bt_j = ((PyArrayObject *)__pyx_t_10);
   __pyx_t_10 = 0;
 
-  /* "trviz/cy/decompose.pyx":69
+  /* "trviz/cy/decompose.pyx":82
  *     # Boundary cases, when i = 0 or j = 0
  *     cdef int m, i, j
  *     for m, motif in enumerate(motifs):             # <<<<<<<<<<<<<<
@@ -3471,9 +3623,9 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   for (;;) {
     if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_10)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_1 = PyList_GET_ITEM(__pyx_t_10, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 69, __pyx_L1_error)
+    __pyx_t_1 = PyList_GET_ITEM(__pyx_t_10, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 82, __pyx_L1_error)
     #else
-    __pyx_t_1 = PySequence_ITEM(__pyx_t_10, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+    __pyx_t_1 = PySequence_ITEM(__pyx_t_10, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_motif, __pyx_t_1);
@@ -3481,33 +3633,33 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     __pyx_v_m = __pyx_t_2;
     __pyx_t_2 = (__pyx_t_2 + 1);
 
-    /* "trviz/cy/decompose.pyx":70
+    /* "trviz/cy/decompose.pyx":83
  *     cdef int m, i, j
  *     for m, motif in enumerate(motifs):
  *         for i in range(len(sequence) + 1):             # <<<<<<<<<<<<<<
  *             for j in range(len(motif) + 1):
  *                 if i == 0 and j == 0:
  */
-    __pyx_t_11 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 70, __pyx_L1_error)
+    __pyx_t_11 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 83, __pyx_L1_error)
     __pyx_t_18 = (__pyx_t_11 + 1);
     __pyx_t_11 = __pyx_t_18;
     for (__pyx_t_19 = 0; __pyx_t_19 < __pyx_t_11; __pyx_t_19+=1) {
       __pyx_v_i = __pyx_t_19;
 
-      /* "trviz/cy/decompose.pyx":71
+      /* "trviz/cy/decompose.pyx":84
  *     for m, motif in enumerate(motifs):
  *         for i in range(len(sequence) + 1):
  *             for j in range(len(motif) + 1):             # <<<<<<<<<<<<<<
  *                 if i == 0 and j == 0:
  *                     s[0, m, 0] = 0
  */
-      __pyx_t_20 = PyObject_Length(__pyx_v_motif); if (unlikely(__pyx_t_20 == ((Py_ssize_t)-1))) __PYX_ERR(0, 71, __pyx_L1_error)
+      __pyx_t_20 = PyObject_Length(__pyx_v_motif); if (unlikely(__pyx_t_20 == ((Py_ssize_t)-1))) __PYX_ERR(0, 84, __pyx_L1_error)
       __pyx_t_21 = (__pyx_t_20 + 1);
       __pyx_t_20 = __pyx_t_21;
       for (__pyx_t_22 = 0; __pyx_t_22 < __pyx_t_20; __pyx_t_22+=1) {
         __pyx_v_j = __pyx_t_22;
 
-        /* "trviz/cy/decompose.pyx":72
+        /* "trviz/cy/decompose.pyx":85
  *         for i in range(len(sequence) + 1):
  *             for j in range(len(motif) + 1):
  *                 if i == 0 and j == 0:             # <<<<<<<<<<<<<<
@@ -3525,7 +3677,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         __pyx_L15_bool_binop_done:;
         if (__pyx_t_5) {
 
-          /* "trviz/cy/decompose.pyx":73
+          /* "trviz/cy/decompose.pyx":86
  *             for j in range(len(motif) + 1):
  *                 if i == 0 and j == 0:
  *                     s[0, m, 0] = 0             # <<<<<<<<<<<<<<
@@ -3537,7 +3689,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_26 = 0;
           *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides) = 0;
 
-          /* "trviz/cy/decompose.pyx":74
+          /* "trviz/cy/decompose.pyx":87
  *                 if i == 0 and j == 0:
  *                     s[0, m, 0] = 0
  *                     bt_i[0, m, j] = 0             # <<<<<<<<<<<<<<
@@ -3549,7 +3701,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_24 = __pyx_v_j;
           *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[2].strides) = 0;
 
-          /* "trviz/cy/decompose.pyx":75
+          /* "trviz/cy/decompose.pyx":88
  *                     s[0, m, 0] = 0
  *                     bt_i[0, m, j] = 0
  *                     bt_m[0, m, j] = m             # <<<<<<<<<<<<<<
@@ -3561,7 +3713,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_26 = __pyx_v_j;
           *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
 
-          /* "trviz/cy/decompose.pyx":76
+          /* "trviz/cy/decompose.pyx":89
  *                     bt_i[0, m, j] = 0
  *                     bt_m[0, m, j] = m
  *                     bt_j[0, m, j] = 0             # <<<<<<<<<<<<<<
@@ -3573,7 +3725,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_24 = __pyx_v_j;
           *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[2].strides) = 0;
 
-          /* "trviz/cy/decompose.pyx":72
+          /* "trviz/cy/decompose.pyx":85
  *         for i in range(len(sequence) + 1):
  *             for j in range(len(motif) + 1):
  *                 if i == 0 and j == 0:             # <<<<<<<<<<<<<<
@@ -3583,7 +3735,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           goto __pyx_L14;
         }
 
-        /* "trviz/cy/decompose.pyx":77
+        /* "trviz/cy/decompose.pyx":90
  *                     bt_m[0, m, j] = m
  *                     bt_j[0, m, j] = 0
  *                 elif i == 0 and j != 0:             # <<<<<<<<<<<<<<
@@ -3601,7 +3753,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         __pyx_L17_bool_binop_done:;
         if (__pyx_t_5) {
 
-          /* "trviz/cy/decompose.pyx":78
+          /* "trviz/cy/decompose.pyx":91
  *                     bt_j[0, m, j] = 0
  *                 elif i == 0 and j != 0:
  *                     s[0, m, j] = s[0, m, j - 1] + insertion_score             # <<<<<<<<<<<<<<
@@ -3616,7 +3768,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_29 = __pyx_v_j;
           *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_29, __pyx_pybuffernd_s.diminfo[2].strides) = ((*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides)) + __pyx_v_insertion_score);
 
-          /* "trviz/cy/decompose.pyx":79
+          /* "trviz/cy/decompose.pyx":92
  *                 elif i == 0 and j != 0:
  *                     s[0, m, j] = s[0, m, j - 1] + insertion_score
  *                     bt_i[0, m, j] = 0             # <<<<<<<<<<<<<<
@@ -3628,7 +3780,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_24 = __pyx_v_j;
           *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[2].strides) = 0;
 
-          /* "trviz/cy/decompose.pyx":80
+          /* "trviz/cy/decompose.pyx":93
  *                     s[0, m, j] = s[0, m, j - 1] + insertion_score
  *                     bt_i[0, m, j] = 0
  *                     bt_m[0, m, j] = m             # <<<<<<<<<<<<<<
@@ -3640,7 +3792,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_26 = __pyx_v_j;
           *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
 
-          /* "trviz/cy/decompose.pyx":81
+          /* "trviz/cy/decompose.pyx":94
  *                     bt_i[0, m, j] = 0
  *                     bt_m[0, m, j] = m
  *                     bt_j[0, m, j] = j - 1             # <<<<<<<<<<<<<<
@@ -3652,7 +3804,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_24 = __pyx_v_j;
           *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[2].strides) = (__pyx_v_j - 1);
 
-          /* "trviz/cy/decompose.pyx":77
+          /* "trviz/cy/decompose.pyx":90
  *                     bt_m[0, m, j] = m
  *                     bt_j[0, m, j] = 0
  *                 elif i == 0 and j != 0:             # <<<<<<<<<<<<<<
@@ -3662,7 +3814,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           goto __pyx_L14;
         }
 
-        /* "trviz/cy/decompose.pyx":82
+        /* "trviz/cy/decompose.pyx":95
  *                     bt_m[0, m, j] = m
  *                     bt_j[0, m, j] = j - 1
  *                 elif i != 0 and j == 0:             # <<<<<<<<<<<<<<
@@ -3680,7 +3832,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         __pyx_L19_bool_binop_done:;
         if (__pyx_t_5) {
 
-          /* "trviz/cy/decompose.pyx":83
+          /* "trviz/cy/decompose.pyx":96
  *                     bt_j[0, m, j] = j - 1
  *                 elif i != 0 and j == 0:
  *                     s[i, m, 0] = s[i - 1, m, 0] + insertion_score             # <<<<<<<<<<<<<<
@@ -3695,7 +3847,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_27 = 0;
           *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_29, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[2].strides) = ((*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides)) + __pyx_v_insertion_score);
 
-          /* "trviz/cy/decompose.pyx":84
+          /* "trviz/cy/decompose.pyx":97
  *                 elif i != 0 and j == 0:
  *                     s[i, m, 0] = s[i - 1, m, 0] + insertion_score
  *                     bt_i[i, m, 0] = i - 1             # <<<<<<<<<<<<<<
@@ -3707,7 +3859,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_24 = 0;
           *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[2].strides) = (__pyx_v_i - 1);
 
-          /* "trviz/cy/decompose.pyx":85
+          /* "trviz/cy/decompose.pyx":98
  *                     s[i, m, 0] = s[i - 1, m, 0] + insertion_score
  *                     bt_i[i, m, 0] = i - 1
  *                     bt_m[i, m, 0] = m             # <<<<<<<<<<<<<<
@@ -3719,7 +3871,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_26 = 0;
           *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
 
-          /* "trviz/cy/decompose.pyx":86
+          /* "trviz/cy/decompose.pyx":99
  *                     bt_i[i, m, 0] = i - 1
  *                     bt_m[i, m, 0] = m
  *                     bt_j[i, m, 0] = 0             # <<<<<<<<<<<<<<
@@ -3731,7 +3883,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_24 = 0;
           *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[2].strides) = 0;
 
-          /* "trviz/cy/decompose.pyx":82
+          /* "trviz/cy/decompose.pyx":95
  *                     bt_m[0, m, j] = m
  *                     bt_j[0, m, j] = j - 1
  *                 elif i != 0 and j == 0:             # <<<<<<<<<<<<<<
@@ -3743,7 +3895,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       }
     }
 
-    /* "trviz/cy/decompose.pyx":69
+    /* "trviz/cy/decompose.pyx":82
  *     # Boundary cases, when i = 0 or j = 0
  *     cdef int m, i, j
  *     for m, motif in enumerate(motifs):             # <<<<<<<<<<<<<<
@@ -3753,20 +3905,20 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   }
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-  /* "trviz/cy/decompose.pyx":98
+  /* "trviz/cy/decompose.pyx":111
  *     cdef const unsigned char* motif_ptr
  * 
  *     for i in range(1, len(sequence) + 1):             # <<<<<<<<<<<<<<
  *         if i > 1:
  *             max_motif_val = NEGATIVE_INF
  */
-  __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 111, __pyx_L1_error)
   __pyx_t_18 = (__pyx_t_7 + 1);
   __pyx_t_7 = __pyx_t_18;
   for (__pyx_t_2 = 1; __pyx_t_2 < __pyx_t_7; __pyx_t_2+=1) {
     __pyx_v_i = __pyx_t_2;
 
-    /* "trviz/cy/decompose.pyx":99
+    /* "trviz/cy/decompose.pyx":112
  * 
  *     for i in range(1, len(sequence) + 1):
  *         if i > 1:             # <<<<<<<<<<<<<<
@@ -3776,20 +3928,20 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     __pyx_t_5 = ((__pyx_v_i > 1) != 0);
     if (__pyx_t_5) {
 
-      /* "trviz/cy/decompose.pyx":100
+      /* "trviz/cy/decompose.pyx":113
  *     for i in range(1, len(sequence) + 1):
  *         if i > 1:
  *             max_motif_val = NEGATIVE_INF             # <<<<<<<<<<<<<<
  *             max_m_index = -1
  *             max_j_of_max_m = -1
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_NEGATIVE_INF); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 100, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_NEGATIVE_INF); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 113, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
-      __pyx_t_4 = __Pyx_PyInt_As_npy_int32(__pyx_t_10); if (unlikely((__pyx_t_4 == ((npy_int32)-1)) && PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_As_npy_int32(__pyx_t_10); if (unlikely((__pyx_t_4 == ((npy_int32)-1)) && PyErr_Occurred())) __PYX_ERR(0, 113, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       __pyx_v_max_motif_val = __pyx_t_4;
 
-      /* "trviz/cy/decompose.pyx":101
+      /* "trviz/cy/decompose.pyx":114
  *         if i > 1:
  *             max_motif_val = NEGATIVE_INF
  *             max_m_index = -1             # <<<<<<<<<<<<<<
@@ -3798,7 +3950,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
       __pyx_v_max_m_index = -1;
 
-      /* "trviz/cy/decompose.pyx":102
+      /* "trviz/cy/decompose.pyx":115
  *             max_motif_val = NEGATIVE_INF
  *             max_m_index = -1
  *             max_j_of_max_m = -1             # <<<<<<<<<<<<<<
@@ -3807,7 +3959,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
       __pyx_v_max_j_of_max_m = -1;
 
-      /* "trviz/cy/decompose.pyx":103
+      /* "trviz/cy/decompose.pyx":116
  *             max_m_index = -1
  *             max_j_of_max_m = -1
  *             for mi in range(len(motifs)):             # <<<<<<<<<<<<<<
@@ -3816,14 +3968,14 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
       if (unlikely(__pyx_v_motifs == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-        __PYX_ERR(0, 103, __pyx_L1_error)
+        __PYX_ERR(0, 116, __pyx_L1_error)
       }
-      __pyx_t_11 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 103, __pyx_L1_error)
+      __pyx_t_11 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 116, __pyx_L1_error)
       __pyx_t_21 = __pyx_t_11;
       for (__pyx_t_19 = 0; __pyx_t_19 < __pyx_t_21; __pyx_t_19+=1) {
         __pyx_v_mi = __pyx_t_19;
 
-        /* "trviz/cy/decompose.pyx":104
+        /* "trviz/cy/decompose.pyx":117
  *             max_j_of_max_m = -1
  *             for mi in range(len(motifs)):
  *                 m_end = s[i - 1, mi, motif_lengths_arr[mi]]             # <<<<<<<<<<<<<<
@@ -3836,7 +3988,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         __pyx_t_27 = (*__Pyx_BufPtrStrided1d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_motif_lengths_arr.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_motif_lengths_arr.diminfo[0].strides));
         __pyx_v_m_end = (*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_25, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[2].strides));
 
-        /* "trviz/cy/decompose.pyx":105
+        /* "trviz/cy/decompose.pyx":118
  *             for mi in range(len(motifs)):
  *                 m_end = s[i - 1, mi, motif_lengths_arr[mi]]
  *                 if m_end > max_motif_val:             # <<<<<<<<<<<<<<
@@ -3846,7 +3998,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         __pyx_t_5 = ((__pyx_v_m_end > __pyx_v_max_motif_val) != 0);
         if (__pyx_t_5) {
 
-          /* "trviz/cy/decompose.pyx":106
+          /* "trviz/cy/decompose.pyx":119
  *                 m_end = s[i - 1, mi, motif_lengths_arr[mi]]
  *                 if m_end > max_motif_val:
  *                     max_motif_val = m_end             # <<<<<<<<<<<<<<
@@ -3855,7 +4007,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
           __pyx_v_max_motif_val = __pyx_v_m_end;
 
-          /* "trviz/cy/decompose.pyx":107
+          /* "trviz/cy/decompose.pyx":120
  *                 if m_end > max_motif_val:
  *                     max_motif_val = m_end
  *                     max_m_index = mi             # <<<<<<<<<<<<<<
@@ -3864,7 +4016,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
           __pyx_v_max_m_index = __pyx_v_mi;
 
-          /* "trviz/cy/decompose.pyx":108
+          /* "trviz/cy/decompose.pyx":121
  *                     max_motif_val = m_end
  *                     max_m_index = mi
  *                     max_j_of_max_m = motif_lengths_arr[mi]             # <<<<<<<<<<<<<<
@@ -3874,7 +4026,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_24 = __pyx_v_mi;
           __pyx_v_max_j_of_max_m = (*__Pyx_BufPtrStrided1d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_motif_lengths_arr.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_motif_lengths_arr.diminfo[0].strides));
 
-          /* "trviz/cy/decompose.pyx":105
+          /* "trviz/cy/decompose.pyx":118
  *             for mi in range(len(motifs)):
  *                 m_end = s[i - 1, mi, motif_lengths_arr[mi]]
  *                 if m_end > max_motif_val:             # <<<<<<<<<<<<<<
@@ -3884,7 +4036,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         }
       }
 
-      /* "trviz/cy/decompose.pyx":99
+      /* "trviz/cy/decompose.pyx":112
  * 
  *     for i in range(1, len(sequence) + 1):
  *         if i > 1:             # <<<<<<<<<<<<<<
@@ -3893,7 +4045,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
     }
 
-    /* "trviz/cy/decompose.pyx":109
+    /* "trviz/cy/decompose.pyx":122
  *                     max_m_index = mi
  *                     max_j_of_max_m = motif_lengths_arr[mi]
  *         for m, motif in enumerate(motifs):             # <<<<<<<<<<<<<<
@@ -3905,9 +4057,9 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     for (;;) {
       if (__pyx_t_11 >= PyList_GET_SIZE(__pyx_t_10)) break;
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      __pyx_t_1 = PyList_GET_ITEM(__pyx_t_10, __pyx_t_11); __Pyx_INCREF(__pyx_t_1); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 109, __pyx_L1_error)
+      __pyx_t_1 = PyList_GET_ITEM(__pyx_t_10, __pyx_t_11); __Pyx_INCREF(__pyx_t_1); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 122, __pyx_L1_error)
       #else
-      __pyx_t_1 = PySequence_ITEM(__pyx_t_10, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+      __pyx_t_1 = PySequence_ITEM(__pyx_t_10, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       #endif
       __Pyx_XDECREF_SET(__pyx_v_motif, __pyx_t_1);
@@ -3915,20 +4067,20 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       __pyx_v_m = __pyx_t_19;
       __pyx_t_19 = (__pyx_t_19 + 1);
 
-      /* "trviz/cy/decompose.pyx":110
+      /* "trviz/cy/decompose.pyx":123
  *                     max_j_of_max_m = motif_lengths_arr[mi]
  *         for m, motif in enumerate(motifs):
  *             motif_b = motif_bytes_list[m]             # <<<<<<<<<<<<<<
  *             motif_ptr = motif_b
  *             motif_len = motif_lengths_arr[m]
  */
-      if (!(likely(PyBytes_CheckExact(PyList_GET_ITEM(__pyx_v_motif_bytes_list, __pyx_v_m)))||((PyList_GET_ITEM(__pyx_v_motif_bytes_list, __pyx_v_m)) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(PyList_GET_ITEM(__pyx_v_motif_bytes_list, __pyx_v_m))->tp_name), 0))) __PYX_ERR(0, 110, __pyx_L1_error)
+      if (!(likely(PyBytes_CheckExact(PyList_GET_ITEM(__pyx_v_motif_bytes_list, __pyx_v_m)))||((PyList_GET_ITEM(__pyx_v_motif_bytes_list, __pyx_v_m)) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(PyList_GET_ITEM(__pyx_v_motif_bytes_list, __pyx_v_m))->tp_name), 0))) __PYX_ERR(0, 123, __pyx_L1_error)
       __pyx_t_1 = PyList_GET_ITEM(__pyx_v_motif_bytes_list, __pyx_v_m);
       __Pyx_INCREF(__pyx_t_1);
       __Pyx_XDECREF_SET(__pyx_v_motif_b, ((PyObject*)__pyx_t_1));
       __pyx_t_1 = 0;
 
-      /* "trviz/cy/decompose.pyx":111
+      /* "trviz/cy/decompose.pyx":124
  *         for m, motif in enumerate(motifs):
  *             motif_b = motif_bytes_list[m]
  *             motif_ptr = motif_b             # <<<<<<<<<<<<<<
@@ -3937,12 +4089,12 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
       if (unlikely(__pyx_v_motif_b == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
-        __PYX_ERR(0, 111, __pyx_L1_error)
+        __PYX_ERR(0, 124, __pyx_L1_error)
       }
-      __pyx_t_30 = __Pyx_PyBytes_AsUString(__pyx_v_motif_b); if (unlikely((!__pyx_t_30) && PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L1_error)
+      __pyx_t_30 = __Pyx_PyBytes_AsUString(__pyx_v_motif_b); if (unlikely((!__pyx_t_30) && PyErr_Occurred())) __PYX_ERR(0, 124, __pyx_L1_error)
       __pyx_v_motif_ptr = __pyx_t_30;
 
-      /* "trviz/cy/decompose.pyx":112
+      /* "trviz/cy/decompose.pyx":125
  *             motif_b = motif_bytes_list[m]
  *             motif_ptr = motif_b
  *             motif_len = motif_lengths_arr[m]             # <<<<<<<<<<<<<<
@@ -3952,7 +4104,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       __pyx_t_24 = __pyx_v_m;
       __pyx_v_motif_len = (*__Pyx_BufPtrStrided1d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_motif_lengths_arr.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_motif_lengths_arr.diminfo[0].strides));
 
-      /* "trviz/cy/decompose.pyx":113
+      /* "trviz/cy/decompose.pyx":126
  *             motif_ptr = motif_b
  *             motif_len = motif_lengths_arr[m]
  *             for j in range(1, motif_len + 1):             # <<<<<<<<<<<<<<
@@ -3964,7 +4116,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       for (__pyx_t_22 = 1; __pyx_t_22 < __pyx_t_32; __pyx_t_22+=1) {
         __pyx_v_j = __pyx_t_22;
 
-        /* "trviz/cy/decompose.pyx":114
+        /* "trviz/cy/decompose.pyx":127
  *             motif_len = motif_lengths_arr[m]
  *             for j in range(1, motif_len + 1):
  *                 if j == 1:             # <<<<<<<<<<<<<<
@@ -3974,7 +4126,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         __pyx_t_5 = ((__pyx_v_j == 1) != 0);
         if (__pyx_t_5) {
 
-          /* "trviz/cy/decompose.pyx":115
+          /* "trviz/cy/decompose.pyx":128
  *             for j in range(1, motif_len + 1):
  *                 if j == 1:
  *                     if i == 1:             # <<<<<<<<<<<<<<
@@ -3984,7 +4136,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_5 = ((__pyx_v_i == 1) != 0);
           if (__pyx_t_5) {
 
-            /* "trviz/cy/decompose.pyx":116
+            /* "trviz/cy/decompose.pyx":129
  *                 if j == 1:
  *                     if i == 1:
  *                         from_diagonal = s[i - 1, m, j - 1] + match_score if seq_ptr[i - 1] == motif_ptr[j - 1] else \             # <<<<<<<<<<<<<<
@@ -3998,7 +4150,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               __pyx_t_4 = ((*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides)) + __pyx_v_match_score);
             } else {
 
-              /* "trviz/cy/decompose.pyx":117
+              /* "trviz/cy/decompose.pyx":130
  *                     if i == 1:
  *                         from_diagonal = s[i - 1, m, j - 1] + match_score if seq_ptr[i - 1] == motif_ptr[j - 1] else \
  *                             s[i - 1, m, j - 1] + mismatch_score             # <<<<<<<<<<<<<<
@@ -4012,7 +4164,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
             }
             __pyx_v_from_diagonal = __pyx_t_4;
 
-            /* "trviz/cy/decompose.pyx":118
+            /* "trviz/cy/decompose.pyx":131
  *                         from_diagonal = s[i - 1, m, j - 1] + match_score if seq_ptr[i - 1] == motif_ptr[j - 1] else \
  *                             s[i - 1, m, j - 1] + mismatch_score
  *                         from_m_left = s[i - 1, m, j] + insertion_score             # <<<<<<<<<<<<<<
@@ -4024,7 +4176,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
             __pyx_t_26 = __pyx_v_j;
             __pyx_v_from_m_left = ((*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides)) + __pyx_v_insertion_score);
 
-            /* "trviz/cy/decompose.pyx":119
+            /* "trviz/cy/decompose.pyx":132
  *                             s[i - 1, m, j - 1] + mismatch_score
  *                         from_m_left = s[i - 1, m, j] + insertion_score
  *                         from_m_up = s[i, m, j - 1] + deletion_score             # <<<<<<<<<<<<<<
@@ -4036,161 +4188,33 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
             __pyx_t_24 = (__pyx_v_j - 1);
             __pyx_v_from_m_up = ((*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_s.diminfo[2].strides)) + __pyx_v_deletion_score);
 
-            /* "trviz/cy/decompose.pyx":124
- *                         # Equivalent to np.argmax([from_diagonal, from_m_left, from_m_up]) AND max([...]):
- *                         # first index wins on ties (>= comparisons).
- *                         if from_diagonal >= from_m_left:             # <<<<<<<<<<<<<<
- *                             if from_diagonal >= from_m_up:
- *                                 s[i, m, j] = from_diagonal
- */
-            __pyx_t_5 = ((__pyx_v_from_diagonal >= __pyx_v_from_m_left) != 0);
-            if (__pyx_t_5) {
-
-              /* "trviz/cy/decompose.pyx":125
- *                         # first index wins on ties (>= comparisons).
- *                         if from_diagonal >= from_m_left:
- *                             if from_diagonal >= from_m_up:             # <<<<<<<<<<<<<<
- *                                 s[i, m, j] = from_diagonal
- *                                 argmax_index = 0
- */
-              __pyx_t_5 = ((__pyx_v_from_diagonal >= __pyx_v_from_m_up) != 0);
-              if (__pyx_t_5) {
-
-                /* "trviz/cy/decompose.pyx":126
- *                         if from_diagonal >= from_m_left:
- *                             if from_diagonal >= from_m_up:
- *                                 s[i, m, j] = from_diagonal             # <<<<<<<<<<<<<<
- *                                 argmax_index = 0
- *                             else:
- */
-                __pyx_t_24 = __pyx_v_i;
-                __pyx_t_27 = __pyx_v_m;
-                __pyx_t_26 = __pyx_v_j;
-                *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_from_diagonal;
-
-                /* "trviz/cy/decompose.pyx":127
- *                             if from_diagonal >= from_m_up:
- *                                 s[i, m, j] = from_diagonal
- *                                 argmax_index = 0             # <<<<<<<<<<<<<<
- *                             else:
- *                                 s[i, m, j] = from_m_up
- */
-                __pyx_v_argmax_index = 0;
-
-                /* "trviz/cy/decompose.pyx":125
- *                         # first index wins on ties (>= comparisons).
- *                         if from_diagonal >= from_m_left:
- *                             if from_diagonal >= from_m_up:             # <<<<<<<<<<<<<<
- *                                 s[i, m, j] = from_diagonal
- *                                 argmax_index = 0
- */
-                goto __pyx_L34;
-              }
-
-              /* "trviz/cy/decompose.pyx":129
- *                                 argmax_index = 0
- *                             else:
- *                                 s[i, m, j] = from_m_up             # <<<<<<<<<<<<<<
- *                                 argmax_index = 2
- *                         else:
- */
-              /*else*/ {
-                __pyx_t_26 = __pyx_v_i;
-                __pyx_t_27 = __pyx_v_m;
-                __pyx_t_24 = __pyx_v_j;
-                *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_from_m_up;
-
-                /* "trviz/cy/decompose.pyx":130
- *                             else:
- *                                 s[i, m, j] = from_m_up
- *                                 argmax_index = 2             # <<<<<<<<<<<<<<
- *                         else:
- *                             if from_m_left >= from_m_up:
- */
-                __pyx_v_argmax_index = 2;
-              }
-              __pyx_L34:;
-
-              /* "trviz/cy/decompose.pyx":124
- *                         # Equivalent to np.argmax([from_diagonal, from_m_left, from_m_up]) AND max([...]):
- *                         # first index wins on ties (>= comparisons).
- *                         if from_diagonal >= from_m_left:             # <<<<<<<<<<<<<<
- *                             if from_diagonal >= from_m_up:
- *                                 s[i, m, j] = from_diagonal
- */
-              goto __pyx_L33;
-            }
-
-            /* "trviz/cy/decompose.pyx":132
- *                                 argmax_index = 2
- *                         else:
- *                             if from_m_left >= from_m_up:             # <<<<<<<<<<<<<<
- *                                 s[i, m, j] = from_m_left
- *                                 argmax_index = 1
- */
-            /*else*/ {
-              __pyx_t_5 = ((__pyx_v_from_m_left >= __pyx_v_from_m_up) != 0);
-              if (__pyx_t_5) {
-
-                /* "trviz/cy/decompose.pyx":133
- *                         else:
- *                             if from_m_left >= from_m_up:
- *                                 s[i, m, j] = from_m_left             # <<<<<<<<<<<<<<
- *                                 argmax_index = 1
- *                             else:
- */
-                __pyx_t_24 = __pyx_v_i;
-                __pyx_t_27 = __pyx_v_m;
-                __pyx_t_26 = __pyx_v_j;
-                *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_from_m_left;
-
-                /* "trviz/cy/decompose.pyx":134
- *                             if from_m_left >= from_m_up:
- *                                 s[i, m, j] = from_m_left
- *                                 argmax_index = 1             # <<<<<<<<<<<<<<
- *                             else:
- *                                 s[i, m, j] = from_m_up
- */
-                __pyx_v_argmax_index = 1;
-
-                /* "trviz/cy/decompose.pyx":132
- *                                 argmax_index = 2
- *                         else:
- *                             if from_m_left >= from_m_up:             # <<<<<<<<<<<<<<
- *                                 s[i, m, j] = from_m_left
- *                                 argmax_index = 1
- */
-                goto __pyx_L35;
-              }
-
-              /* "trviz/cy/decompose.pyx":136
- *                                 argmax_index = 1
- *                             else:
- *                                 s[i, m, j] = from_m_up             # <<<<<<<<<<<<<<
- *                                 argmax_index = 2
+            /* "trviz/cy/decompose.pyx":135
+ * 
+ *                         # s[1][m][1]
+ *                         argmax_index, max_val = _argmax_max3(from_diagonal, from_m_left, from_m_up)             # <<<<<<<<<<<<<<
+ *                         s[i, m, j] = max_val
  * 
  */
-              /*else*/ {
-                __pyx_t_26 = __pyx_v_i;
-                __pyx_t_27 = __pyx_v_m;
-                __pyx_t_24 = __pyx_v_j;
-                *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_from_m_up;
+            __pyx_t_33 = __pyx_f_5trviz_2cy_9decompose__argmax_max3(__pyx_v_from_diagonal, __pyx_v_from_m_left, __pyx_v_from_m_up);
+            __pyx_t_34 = __pyx_t_33.f0;
+            __pyx_t_4 = __pyx_t_33.f1;
+            __pyx_v_argmax_index = __pyx_t_34;
+            __pyx_v_max_val = __pyx_t_4;
 
-                /* "trviz/cy/decompose.pyx":137
- *                             else:
- *                                 s[i, m, j] = from_m_up
- *                                 argmax_index = 2             # <<<<<<<<<<<<<<
+            /* "trviz/cy/decompose.pyx":136
+ *                         # s[1][m][1]
+ *                         argmax_index, max_val = _argmax_max3(from_diagonal, from_m_left, from_m_up)
+ *                         s[i, m, j] = max_val             # <<<<<<<<<<<<<<
  * 
  *                         if argmax_index == 0:  # max from end
  */
-                __pyx_v_argmax_index = 2;
-              }
-              __pyx_L35:;
-            }
-            __pyx_L33:;
+            __pyx_t_24 = __pyx_v_i;
+            __pyx_t_27 = __pyx_v_m;
+            __pyx_t_26 = __pyx_v_j;
+            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_max_val;
 
-            /* "trviz/cy/decompose.pyx":139
- *                                 argmax_index = 2
+            /* "trviz/cy/decompose.pyx":138
+ *                         s[i, m, j] = max_val
  * 
  *                         if argmax_index == 0:  # max from end             # <<<<<<<<<<<<<<
  *                             bt_i[i, m, j] = 0
@@ -4199,44 +4223,44 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
             switch (__pyx_v_argmax_index) {
               case 0:
 
-              /* "trviz/cy/decompose.pyx":140
+              /* "trviz/cy/decompose.pyx":139
  * 
  *                         if argmax_index == 0:  # max from end
  *                             bt_i[i, m, j] = 0             # <<<<<<<<<<<<<<
  *                             bt_m[i, m, j] = m
  *                             bt_j[i, m, j] = 0
  */
-              __pyx_t_24 = __pyx_v_i;
+              __pyx_t_26 = __pyx_v_i;
               __pyx_t_27 = __pyx_v_m;
-              __pyx_t_26 = __pyx_v_j;
-              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[2].strides) = 0;
+              __pyx_t_24 = __pyx_v_j;
+              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[2].strides) = 0;
 
-              /* "trviz/cy/decompose.pyx":141
+              /* "trviz/cy/decompose.pyx":140
  *                         if argmax_index == 0:  # max from end
  *                             bt_i[i, m, j] = 0
  *                             bt_m[i, m, j] = m             # <<<<<<<<<<<<<<
  *                             bt_j[i, m, j] = 0
  *                         elif argmax_index == 1:  # max from left in the same m
  */
-              __pyx_t_26 = __pyx_v_i;
+              __pyx_t_24 = __pyx_v_i;
               __pyx_t_27 = __pyx_v_m;
-              __pyx_t_24 = __pyx_v_j;
-              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
+              __pyx_t_26 = __pyx_v_j;
+              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
 
-              /* "trviz/cy/decompose.pyx":142
+              /* "trviz/cy/decompose.pyx":141
  *                             bt_i[i, m, j] = 0
  *                             bt_m[i, m, j] = m
  *                             bt_j[i, m, j] = 0             # <<<<<<<<<<<<<<
  *                         elif argmax_index == 1:  # max from left in the same m
  *                             bt_i[i, m, j] = i - 1
  */
-              __pyx_t_24 = __pyx_v_i;
+              __pyx_t_26 = __pyx_v_i;
               __pyx_t_27 = __pyx_v_m;
-              __pyx_t_26 = __pyx_v_j;
-              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[2].strides) = 0;
+              __pyx_t_24 = __pyx_v_j;
+              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[2].strides) = 0;
 
-              /* "trviz/cy/decompose.pyx":139
- *                                 argmax_index = 2
+              /* "trviz/cy/decompose.pyx":138
+ *                         s[i, m, j] = max_val
  * 
  *                         if argmax_index == 0:  # max from end             # <<<<<<<<<<<<<<
  *                             bt_i[i, m, j] = 0
@@ -4245,43 +4269,43 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               break;
               case 1:
 
-              /* "trviz/cy/decompose.pyx":144
+              /* "trviz/cy/decompose.pyx":143
  *                             bt_j[i, m, j] = 0
  *                         elif argmax_index == 1:  # max from left in the same m
  *                             bt_i[i, m, j] = i - 1             # <<<<<<<<<<<<<<
  *                             bt_m[i, m, j] = m
  *                             bt_j[i, m, j] = j
  */
-              __pyx_t_26 = __pyx_v_i;
+              __pyx_t_24 = __pyx_v_i;
               __pyx_t_27 = __pyx_v_m;
-              __pyx_t_24 = __pyx_v_j;
-              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[2].strides) = (__pyx_v_i - 1);
+              __pyx_t_26 = __pyx_v_j;
+              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[2].strides) = (__pyx_v_i - 1);
 
-              /* "trviz/cy/decompose.pyx":145
+              /* "trviz/cy/decompose.pyx":144
  *                         elif argmax_index == 1:  # max from left in the same m
  *                             bt_i[i, m, j] = i - 1
  *                             bt_m[i, m, j] = m             # <<<<<<<<<<<<<<
  *                             bt_j[i, m, j] = j
  *                         else:  # max from up in the same m
  */
-              __pyx_t_24 = __pyx_v_i;
+              __pyx_t_26 = __pyx_v_i;
               __pyx_t_27 = __pyx_v_m;
-              __pyx_t_26 = __pyx_v_j;
-              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
+              __pyx_t_24 = __pyx_v_j;
+              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
 
-              /* "trviz/cy/decompose.pyx":146
+              /* "trviz/cy/decompose.pyx":145
  *                             bt_i[i, m, j] = i - 1
  *                             bt_m[i, m, j] = m
  *                             bt_j[i, m, j] = j             # <<<<<<<<<<<<<<
  *                         else:  # max from up in the same m
  *                             bt_i[i, m, j] = i
  */
-              __pyx_t_26 = __pyx_v_i;
+              __pyx_t_24 = __pyx_v_i;
               __pyx_t_27 = __pyx_v_m;
-              __pyx_t_24 = __pyx_v_j;
-              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[2].strides) = __pyx_v_j;
+              __pyx_t_26 = __pyx_v_j;
+              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[2].strides) = __pyx_v_j;
 
-              /* "trviz/cy/decompose.pyx":143
+              /* "trviz/cy/decompose.pyx":142
  *                             bt_m[i, m, j] = m
  *                             bt_j[i, m, j] = 0
  *                         elif argmax_index == 1:  # max from left in the same m             # <<<<<<<<<<<<<<
@@ -4291,45 +4315,45 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               break;
               default:
 
-              /* "trviz/cy/decompose.pyx":148
+              /* "trviz/cy/decompose.pyx":147
  *                             bt_j[i, m, j] = j
  *                         else:  # max from up in the same m
  *                             bt_i[i, m, j] = i             # <<<<<<<<<<<<<<
  *                             bt_m[i, m, j] = m
  *                             bt_j[i, m, j] = 0  # j == 0
  */
-              __pyx_t_24 = __pyx_v_i;
+              __pyx_t_26 = __pyx_v_i;
               __pyx_t_27 = __pyx_v_m;
-              __pyx_t_26 = __pyx_v_j;
-              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[2].strides) = __pyx_v_i;
+              __pyx_t_24 = __pyx_v_j;
+              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[2].strides) = __pyx_v_i;
 
-              /* "trviz/cy/decompose.pyx":149
+              /* "trviz/cy/decompose.pyx":148
  *                         else:  # max from up in the same m
  *                             bt_i[i, m, j] = i
  *                             bt_m[i, m, j] = m             # <<<<<<<<<<<<<<
  *                             bt_j[i, m, j] = 0  # j == 0
  *                     else:
  */
-              __pyx_t_26 = __pyx_v_i;
+              __pyx_t_24 = __pyx_v_i;
               __pyx_t_27 = __pyx_v_m;
-              __pyx_t_24 = __pyx_v_j;
-              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
+              __pyx_t_26 = __pyx_v_j;
+              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
 
-              /* "trviz/cy/decompose.pyx":150
+              /* "trviz/cy/decompose.pyx":149
  *                             bt_i[i, m, j] = i
  *                             bt_m[i, m, j] = m
  *                             bt_j[i, m, j] = 0  # j == 0             # <<<<<<<<<<<<<<
  *                     else:
  *                         max_from_motif_end = max_motif_val + match_score if seq_ptr[i - 1] == motif_ptr[
  */
-              __pyx_t_24 = __pyx_v_i;
+              __pyx_t_26 = __pyx_v_i;
               __pyx_t_27 = __pyx_v_m;
-              __pyx_t_26 = __pyx_v_j;
-              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[2].strides) = 0;
+              __pyx_t_24 = __pyx_v_j;
+              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[2].strides) = 0;
               break;
             }
 
-            /* "trviz/cy/decompose.pyx":115
+            /* "trviz/cy/decompose.pyx":128
  *             for j in range(1, motif_len + 1):
  *                 if j == 1:
  *                     if i == 1:             # <<<<<<<<<<<<<<
@@ -4339,7 +4363,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
             goto __pyx_L32;
           }
 
-          /* "trviz/cy/decompose.pyx":152
+          /* "trviz/cy/decompose.pyx":151
  *                             bt_j[i, m, j] = 0  # j == 0
  *                     else:
  *                         max_from_motif_end = max_motif_val + match_score if seq_ptr[i - 1] == motif_ptr[             # <<<<<<<<<<<<<<
@@ -4351,7 +4375,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               __pyx_t_4 = (__pyx_v_max_motif_val + __pyx_v_match_score);
             } else {
 
-              /* "trviz/cy/decompose.pyx":153
+              /* "trviz/cy/decompose.pyx":152
  *                     else:
  *                         max_from_motif_end = max_motif_val + match_score if seq_ptr[i - 1] == motif_ptr[
  *                             0] else max_motif_val + mismatch_score             # <<<<<<<<<<<<<<
@@ -4362,185 +4386,57 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
             }
             __pyx_v_max_from_motif_end = __pyx_t_4;
 
-            /* "trviz/cy/decompose.pyx":154
+            /* "trviz/cy/decompose.pyx":153
  *                         max_from_motif_end = max_motif_val + match_score if seq_ptr[i - 1] == motif_ptr[
  *                             0] else max_motif_val + mismatch_score
  *                         from_m_left = s[i - 1, m, 1] + insertion_score             # <<<<<<<<<<<<<<
  *                         from_m_up = s[i, m, 0] + deletion_score
  * 
  */
-            __pyx_t_26 = (__pyx_v_i - 1);
+            __pyx_t_24 = (__pyx_v_i - 1);
             __pyx_t_27 = __pyx_v_m;
-            __pyx_t_24 = 1;
-            __pyx_v_from_m_left = ((*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_s.diminfo[2].strides)) + __pyx_v_insertion_score);
+            __pyx_t_26 = 1;
+            __pyx_v_from_m_left = ((*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides)) + __pyx_v_insertion_score);
 
-            /* "trviz/cy/decompose.pyx":155
+            /* "trviz/cy/decompose.pyx":154
  *                             0] else max_motif_val + mismatch_score
  *                         from_m_left = s[i - 1, m, 1] + insertion_score
  *                         from_m_up = s[i, m, 0] + deletion_score             # <<<<<<<<<<<<<<
  * 
  *                         '''
  */
-            __pyx_t_24 = __pyx_v_i;
+            __pyx_t_26 = __pyx_v_i;
             __pyx_t_27 = __pyx_v_m;
-            __pyx_t_26 = 0;
-            __pyx_v_from_m_up = ((*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides)) + __pyx_v_deletion_score);
+            __pyx_t_24 = 0;
+            __pyx_v_from_m_up = ((*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_s.diminfo[2].strides)) + __pyx_v_deletion_score);
 
-            /* "trviz/cy/decompose.pyx":169
- *                         # Equivalent to np.argmax([max_from_motif_end, from_m_left, from_m_up]) AND max([...]):
- *                         # first index wins on ties  preserves the motif-end tie-break documented above.
- *                         if max_from_motif_end >= from_m_left:             # <<<<<<<<<<<<<<
- *                             if max_from_motif_end >= from_m_up:
- *                                 s[i, m, j] = max_from_motif_end
- */
-            __pyx_t_5 = ((__pyx_v_max_from_motif_end >= __pyx_v_from_m_left) != 0);
-            if (__pyx_t_5) {
-
-              /* "trviz/cy/decompose.pyx":170
- *                         # first index wins on ties  preserves the motif-end tie-break documented above.
- *                         if max_from_motif_end >= from_m_left:
- *                             if max_from_motif_end >= from_m_up:             # <<<<<<<<<<<<<<
- *                                 s[i, m, j] = max_from_motif_end
- *                                 argmax_index = 0
- */
-              __pyx_t_5 = ((__pyx_v_max_from_motif_end >= __pyx_v_from_m_up) != 0);
-              if (__pyx_t_5) {
-
-                /* "trviz/cy/decompose.pyx":171
- *                         if max_from_motif_end >= from_m_left:
- *                             if max_from_motif_end >= from_m_up:
- *                                 s[i, m, j] = max_from_motif_end             # <<<<<<<<<<<<<<
- *                                 argmax_index = 0
- *                             else:
- */
-                __pyx_t_26 = __pyx_v_i;
-                __pyx_t_27 = __pyx_v_m;
-                __pyx_t_24 = __pyx_v_j;
-                *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_max_from_motif_end;
-
-                /* "trviz/cy/decompose.pyx":172
- *                             if max_from_motif_end >= from_m_up:
- *                                 s[i, m, j] = max_from_motif_end
- *                                 argmax_index = 0             # <<<<<<<<<<<<<<
- *                             else:
- *                                 s[i, m, j] = from_m_up
- */
-                __pyx_v_argmax_index = 0;
-
-                /* "trviz/cy/decompose.pyx":170
- *                         # first index wins on ties  preserves the motif-end tie-break documented above.
- *                         if max_from_motif_end >= from_m_left:
- *                             if max_from_motif_end >= from_m_up:             # <<<<<<<<<<<<<<
- *                                 s[i, m, j] = max_from_motif_end
- *                                 argmax_index = 0
- */
-                goto __pyx_L37;
-              }
-
-              /* "trviz/cy/decompose.pyx":174
- *                                 argmax_index = 0
- *                             else:
- *                                 s[i, m, j] = from_m_up             # <<<<<<<<<<<<<<
- *                                 argmax_index = 2
- *                         else:
- */
-              /*else*/ {
-                __pyx_t_24 = __pyx_v_i;
-                __pyx_t_27 = __pyx_v_m;
-                __pyx_t_26 = __pyx_v_j;
-                *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_from_m_up;
-
-                /* "trviz/cy/decompose.pyx":175
- *                             else:
- *                                 s[i, m, j] = from_m_up
- *                                 argmax_index = 2             # <<<<<<<<<<<<<<
- *                         else:
- *                             if from_m_left >= from_m_up:
- */
-                __pyx_v_argmax_index = 2;
-              }
-              __pyx_L37:;
-
-              /* "trviz/cy/decompose.pyx":169
- *                         # Equivalent to np.argmax([max_from_motif_end, from_m_left, from_m_up]) AND max([...]):
- *                         # first index wins on ties  preserves the motif-end tie-break documented above.
- *                         if max_from_motif_end >= from_m_left:             # <<<<<<<<<<<<<<
- *                             if max_from_motif_end >= from_m_up:
- *                                 s[i, m, j] = max_from_motif_end
- */
-              goto __pyx_L36;
-            }
-
-            /* "trviz/cy/decompose.pyx":177
- *                                 argmax_index = 2
- *                         else:
- *                             if from_m_left >= from_m_up:             # <<<<<<<<<<<<<<
- *                                 s[i, m, j] = from_m_left
- *                                 argmax_index = 1
- */
-            /*else*/ {
-              __pyx_t_5 = ((__pyx_v_from_m_left >= __pyx_v_from_m_up) != 0);
-              if (__pyx_t_5) {
-
-                /* "trviz/cy/decompose.pyx":178
- *                         else:
- *                             if from_m_left >= from_m_up:
- *                                 s[i, m, j] = from_m_left             # <<<<<<<<<<<<<<
- *                                 argmax_index = 1
- *                             else:
- */
-                __pyx_t_26 = __pyx_v_i;
-                __pyx_t_27 = __pyx_v_m;
-                __pyx_t_24 = __pyx_v_j;
-                *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_from_m_left;
-
-                /* "trviz/cy/decompose.pyx":179
- *                             if from_m_left >= from_m_up:
- *                                 s[i, m, j] = from_m_left
- *                                 argmax_index = 1             # <<<<<<<<<<<<<<
- *                             else:
- *                                 s[i, m, j] = from_m_up
- */
-                __pyx_v_argmax_index = 1;
-
-                /* "trviz/cy/decompose.pyx":177
- *                                 argmax_index = 2
- *                         else:
- *                             if from_m_left >= from_m_up:             # <<<<<<<<<<<<<<
- *                                 s[i, m, j] = from_m_left
- *                                 argmax_index = 1
- */
-                goto __pyx_L38;
-              }
-
-              /* "trviz/cy/decompose.pyx":181
- *                                 argmax_index = 1
- *                             else:
- *                                 s[i, m, j] = from_m_up             # <<<<<<<<<<<<<<
- *                                 argmax_index = 2
+            /* "trviz/cy/decompose.pyx":166
+ *                             Decomposition 2) ACGTA -ACGT
+ *                         '''
+ *                         argmax_index, max_val = _argmax_max3(max_from_motif_end, from_m_left, from_m_up)             # <<<<<<<<<<<<<<
+ *                         s[i, m, j] = max_val
  * 
  */
-              /*else*/ {
-                __pyx_t_24 = __pyx_v_i;
-                __pyx_t_27 = __pyx_v_m;
-                __pyx_t_26 = __pyx_v_j;
-                *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_from_m_up;
+            __pyx_t_33 = __pyx_f_5trviz_2cy_9decompose__argmax_max3(__pyx_v_max_from_motif_end, __pyx_v_from_m_left, __pyx_v_from_m_up);
+            __pyx_t_34 = __pyx_t_33.f0;
+            __pyx_t_4 = __pyx_t_33.f1;
+            __pyx_v_argmax_index = __pyx_t_34;
+            __pyx_v_max_val = __pyx_t_4;
 
-                /* "trviz/cy/decompose.pyx":182
- *                             else:
- *                                 s[i, m, j] = from_m_up
- *                                 argmax_index = 2             # <<<<<<<<<<<<<<
+            /* "trviz/cy/decompose.pyx":167
+ *                         '''
+ *                         argmax_index, max_val = _argmax_max3(max_from_motif_end, from_m_left, from_m_up)
+ *                         s[i, m, j] = max_val             # <<<<<<<<<<<<<<
  * 
  *                         if argmax_index == 0:  # max from motif end
  */
-                __pyx_v_argmax_index = 2;
-              }
-              __pyx_L38:;
-            }
-            __pyx_L36:;
+            __pyx_t_24 = __pyx_v_i;
+            __pyx_t_27 = __pyx_v_m;
+            __pyx_t_26 = __pyx_v_j;
+            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_max_val;
 
-            /* "trviz/cy/decompose.pyx":184
- *                                 argmax_index = 2
+            /* "trviz/cy/decompose.pyx":169
+ *                         s[i, m, j] = max_val
  * 
  *                         if argmax_index == 0:  # max from motif end             # <<<<<<<<<<<<<<
  *                             bt_i[i, m, j] = i - 1
@@ -4549,7 +4445,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
             switch (__pyx_v_argmax_index) {
               case 0:
 
-              /* "trviz/cy/decompose.pyx":185
+              /* "trviz/cy/decompose.pyx":170
  * 
  *                         if argmax_index == 0:  # max from motif end
  *                             bt_i[i, m, j] = i - 1             # <<<<<<<<<<<<<<
@@ -4561,7 +4457,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               __pyx_t_24 = __pyx_v_j;
               *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[2].strides) = (__pyx_v_i - 1);
 
-              /* "trviz/cy/decompose.pyx":186
+              /* "trviz/cy/decompose.pyx":171
  *                         if argmax_index == 0:  # max from motif end
  *                             bt_i[i, m, j] = i - 1
  *                             bt_m[i, m, j] = max_m_index             # <<<<<<<<<<<<<<
@@ -4573,7 +4469,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               __pyx_t_26 = __pyx_v_j;
               *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_max_m_index;
 
-              /* "trviz/cy/decompose.pyx":187
+              /* "trviz/cy/decompose.pyx":172
  *                             bt_i[i, m, j] = i - 1
  *                             bt_m[i, m, j] = max_m_index
  *                             bt_j[i, m, j] = max_j_of_max_m             # <<<<<<<<<<<<<<
@@ -4585,8 +4481,8 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               __pyx_t_24 = __pyx_v_j;
               *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[2].strides) = __pyx_v_max_j_of_max_m;
 
-              /* "trviz/cy/decompose.pyx":184
- *                                 argmax_index = 2
+              /* "trviz/cy/decompose.pyx":169
+ *                         s[i, m, j] = max_val
  * 
  *                         if argmax_index == 0:  # max from motif end             # <<<<<<<<<<<<<<
  *                             bt_i[i, m, j] = i - 1
@@ -4595,7 +4491,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               break;
               case 1:
 
-              /* "trviz/cy/decompose.pyx":189
+              /* "trviz/cy/decompose.pyx":174
  *                             bt_j[i, m, j] = max_j_of_max_m
  *                         elif argmax_index == 1:  # max from left in the same m
  *                             bt_i[i, m, j] = i - 1             # <<<<<<<<<<<<<<
@@ -4607,7 +4503,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               __pyx_t_26 = __pyx_v_j;
               *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[2].strides) = (__pyx_v_i - 1);
 
-              /* "trviz/cy/decompose.pyx":190
+              /* "trviz/cy/decompose.pyx":175
  *                         elif argmax_index == 1:  # max from left in the same m
  *                             bt_i[i, m, j] = i - 1
  *                             bt_m[i, m, j] = m             # <<<<<<<<<<<<<<
@@ -4619,7 +4515,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               __pyx_t_24 = __pyx_v_j;
               *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
 
-              /* "trviz/cy/decompose.pyx":191
+              /* "trviz/cy/decompose.pyx":176
  *                             bt_i[i, m, j] = i - 1
  *                             bt_m[i, m, j] = m
  *                             bt_j[i, m, j] = 1             # <<<<<<<<<<<<<<
@@ -4631,7 +4527,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               __pyx_t_26 = __pyx_v_j;
               *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[2].strides) = 1;
 
-              /* "trviz/cy/decompose.pyx":188
+              /* "trviz/cy/decompose.pyx":173
  *                             bt_m[i, m, j] = max_m_index
  *                             bt_j[i, m, j] = max_j_of_max_m
  *                         elif argmax_index == 1:  # max from left in the same m             # <<<<<<<<<<<<<<
@@ -4641,7 +4537,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               break;
               default:
 
-              /* "trviz/cy/decompose.pyx":193
+              /* "trviz/cy/decompose.pyx":178
  *                             bt_j[i, m, j] = 1
  *                         else:  # max from up in the same m
  *                             bt_i[i, m, j] = i             # <<<<<<<<<<<<<<
@@ -4653,7 +4549,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               __pyx_t_24 = __pyx_v_j;
               *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[2].strides) = __pyx_v_i;
 
-              /* "trviz/cy/decompose.pyx":194
+              /* "trviz/cy/decompose.pyx":179
  *                         else:  # max from up in the same m
  *                             bt_i[i, m, j] = i
  *                             bt_m[i, m, j] = m             # <<<<<<<<<<<<<<
@@ -4665,7 +4561,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
               __pyx_t_26 = __pyx_v_j;
               *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
 
-              /* "trviz/cy/decompose.pyx":195
+              /* "trviz/cy/decompose.pyx":180
  *                             bt_i[i, m, j] = i
  *                             bt_m[i, m, j] = m
  *                             bt_j[i, m, j] = 0             # <<<<<<<<<<<<<<
@@ -4681,7 +4577,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           }
           __pyx_L32:;
 
-          /* "trviz/cy/decompose.pyx":114
+          /* "trviz/cy/decompose.pyx":127
  *             motif_len = motif_lengths_arr[m]
  *             for j in range(1, motif_len + 1):
  *                 if j == 1:             # <<<<<<<<<<<<<<
@@ -4691,7 +4587,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           goto __pyx_L31;
         }
 
-        /* "trviz/cy/decompose.pyx":197
+        /* "trviz/cy/decompose.pyx":182
  *                             bt_j[i, m, j] = 0
  *                 else:
  *                     diagonal = s[i - 1, m, j - 1] + match_score if seq_ptr[i - 1] == motif_ptr[j - 1] else \             # <<<<<<<<<<<<<<
@@ -4706,7 +4602,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
             __pyx_t_4 = ((*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides)) + __pyx_v_match_score);
           } else {
 
-            /* "trviz/cy/decompose.pyx":198
+            /* "trviz/cy/decompose.pyx":183
  *                 else:
  *                     diagonal = s[i - 1, m, j - 1] + match_score if seq_ptr[i - 1] == motif_ptr[j - 1] else \
  *                     s[i - 1, m, j - 1] + mismatch_score             # <<<<<<<<<<<<<<
@@ -4720,7 +4616,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           }
           __pyx_v_diagonal = __pyx_t_4;
 
-          /* "trviz/cy/decompose.pyx":199
+          /* "trviz/cy/decompose.pyx":184
  *                     diagonal = s[i - 1, m, j - 1] + match_score if seq_ptr[i - 1] == motif_ptr[j - 1] else \
  *                     s[i - 1, m, j - 1] + mismatch_score
  *                     from_left = s[i - 1, m, j] + insertion_score             # <<<<<<<<<<<<<<
@@ -4732,174 +4628,46 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           __pyx_t_26 = __pyx_v_j;
           __pyx_v_from_left = ((*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides)) + __pyx_v_insertion_score);
 
-          /* "trviz/cy/decompose.pyx":200
+          /* "trviz/cy/decompose.pyx":185
  *                     s[i - 1, m, j - 1] + mismatch_score
  *                     from_left = s[i - 1, m, j] + insertion_score
  *                     from_up = s[i, m, j - 1] + deletion_score             # <<<<<<<<<<<<<<
  * 
- *                     # Equivalent to np.argmax([diagonal, from_left, from_up]) AND max([...]):
+ *                     argmax_index, max_val = _argmax_max3(diagonal, from_left, from_up)
  */
           __pyx_t_26 = __pyx_v_i;
           __pyx_t_27 = __pyx_v_m;
           __pyx_t_24 = (__pyx_v_j - 1);
           __pyx_v_from_up = ((*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_s.diminfo[2].strides)) + __pyx_v_deletion_score);
 
-          /* "trviz/cy/decompose.pyx":204
- *                     # Equivalent to np.argmax([diagonal, from_left, from_up]) AND max([...]):
- *                     # first index wins on ties.
- *                     if diagonal >= from_left:             # <<<<<<<<<<<<<<
- *                         if diagonal >= from_up:
- *                             s[i, m, j] = diagonal
- */
-          __pyx_t_5 = ((__pyx_v_diagonal >= __pyx_v_from_left) != 0);
-          if (__pyx_t_5) {
-
-            /* "trviz/cy/decompose.pyx":205
- *                     # first index wins on ties.
- *                     if diagonal >= from_left:
- *                         if diagonal >= from_up:             # <<<<<<<<<<<<<<
- *                             s[i, m, j] = diagonal
- *                             argmax_index = 0
- */
-            __pyx_t_5 = ((__pyx_v_diagonal >= __pyx_v_from_up) != 0);
-            if (__pyx_t_5) {
-
-              /* "trviz/cy/decompose.pyx":206
- *                     if diagonal >= from_left:
- *                         if diagonal >= from_up:
- *                             s[i, m, j] = diagonal             # <<<<<<<<<<<<<<
- *                             argmax_index = 0
- *                         else:
- */
-              __pyx_t_24 = __pyx_v_i;
-              __pyx_t_27 = __pyx_v_m;
-              __pyx_t_26 = __pyx_v_j;
-              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_diagonal;
-
-              /* "trviz/cy/decompose.pyx":207
- *                         if diagonal >= from_up:
- *                             s[i, m, j] = diagonal
- *                             argmax_index = 0             # <<<<<<<<<<<<<<
- *                         else:
- *                             s[i, m, j] = from_up
- */
-              __pyx_v_argmax_index = 0;
-
-              /* "trviz/cy/decompose.pyx":205
- *                     # first index wins on ties.
- *                     if diagonal >= from_left:
- *                         if diagonal >= from_up:             # <<<<<<<<<<<<<<
- *                             s[i, m, j] = diagonal
- *                             argmax_index = 0
- */
-              goto __pyx_L40;
-            }
-
-            /* "trviz/cy/decompose.pyx":209
- *                             argmax_index = 0
- *                         else:
- *                             s[i, m, j] = from_up             # <<<<<<<<<<<<<<
- *                             argmax_index = 2
- *                     else:
- */
-            /*else*/ {
-              __pyx_t_26 = __pyx_v_i;
-              __pyx_t_27 = __pyx_v_m;
-              __pyx_t_24 = __pyx_v_j;
-              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_from_up;
-
-              /* "trviz/cy/decompose.pyx":210
- *                         else:
- *                             s[i, m, j] = from_up
- *                             argmax_index = 2             # <<<<<<<<<<<<<<
- *                     else:
- *                         if from_left >= from_up:
- */
-              __pyx_v_argmax_index = 2;
-            }
-            __pyx_L40:;
-
-            /* "trviz/cy/decompose.pyx":204
- *                     # Equivalent to np.argmax([diagonal, from_left, from_up]) AND max([...]):
- *                     # first index wins on ties.
- *                     if diagonal >= from_left:             # <<<<<<<<<<<<<<
- *                         if diagonal >= from_up:
- *                             s[i, m, j] = diagonal
- */
-            goto __pyx_L39;
-          }
-
-          /* "trviz/cy/decompose.pyx":212
- *                             argmax_index = 2
- *                     else:
- *                         if from_left >= from_up:             # <<<<<<<<<<<<<<
- *                             s[i, m, j] = from_left
- *                             argmax_index = 1
- */
-          /*else*/ {
-            __pyx_t_5 = ((__pyx_v_from_left >= __pyx_v_from_up) != 0);
-            if (__pyx_t_5) {
-
-              /* "trviz/cy/decompose.pyx":213
- *                     else:
- *                         if from_left >= from_up:
- *                             s[i, m, j] = from_left             # <<<<<<<<<<<<<<
- *                             argmax_index = 1
- *                         else:
- */
-              __pyx_t_24 = __pyx_v_i;
-              __pyx_t_27 = __pyx_v_m;
-              __pyx_t_26 = __pyx_v_j;
-              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_from_left;
-
-              /* "trviz/cy/decompose.pyx":214
- *                         if from_left >= from_up:
- *                             s[i, m, j] = from_left
- *                             argmax_index = 1             # <<<<<<<<<<<<<<
- *                         else:
- *                             s[i, m, j] = from_up
- */
-              __pyx_v_argmax_index = 1;
-
-              /* "trviz/cy/decompose.pyx":212
- *                             argmax_index = 2
- *                     else:
- *                         if from_left >= from_up:             # <<<<<<<<<<<<<<
- *                             s[i, m, j] = from_left
- *                             argmax_index = 1
- */
-              goto __pyx_L41;
-            }
-
-            /* "trviz/cy/decompose.pyx":216
- *                             argmax_index = 1
- *                         else:
- *                             s[i, m, j] = from_up             # <<<<<<<<<<<<<<
- *                             argmax_index = 2
+          /* "trviz/cy/decompose.pyx":187
+ *                     from_up = s[i, m, j - 1] + deletion_score
+ * 
+ *                     argmax_index, max_val = _argmax_max3(diagonal, from_left, from_up)             # <<<<<<<<<<<<<<
+ *                     s[i, m, j] = max_val
  *                     if argmax_index == 0:
  */
-            /*else*/ {
-              __pyx_t_26 = __pyx_v_i;
-              __pyx_t_27 = __pyx_v_m;
-              __pyx_t_24 = __pyx_v_j;
-              *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_from_up;
+          __pyx_t_33 = __pyx_f_5trviz_2cy_9decompose__argmax_max3(__pyx_v_diagonal, __pyx_v_from_left, __pyx_v_from_up);
+          __pyx_t_34 = __pyx_t_33.f0;
+          __pyx_t_4 = __pyx_t_33.f1;
+          __pyx_v_argmax_index = __pyx_t_34;
+          __pyx_v_max_val = __pyx_t_4;
 
-              /* "trviz/cy/decompose.pyx":217
- *                         else:
- *                             s[i, m, j] = from_up
- *                             argmax_index = 2             # <<<<<<<<<<<<<<
+          /* "trviz/cy/decompose.pyx":188
+ * 
+ *                     argmax_index, max_val = _argmax_max3(diagonal, from_left, from_up)
+ *                     s[i, m, j] = max_val             # <<<<<<<<<<<<<<
  *                     if argmax_index == 0:
  *                         bt_i[i, m, j] = i - 1
  */
-              __pyx_v_argmax_index = 2;
-            }
-            __pyx_L41:;
-          }
-          __pyx_L39:;
+          __pyx_t_24 = __pyx_v_i;
+          __pyx_t_27 = __pyx_v_m;
+          __pyx_t_26 = __pyx_v_j;
+          *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides) = __pyx_v_max_val;
 
-          /* "trviz/cy/decompose.pyx":218
- *                             s[i, m, j] = from_up
- *                             argmax_index = 2
+          /* "trviz/cy/decompose.pyx":189
+ *                     argmax_index, max_val = _argmax_max3(diagonal, from_left, from_up)
+ *                     s[i, m, j] = max_val
  *                     if argmax_index == 0:             # <<<<<<<<<<<<<<
  *                         bt_i[i, m, j] = i - 1
  *                         bt_m[i, m, j] = m
@@ -4907,45 +4675,45 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
           switch (__pyx_v_argmax_index) {
             case 0:
 
-            /* "trviz/cy/decompose.pyx":219
- *                             argmax_index = 2
+            /* "trviz/cy/decompose.pyx":190
+ *                     s[i, m, j] = max_val
  *                     if argmax_index == 0:
  *                         bt_i[i, m, j] = i - 1             # <<<<<<<<<<<<<<
  *                         bt_m[i, m, j] = m
  *                         bt_j[i, m, j] = j - 1
  */
-            __pyx_t_24 = __pyx_v_i;
+            __pyx_t_26 = __pyx_v_i;
             __pyx_t_27 = __pyx_v_m;
-            __pyx_t_26 = __pyx_v_j;
-            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[2].strides) = (__pyx_v_i - 1);
+            __pyx_t_24 = __pyx_v_j;
+            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[2].strides) = (__pyx_v_i - 1);
 
-            /* "trviz/cy/decompose.pyx":220
+            /* "trviz/cy/decompose.pyx":191
  *                     if argmax_index == 0:
  *                         bt_i[i, m, j] = i - 1
  *                         bt_m[i, m, j] = m             # <<<<<<<<<<<<<<
  *                         bt_j[i, m, j] = j - 1
  *                     elif argmax_index == 1:
  */
-            __pyx_t_26 = __pyx_v_i;
+            __pyx_t_24 = __pyx_v_i;
             __pyx_t_27 = __pyx_v_m;
-            __pyx_t_24 = __pyx_v_j;
-            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
+            __pyx_t_26 = __pyx_v_j;
+            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
 
-            /* "trviz/cy/decompose.pyx":221
+            /* "trviz/cy/decompose.pyx":192
  *                         bt_i[i, m, j] = i - 1
  *                         bt_m[i, m, j] = m
  *                         bt_j[i, m, j] = j - 1             # <<<<<<<<<<<<<<
  *                     elif argmax_index == 1:
  *                         bt_i[i, m, j] = i - 1
  */
-            __pyx_t_24 = __pyx_v_i;
+            __pyx_t_26 = __pyx_v_i;
             __pyx_t_27 = __pyx_v_m;
-            __pyx_t_26 = __pyx_v_j;
-            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[2].strides) = (__pyx_v_j - 1);
+            __pyx_t_24 = __pyx_v_j;
+            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[2].strides) = (__pyx_v_j - 1);
 
-            /* "trviz/cy/decompose.pyx":218
- *                             s[i, m, j] = from_up
- *                             argmax_index = 2
+            /* "trviz/cy/decompose.pyx":189
+ *                     argmax_index, max_val = _argmax_max3(diagonal, from_left, from_up)
+ *                     s[i, m, j] = max_val
  *                     if argmax_index == 0:             # <<<<<<<<<<<<<<
  *                         bt_i[i, m, j] = i - 1
  *                         bt_m[i, m, j] = m
@@ -4953,43 +4721,43 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
             break;
             case 1:
 
-            /* "trviz/cy/decompose.pyx":223
+            /* "trviz/cy/decompose.pyx":194
  *                         bt_j[i, m, j] = j - 1
  *                     elif argmax_index == 1:
  *                         bt_i[i, m, j] = i - 1             # <<<<<<<<<<<<<<
  *                         bt_m[i, m, j] = m
  *                         bt_j[i, m, j] = j
  */
-            __pyx_t_26 = __pyx_v_i;
+            __pyx_t_24 = __pyx_v_i;
             __pyx_t_27 = __pyx_v_m;
-            __pyx_t_24 = __pyx_v_j;
-            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[2].strides) = (__pyx_v_i - 1);
+            __pyx_t_26 = __pyx_v_j;
+            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[2].strides) = (__pyx_v_i - 1);
 
-            /* "trviz/cy/decompose.pyx":224
+            /* "trviz/cy/decompose.pyx":195
  *                     elif argmax_index == 1:
  *                         bt_i[i, m, j] = i - 1
  *                         bt_m[i, m, j] = m             # <<<<<<<<<<<<<<
  *                         bt_j[i, m, j] = j
  *                     else:
  */
-            __pyx_t_24 = __pyx_v_i;
+            __pyx_t_26 = __pyx_v_i;
             __pyx_t_27 = __pyx_v_m;
-            __pyx_t_26 = __pyx_v_j;
-            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
+            __pyx_t_24 = __pyx_v_j;
+            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
 
-            /* "trviz/cy/decompose.pyx":225
+            /* "trviz/cy/decompose.pyx":196
  *                         bt_i[i, m, j] = i - 1
  *                         bt_m[i, m, j] = m
  *                         bt_j[i, m, j] = j             # <<<<<<<<<<<<<<
  *                     else:
  *                         bt_i[i, m, j] = i
  */
-            __pyx_t_26 = __pyx_v_i;
+            __pyx_t_24 = __pyx_v_i;
             __pyx_t_27 = __pyx_v_m;
-            __pyx_t_24 = __pyx_v_j;
-            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[2].strides) = __pyx_v_j;
+            __pyx_t_26 = __pyx_v_j;
+            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[2].strides) = __pyx_v_j;
 
-            /* "trviz/cy/decompose.pyx":222
+            /* "trviz/cy/decompose.pyx":193
  *                         bt_m[i, m, j] = m
  *                         bt_j[i, m, j] = j - 1
  *                     elif argmax_index == 1:             # <<<<<<<<<<<<<<
@@ -4999,48 +4767,48 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
             break;
             default:
 
-            /* "trviz/cy/decompose.pyx":227
+            /* "trviz/cy/decompose.pyx":198
  *                         bt_j[i, m, j] = j
  *                     else:
  *                         bt_i[i, m, j] = i             # <<<<<<<<<<<<<<
  *                         bt_m[i, m, j] = m
  *                         bt_j[i, m, j] = j - 1
  */
-            __pyx_t_24 = __pyx_v_i;
+            __pyx_t_26 = __pyx_v_i;
             __pyx_t_27 = __pyx_v_m;
-            __pyx_t_26 = __pyx_v_j;
-            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[2].strides) = __pyx_v_i;
+            __pyx_t_24 = __pyx_v_j;
+            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[2].strides) = __pyx_v_i;
 
-            /* "trviz/cy/decompose.pyx":228
+            /* "trviz/cy/decompose.pyx":199
  *                     else:
  *                         bt_i[i, m, j] = i
  *                         bt_m[i, m, j] = m             # <<<<<<<<<<<<<<
  *                         bt_j[i, m, j] = j - 1
  * 
  */
-            __pyx_t_26 = __pyx_v_i;
+            __pyx_t_24 = __pyx_v_i;
             __pyx_t_27 = __pyx_v_m;
-            __pyx_t_24 = __pyx_v_j;
-            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
+            __pyx_t_26 = __pyx_v_j;
+            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[2].strides) = __pyx_v_m;
 
-            /* "trviz/cy/decompose.pyx":229
+            /* "trviz/cy/decompose.pyx":200
  *                         bt_i[i, m, j] = i
  *                         bt_m[i, m, j] = m
  *                         bt_j[i, m, j] = j - 1             # <<<<<<<<<<<<<<
  * 
  *     if verbose:
  */
-            __pyx_t_24 = __pyx_v_i;
+            __pyx_t_26 = __pyx_v_i;
             __pyx_t_27 = __pyx_v_m;
-            __pyx_t_26 = __pyx_v_j;
-            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[2].strides) = (__pyx_v_j - 1);
+            __pyx_t_24 = __pyx_v_j;
+            *__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[2].strides) = (__pyx_v_j - 1);
             break;
           }
         }
         __pyx_L31:;
       }
 
-      /* "trviz/cy/decompose.pyx":109
+      /* "trviz/cy/decompose.pyx":122
  *                     max_m_index = mi
  *                     max_j_of_max_m = motif_lengths_arr[mi]
  *         for m, motif in enumerate(motifs):             # <<<<<<<<<<<<<<
@@ -5051,7 +4819,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   }
 
-  /* "trviz/cy/decompose.pyx":231
+  /* "trviz/cy/decompose.pyx":202
  *                         bt_j[i, m, j] = j - 1
  * 
  *     if verbose:             # <<<<<<<<<<<<<<
@@ -5061,29 +4829,29 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __pyx_t_5 = (__pyx_v_verbose != 0);
   if (__pyx_t_5) {
 
-    /* "trviz/cy/decompose.pyx":232
+    /* "trviz/cy/decompose.pyx":203
  * 
  *     if verbose:
  *         print("DP table")             # <<<<<<<<<<<<<<
  *         for i in range(len(sequence) + 1):
  *             for m in range(len(motifs)):
  */
-    if (__Pyx_PrintOne(0, __pyx_kp_s_DP_table) < 0) __PYX_ERR(0, 232, __pyx_L1_error)
+    if (__Pyx_PrintOne(0, __pyx_kp_s_DP_table) < 0) __PYX_ERR(0, 203, __pyx_L1_error)
 
-    /* "trviz/cy/decompose.pyx":233
+    /* "trviz/cy/decompose.pyx":204
  *     if verbose:
  *         print("DP table")
  *         for i in range(len(sequence) + 1):             # <<<<<<<<<<<<<<
  *             for m in range(len(motifs)):
  *                 print(f"i{i}, m{m}, {s[i]}")
  */
-    __pyx_t_18 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_18 == ((Py_ssize_t)-1))) __PYX_ERR(0, 233, __pyx_L1_error)
+    __pyx_t_18 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_18 == ((Py_ssize_t)-1))) __PYX_ERR(0, 204, __pyx_L1_error)
     __pyx_t_7 = (__pyx_t_18 + 1);
     __pyx_t_18 = __pyx_t_7;
     for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_18; __pyx_t_2+=1) {
       __pyx_v_i = __pyx_t_2;
 
-      /* "trviz/cy/decompose.pyx":234
+      /* "trviz/cy/decompose.pyx":205
  *         print("DP table")
  *         for i in range(len(sequence) + 1):
  *             for m in range(len(motifs)):             # <<<<<<<<<<<<<<
@@ -5092,29 +4860,29 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
       if (unlikely(__pyx_v_motifs == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-        __PYX_ERR(0, 234, __pyx_L1_error)
+        __PYX_ERR(0, 205, __pyx_L1_error)
       }
-      __pyx_t_11 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 234, __pyx_L1_error)
+      __pyx_t_11 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 205, __pyx_L1_error)
       __pyx_t_21 = __pyx_t_11;
       for (__pyx_t_19 = 0; __pyx_t_19 < __pyx_t_21; __pyx_t_19+=1) {
         __pyx_v_m = __pyx_t_19;
 
-        /* "trviz/cy/decompose.pyx":235
+        /* "trviz/cy/decompose.pyx":206
  *         for i in range(len(sequence) + 1):
  *             for m in range(len(motifs)):
  *                 print(f"i{i}, m{m}, {s[i]}")             # <<<<<<<<<<<<<<
  * 
  *         print("Backtrack table")
  */
-        __pyx_t_10 = PyTuple_New(6); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 235, __pyx_L1_error)
+        __pyx_t_10 = PyTuple_New(6); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 206, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __pyx_t_20 = 0;
-        __pyx_t_33 = 127;
+        __pyx_t_35 = 127;
         __Pyx_INCREF(__pyx_n_u_i);
         __pyx_t_20 += 1;
         __Pyx_GIVEREF(__pyx_n_u_i);
         PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_n_u_i);
-        __pyx_t_1 = __Pyx_PyUnicode_From_int(__pyx_v_i, 0, ' ', 'd'); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 235, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyUnicode_From_int(__pyx_v_i, 0, ' ', 'd'); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __pyx_t_20 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
@@ -5124,7 +4892,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         __pyx_t_20 += 3;
         __Pyx_GIVEREF(__pyx_kp_u_m);
         PyTuple_SET_ITEM(__pyx_t_10, 2, __pyx_kp_u_m);
-        __pyx_t_1 = __Pyx_PyUnicode_From_int(__pyx_v_m, 0, ' ', 'd'); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 235, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyUnicode_From_int(__pyx_v_m, 0, ' ', 'd'); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __pyx_t_20 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
@@ -5134,47 +4902,47 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         __pyx_t_20 += 2;
         __Pyx_GIVEREF(__pyx_kp_u__3);
         PyTuple_SET_ITEM(__pyx_t_10, 4, __pyx_kp_u__3);
-        __pyx_t_1 = __Pyx_GetItemInt(((PyObject *)__pyx_v_s), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 235, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_GetItemInt(((PyObject *)__pyx_v_s), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_3 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 235, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 206, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_33 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) > __pyx_t_33) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) : __pyx_t_33;
+        __pyx_t_35 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) > __pyx_t_35) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) : __pyx_t_35;
         __pyx_t_20 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_3);
         __Pyx_GIVEREF(__pyx_t_3);
         PyTuple_SET_ITEM(__pyx_t_10, 5, __pyx_t_3);
         __pyx_t_3 = 0;
-        __pyx_t_3 = __Pyx_PyUnicode_Join(__pyx_t_10, 6, __pyx_t_20, __pyx_t_33); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 235, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyUnicode_Join(__pyx_t_10, 6, __pyx_t_20, __pyx_t_35); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 206, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 235, __pyx_L1_error)
+        if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 206, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       }
     }
 
-    /* "trviz/cy/decompose.pyx":237
+    /* "trviz/cy/decompose.pyx":208
  *                 print(f"i{i}, m{m}, {s[i]}")
  * 
  *         print("Backtrack table")             # <<<<<<<<<<<<<<
  *         for i in range(len(sequence) + 1):
  *             for m in range(len(motifs) + 1):
  */
-    if (__Pyx_PrintOne(0, __pyx_kp_s_Backtrack_table) < 0) __PYX_ERR(0, 237, __pyx_L1_error)
+    if (__Pyx_PrintOne(0, __pyx_kp_s_Backtrack_table) < 0) __PYX_ERR(0, 208, __pyx_L1_error)
 
-    /* "trviz/cy/decompose.pyx":238
+    /* "trviz/cy/decompose.pyx":209
  * 
  *         print("Backtrack table")
  *         for i in range(len(sequence) + 1):             # <<<<<<<<<<<<<<
  *             for m in range(len(motifs) + 1):
  *                 print(f"i{i}, m{m}, bt_i={bt_i[i]}, bt_m={bt_m[i]}, bt_j={bt_j[i]}")
  */
-    __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 238, __pyx_L1_error)
+    __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 209, __pyx_L1_error)
     __pyx_t_18 = (__pyx_t_7 + 1);
     __pyx_t_7 = __pyx_t_18;
     for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_7; __pyx_t_2+=1) {
       __pyx_v_i = __pyx_t_2;
 
-      /* "trviz/cy/decompose.pyx":239
+      /* "trviz/cy/decompose.pyx":210
  *         print("Backtrack table")
  *         for i in range(len(sequence) + 1):
  *             for m in range(len(motifs) + 1):             # <<<<<<<<<<<<<<
@@ -5183,30 +4951,30 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
       if (unlikely(__pyx_v_motifs == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-        __PYX_ERR(0, 239, __pyx_L1_error)
+        __PYX_ERR(0, 210, __pyx_L1_error)
       }
-      __pyx_t_11 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 239, __pyx_L1_error)
+      __pyx_t_11 = PyList_GET_SIZE(__pyx_v_motifs); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 210, __pyx_L1_error)
       __pyx_t_21 = (__pyx_t_11 + 1);
       __pyx_t_11 = __pyx_t_21;
       for (__pyx_t_19 = 0; __pyx_t_19 < __pyx_t_11; __pyx_t_19+=1) {
         __pyx_v_m = __pyx_t_19;
 
-        /* "trviz/cy/decompose.pyx":240
+        /* "trviz/cy/decompose.pyx":211
  *         for i in range(len(sequence) + 1):
  *             for m in range(len(motifs) + 1):
  *                 print(f"i{i}, m{m}, bt_i={bt_i[i]}, bt_m={bt_m[i]}, bt_j={bt_j[i]}")             # <<<<<<<<<<<<<<
  * 
  *     # Backtracking - getting decomposed motifs
  */
-        __pyx_t_3 = PyTuple_New(10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_3 = PyTuple_New(10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __pyx_t_20 = 0;
-        __pyx_t_33 = 127;
+        __pyx_t_35 = 127;
         __Pyx_INCREF(__pyx_n_u_i);
         __pyx_t_20 += 1;
         __Pyx_GIVEREF(__pyx_n_u_i);
         PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_n_u_i);
-        __pyx_t_10 = __Pyx_PyUnicode_From_int(__pyx_v_i, 0, ' ', 'd'); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyUnicode_From_int(__pyx_v_i, 0, ' ', 'd'); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __pyx_t_20 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_10);
         __Pyx_GIVEREF(__pyx_t_10);
@@ -5216,7 +4984,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         __pyx_t_20 += 3;
         __Pyx_GIVEREF(__pyx_kp_u_m);
         PyTuple_SET_ITEM(__pyx_t_3, 2, __pyx_kp_u_m);
-        __pyx_t_10 = __Pyx_PyUnicode_From_int(__pyx_v_m, 0, ' ', 'd'); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyUnicode_From_int(__pyx_v_m, 0, ' ', 'd'); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __pyx_t_20 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_10);
         __Pyx_GIVEREF(__pyx_t_10);
@@ -5226,12 +4994,12 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         __pyx_t_20 += 7;
         __Pyx_GIVEREF(__pyx_kp_u_bt_i);
         PyTuple_SET_ITEM(__pyx_t_3, 4, __pyx_kp_u_bt_i);
-        __pyx_t_10 = __Pyx_GetItemInt(((PyObject *)__pyx_v_bt_i), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_GetItemInt(((PyObject *)__pyx_v_bt_i), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
-        __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_10, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_10, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __pyx_t_33 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) > __pyx_t_33) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) : __pyx_t_33;
+        __pyx_t_35 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) > __pyx_t_35) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) : __pyx_t_35;
         __pyx_t_20 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_3, 5, __pyx_t_1);
@@ -5240,12 +5008,12 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         __pyx_t_20 += 7;
         __Pyx_GIVEREF(__pyx_kp_u_bt_m);
         PyTuple_SET_ITEM(__pyx_t_3, 6, __pyx_kp_u_bt_m);
-        __pyx_t_1 = __Pyx_GetItemInt(((PyObject *)__pyx_v_bt_m), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_GetItemInt(((PyObject *)__pyx_v_bt_m), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_10 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_33 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_10) > __pyx_t_33) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_10) : __pyx_t_33;
+        __pyx_t_35 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_10) > __pyx_t_35) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_10) : __pyx_t_35;
         __pyx_t_20 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_10);
         __Pyx_GIVEREF(__pyx_t_10);
         PyTuple_SET_ITEM(__pyx_t_3, 7, __pyx_t_10);
@@ -5254,25 +5022,25 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         __pyx_t_20 += 7;
         __Pyx_GIVEREF(__pyx_kp_u_bt_j);
         PyTuple_SET_ITEM(__pyx_t_3, 8, __pyx_kp_u_bt_j);
-        __pyx_t_10 = __Pyx_GetItemInt(((PyObject *)__pyx_v_bt_j), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_GetItemInt(((PyObject *)__pyx_v_bt_j), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
-        __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_10, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_10, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __pyx_t_33 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) > __pyx_t_33) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) : __pyx_t_33;
+        __pyx_t_35 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) > __pyx_t_35) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) : __pyx_t_35;
         __pyx_t_20 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_3, 9, __pyx_t_1);
         __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyUnicode_Join(__pyx_t_3, 10, __pyx_t_20, __pyx_t_33); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyUnicode_Join(__pyx_t_3, 10, __pyx_t_20, __pyx_t_35); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 240, __pyx_L1_error)
+        if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 211, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       }
     }
 
-    /* "trviz/cy/decompose.pyx":231
+    /* "trviz/cy/decompose.pyx":202
  *                         bt_j[i, m, j] = j - 1
  * 
  *     if verbose:             # <<<<<<<<<<<<<<
@@ -5281,7 +5049,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   }
 
-  /* "trviz/cy/decompose.pyx":243
+  /* "trviz/cy/decompose.pyx":214
  * 
  *     # Backtracking - getting decomposed motifs
  *     cdef int start_i = 0             # <<<<<<<<<<<<<<
@@ -5290,7 +5058,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   __pyx_v_start_i = 0;
 
-  /* "trviz/cy/decompose.pyx":244
+  /* "trviz/cy/decompose.pyx":215
  *     # Backtracking - getting decomposed motifs
  *     cdef int start_i = 0
  *     cdef int start_m = 0             # <<<<<<<<<<<<<<
@@ -5299,7 +5067,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   __pyx_v_start_m = 0;
 
-  /* "trviz/cy/decompose.pyx":245
+  /* "trviz/cy/decompose.pyx":216
  *     cdef int start_i = 0
  *     cdef int start_m = 0
  *     cdef int start_j = 0             # <<<<<<<<<<<<<<
@@ -5308,7 +5076,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   __pyx_v_start_j = 0;
 
-  /* "trviz/cy/decompose.pyx":246
+  /* "trviz/cy/decompose.pyx":217
  *     cdef int start_m = 0
  *     cdef int start_j = 0
  *     cdef bint found = False             # <<<<<<<<<<<<<<
@@ -5317,7 +5085,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   __pyx_v_found = 0;
 
-  /* "trviz/cy/decompose.pyx":247
+  /* "trviz/cy/decompose.pyx":218
  *     cdef int start_j = 0
  *     cdef bint found = False
  *     cdef DTYPE_t backtrack_max = min_score_threshold             # <<<<<<<<<<<<<<
@@ -5326,7 +5094,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   __pyx_v_backtrack_max = __pyx_v_min_score_threshold;
 
-  /* "trviz/cy/decompose.pyx":248
+  /* "trviz/cy/decompose.pyx":219
  *     cdef bint found = False
  *     cdef DTYPE_t backtrack_max = min_score_threshold
  *     for m, motif in enumerate(motifs):             # <<<<<<<<<<<<<<
@@ -5338,9 +5106,9 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   for (;;) {
     if (__pyx_t_18 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_18); __Pyx_INCREF(__pyx_t_3); __pyx_t_18++; if (unlikely(0 < 0)) __PYX_ERR(0, 248, __pyx_L1_error)
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_18); __Pyx_INCREF(__pyx_t_3); __pyx_t_18++; if (unlikely(0 < 0)) __PYX_ERR(0, 219, __pyx_L1_error)
     #else
-    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_18); __pyx_t_18++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 248, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_18); __pyx_t_18++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 219, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_motif, __pyx_t_3);
@@ -5348,46 +5116,46 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     __pyx_v_m = __pyx_t_2;
     __pyx_t_2 = (__pyx_t_2 + 1);
 
-    /* "trviz/cy/decompose.pyx":249
+    /* "trviz/cy/decompose.pyx":220
  *     cdef DTYPE_t backtrack_max = min_score_threshold
  *     for m, motif in enumerate(motifs):
  *         if backtrack_max < s[len(sequence), m, len(motif)]:             # <<<<<<<<<<<<<<
  *             backtrack_max = s[len(sequence), m, len(motif)]
  *             start_i = len(sequence)
  */
-    __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 249, __pyx_L1_error)
-    __pyx_t_21 = PyObject_Length(__pyx_v_motif); if (unlikely(__pyx_t_21 == ((Py_ssize_t)-1))) __PYX_ERR(0, 249, __pyx_L1_error)
-    __pyx_t_26 = __pyx_t_7;
+    __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 220, __pyx_L1_error)
+    __pyx_t_21 = PyObject_Length(__pyx_v_motif); if (unlikely(__pyx_t_21 == ((Py_ssize_t)-1))) __PYX_ERR(0, 220, __pyx_L1_error)
+    __pyx_t_24 = __pyx_t_7;
     __pyx_t_27 = __pyx_v_m;
-    __pyx_t_24 = __pyx_t_21;
-    __pyx_t_5 = ((__pyx_v_backtrack_max < (*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_s.diminfo[2].strides))) != 0);
+    __pyx_t_26 = __pyx_t_21;
+    __pyx_t_5 = ((__pyx_v_backtrack_max < (*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides))) != 0);
     if (__pyx_t_5) {
 
-      /* "trviz/cy/decompose.pyx":250
+      /* "trviz/cy/decompose.pyx":221
  *     for m, motif in enumerate(motifs):
  *         if backtrack_max < s[len(sequence), m, len(motif)]:
  *             backtrack_max = s[len(sequence), m, len(motif)]             # <<<<<<<<<<<<<<
  *             start_i = len(sequence)
  *             start_m = m
  */
-      __pyx_t_21 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_21 == ((Py_ssize_t)-1))) __PYX_ERR(0, 250, __pyx_L1_error)
-      __pyx_t_7 = PyObject_Length(__pyx_v_motif); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 250, __pyx_L1_error)
-      __pyx_t_24 = __pyx_t_21;
+      __pyx_t_21 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_21 == ((Py_ssize_t)-1))) __PYX_ERR(0, 221, __pyx_L1_error)
+      __pyx_t_7 = PyObject_Length(__pyx_v_motif); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 221, __pyx_L1_error)
+      __pyx_t_26 = __pyx_t_21;
       __pyx_t_27 = __pyx_v_m;
-      __pyx_t_26 = __pyx_t_7;
-      __pyx_v_backtrack_max = (*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_s.diminfo[2].strides));
+      __pyx_t_24 = __pyx_t_7;
+      __pyx_v_backtrack_max = (*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_s.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_s.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_s.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_s.diminfo[2].strides));
 
-      /* "trviz/cy/decompose.pyx":251
+      /* "trviz/cy/decompose.pyx":222
  *         if backtrack_max < s[len(sequence), m, len(motif)]:
  *             backtrack_max = s[len(sequence), m, len(motif)]
  *             start_i = len(sequence)             # <<<<<<<<<<<<<<
  *             start_m = m
  *             start_j = len(motif)
  */
-      __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 251, __pyx_L1_error)
+      __pyx_t_7 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 222, __pyx_L1_error)
       __pyx_v_start_i = __pyx_t_7;
 
-      /* "trviz/cy/decompose.pyx":252
+      /* "trviz/cy/decompose.pyx":223
  *             backtrack_max = s[len(sequence), m, len(motif)]
  *             start_i = len(sequence)
  *             start_m = m             # <<<<<<<<<<<<<<
@@ -5396,17 +5164,17 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
       __pyx_v_start_m = __pyx_v_m;
 
-      /* "trviz/cy/decompose.pyx":253
+      /* "trviz/cy/decompose.pyx":224
  *             start_i = len(sequence)
  *             start_m = m
  *             start_j = len(motif)             # <<<<<<<<<<<<<<
  *             found = True
  * 
  */
-      __pyx_t_7 = PyObject_Length(__pyx_v_motif); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 253, __pyx_L1_error)
+      __pyx_t_7 = PyObject_Length(__pyx_v_motif); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 224, __pyx_L1_error)
       __pyx_v_start_j = __pyx_t_7;
 
-      /* "trviz/cy/decompose.pyx":254
+      /* "trviz/cy/decompose.pyx":225
  *             start_m = m
  *             start_j = len(motif)
  *             found = True             # <<<<<<<<<<<<<<
@@ -5415,7 +5183,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
       __pyx_v_found = 1;
 
-      /* "trviz/cy/decompose.pyx":249
+      /* "trviz/cy/decompose.pyx":220
  *     cdef DTYPE_t backtrack_max = min_score_threshold
  *     for m, motif in enumerate(motifs):
  *         if backtrack_max < s[len(sequence), m, len(motif)]:             # <<<<<<<<<<<<<<
@@ -5424,7 +5192,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
     }
 
-    /* "trviz/cy/decompose.pyx":248
+    /* "trviz/cy/decompose.pyx":219
  *     cdef bint found = False
  *     cdef DTYPE_t backtrack_max = min_score_threshold
  *     for m, motif in enumerate(motifs):             # <<<<<<<<<<<<<<
@@ -5434,7 +5202,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "trviz/cy/decompose.pyx":256
+  /* "trviz/cy/decompose.pyx":227
  *             found = True
  * 
  *     if not found:             # <<<<<<<<<<<<<<
@@ -5444,16 +5212,16 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __pyx_t_5 = ((!(__pyx_v_found != 0)) != 0);
   if (unlikely(__pyx_t_5)) {
 
-    /* "trviz/cy/decompose.pyx":257
+    /* "trviz/cy/decompose.pyx":228
  * 
  *     if not found:
  *         raise ValueError("No good match greater than score threshold of {}".format(min_score_threshold))             # <<<<<<<<<<<<<<
  * 
  *     if verbose:
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_No_good_match_greater_than_score, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 257, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_No_good_match_greater_than_score, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 228, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_10 = __Pyx_PyInt_From_npy_int32(__pyx_v_min_score_threshold); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 257, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyInt_From_npy_int32(__pyx_v_min_score_threshold); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 228, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __pyx_t_9 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -5468,17 +5236,17 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     __pyx_t_1 = (__pyx_t_9) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_9, __pyx_t_10) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_10);
     __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 228, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 257, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 228, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 257, __pyx_L1_error)
+    __PYX_ERR(0, 228, __pyx_L1_error)
 
-    /* "trviz/cy/decompose.pyx":256
+    /* "trviz/cy/decompose.pyx":227
  *             found = True
  * 
  *     if not found:             # <<<<<<<<<<<<<<
@@ -5487,7 +5255,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   }
 
-  /* "trviz/cy/decompose.pyx":259
+  /* "trviz/cy/decompose.pyx":230
  *         raise ValueError("No good match greater than score threshold of {}".format(min_score_threshold))
  * 
  *     if verbose:             # <<<<<<<<<<<<<<
@@ -5497,16 +5265,16 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __pyx_t_5 = (__pyx_v_verbose != 0);
   if (__pyx_t_5) {
 
-    /* "trviz/cy/decompose.pyx":260
+    /* "trviz/cy/decompose.pyx":231
  * 
  *     if verbose:
  *         print("Best score: ", backtrack_max)             # <<<<<<<<<<<<<<
  * 
  *     cdef int cur_i = start_i
  */
-    __pyx_t_3 = __Pyx_PyInt_From_npy_int32(__pyx_v_backtrack_max); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 260, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_npy_int32(__pyx_v_backtrack_max); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 231, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 260, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 231, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_INCREF(__pyx_kp_s_Best_score);
     __Pyx_GIVEREF(__pyx_kp_s_Best_score);
@@ -5514,10 +5282,10 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_3);
     __pyx_t_3 = 0;
-    if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 260, __pyx_L1_error)
+    if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 231, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "trviz/cy/decompose.pyx":259
+    /* "trviz/cy/decompose.pyx":230
  *         raise ValueError("No good match greater than score threshold of {}".format(min_score_threshold))
  * 
  *     if verbose:             # <<<<<<<<<<<<<<
@@ -5526,7 +5294,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   }
 
-  /* "trviz/cy/decompose.pyx":262
+  /* "trviz/cy/decompose.pyx":233
  *         print("Best score: ", backtrack_max)
  * 
  *     cdef int cur_i = start_i             # <<<<<<<<<<<<<<
@@ -5535,7 +5303,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   __pyx_v_cur_i = __pyx_v_start_i;
 
-  /* "trviz/cy/decompose.pyx":263
+  /* "trviz/cy/decompose.pyx":234
  * 
  *     cdef int cur_i = start_i
  *     cdef int cur_m = start_m             # <<<<<<<<<<<<<<
@@ -5544,7 +5312,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   __pyx_v_cur_m = __pyx_v_start_m;
 
-  /* "trviz/cy/decompose.pyx":264
+  /* "trviz/cy/decompose.pyx":235
  *     cdef int cur_i = start_i
  *     cdef int cur_m = start_m
  *     cdef int cur_j = start_j             # <<<<<<<<<<<<<<
@@ -5553,7 +5321,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   __pyx_v_cur_j = __pyx_v_start_j;
 
-  /* "trviz/cy/decompose.pyx":265
+  /* "trviz/cy/decompose.pyx":236
  *     cdef int cur_m = start_m
  *     cdef int cur_j = start_j
  *     cdef int prev_i = -1             # <<<<<<<<<<<<<<
@@ -5562,7 +5330,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   __pyx_v_prev_i = -1;
 
-  /* "trviz/cy/decompose.pyx":266
+  /* "trviz/cy/decompose.pyx":237
  *     cdef int cur_j = start_j
  *     cdef int prev_i = -1
  *     cdef int prev_j = -1             # <<<<<<<<<<<<<<
@@ -5571,17 +5339,17 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   __pyx_v_prev_j = -1;
 
-  /* "trviz/cy/decompose.pyx":267
+  /* "trviz/cy/decompose.pyx":238
  *     cdef int prev_i = -1
  *     cdef int prev_j = -1
  *     cdef int motif_end = len(sequence)             # <<<<<<<<<<<<<<
  *     cdef str decomposed_motif = ""
  *     cdef list decomposed_motifs = []
  */
-  __pyx_t_18 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_18 == ((Py_ssize_t)-1))) __PYX_ERR(0, 267, __pyx_L1_error)
+  __pyx_t_18 = PyObject_Length(__pyx_v_sequence); if (unlikely(__pyx_t_18 == ((Py_ssize_t)-1))) __PYX_ERR(0, 238, __pyx_L1_error)
   __pyx_v_motif_end = __pyx_t_18;
 
-  /* "trviz/cy/decompose.pyx":268
+  /* "trviz/cy/decompose.pyx":239
  *     cdef int prev_j = -1
  *     cdef int motif_end = len(sequence)
  *     cdef str decomposed_motif = ""             # <<<<<<<<<<<<<<
@@ -5591,19 +5359,19 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __Pyx_INCREF(__pyx_kp_s__4);
   __pyx_v_decomposed_motif = __pyx_kp_s__4;
 
-  /* "trviz/cy/decompose.pyx":269
+  /* "trviz/cy/decompose.pyx":240
  *     cdef int motif_end = len(sequence)
  *     cdef str decomposed_motif = ""
  *     cdef list decomposed_motifs = []             # <<<<<<<<<<<<<<
  * 
  *     while True:
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_decomposed_motifs = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "trviz/cy/decompose.pyx":271
+  /* "trviz/cy/decompose.pyx":242
  *     cdef list decomposed_motifs = []
  * 
  *     while True:             # <<<<<<<<<<<<<<
@@ -5612,7 +5380,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   while (1) {
 
-    /* "trviz/cy/decompose.pyx":272
+    /* "trviz/cy/decompose.pyx":243
  * 
  *     while True:
  *         if verbose:             # <<<<<<<<<<<<<<
@@ -5622,20 +5390,20 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     __pyx_t_5 = (__pyx_v_verbose != 0);
     if (__pyx_t_5) {
 
-      /* "trviz/cy/decompose.pyx":273
+      /* "trviz/cy/decompose.pyx":244
  *     while True:
  *         if verbose:
  *             print("Backtrack pointer", (cur_i, cur_m, cur_j))             # <<<<<<<<<<<<<<
  *         i = cur_i
  *         m = cur_m
  */
-      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_cur_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 273, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_cur_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 244, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_cur_m); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 273, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_cur_m); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 244, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_10 = __Pyx_PyInt_From_int(__pyx_v_cur_j); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 273, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyInt_From_int(__pyx_v_cur_j); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 244, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
-      __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 273, __pyx_L1_error)
+      __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 244, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_GIVEREF(__pyx_t_1);
       PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1);
@@ -5646,7 +5414,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       __pyx_t_1 = 0;
       __pyx_t_3 = 0;
       __pyx_t_10 = 0;
-      __pyx_t_10 = PyTuple_New(2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 273, __pyx_L1_error)
+      __pyx_t_10 = PyTuple_New(2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 244, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_INCREF(__pyx_kp_s_Backtrack_pointer);
       __Pyx_GIVEREF(__pyx_kp_s_Backtrack_pointer);
@@ -5654,10 +5422,10 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       __Pyx_GIVEREF(__pyx_t_9);
       PyTuple_SET_ITEM(__pyx_t_10, 1, __pyx_t_9);
       __pyx_t_9 = 0;
-      if (__Pyx_PrintOne(0, __pyx_t_10) < 0) __PYX_ERR(0, 273, __pyx_L1_error)
+      if (__Pyx_PrintOne(0, __pyx_t_10) < 0) __PYX_ERR(0, 244, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-      /* "trviz/cy/decompose.pyx":272
+      /* "trviz/cy/decompose.pyx":243
  * 
  *     while True:
  *         if verbose:             # <<<<<<<<<<<<<<
@@ -5666,7 +5434,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
     }
 
-    /* "trviz/cy/decompose.pyx":274
+    /* "trviz/cy/decompose.pyx":245
  *         if verbose:
  *             print("Backtrack pointer", (cur_i, cur_m, cur_j))
  *         i = cur_i             # <<<<<<<<<<<<<<
@@ -5675,7 +5443,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
     __pyx_v_i = __pyx_v_cur_i;
 
-    /* "trviz/cy/decompose.pyx":275
+    /* "trviz/cy/decompose.pyx":246
  *             print("Backtrack pointer", (cur_i, cur_m, cur_j))
  *         i = cur_i
  *         m = cur_m             # <<<<<<<<<<<<<<
@@ -5684,7 +5452,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
     __pyx_v_m = __pyx_v_cur_m;
 
-    /* "trviz/cy/decompose.pyx":276
+    /* "trviz/cy/decompose.pyx":247
  *         i = cur_i
  *         m = cur_m
  *         j = cur_j             # <<<<<<<<<<<<<<
@@ -5693,7 +5461,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
     __pyx_v_j = __pyx_v_cur_j;
 
-    /* "trviz/cy/decompose.pyx":278
+    /* "trviz/cy/decompose.pyx":249
  *         j = cur_j
  * 
  *         if prev_j == 1 and j != 1:  # decompose             # <<<<<<<<<<<<<<
@@ -5704,14 +5472,14 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     if (__pyx_t_23) {
     } else {
       __pyx_t_5 = __pyx_t_23;
-      goto __pyx_L60_bool_binop_done;
+      goto __pyx_L51_bool_binop_done;
     }
     __pyx_t_23 = ((__pyx_v_j != 1) != 0);
     __pyx_t_5 = __pyx_t_23;
-    __pyx_L60_bool_binop_done:;
+    __pyx_L51_bool_binop_done:;
     if (__pyx_t_5) {
 
-      /* "trviz/cy/decompose.pyx":282
+      /* "trviz/cy/decompose.pyx":253
  *             # sequence[prev_i: motif_end].
  *             # update motif_end
  *             if verbose:             # <<<<<<<<<<<<<<
@@ -5721,16 +5489,16 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       __pyx_t_5 = (__pyx_v_verbose != 0);
       if (__pyx_t_5) {
 
-        /* "trviz/cy/decompose.pyx":283
+        /* "trviz/cy/decompose.pyx":254
  *             # update motif_end
  *             if verbose:
  *                 print("Decomposed motif: ", decomposed_motif[::-1])             # <<<<<<<<<<<<<<
  *             if prev_i == 0:
  *                 decomposed_motifs.append(sequence[:motif_end])
  */
-        __pyx_t_10 = __Pyx_PyObject_GetItem(__pyx_v_decomposed_motif, __pyx_slice__5); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 283, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyObject_GetItem(__pyx_v_decomposed_motif, __pyx_slice__5); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 254, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
-        __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 283, __pyx_L1_error)
+        __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 254, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         __Pyx_INCREF(__pyx_kp_s_Decomposed_motif);
         __Pyx_GIVEREF(__pyx_kp_s_Decomposed_motif);
@@ -5738,10 +5506,10 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
         __Pyx_GIVEREF(__pyx_t_10);
         PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_10);
         __pyx_t_10 = 0;
-        if (__Pyx_PrintOne(0, __pyx_t_9) < 0) __PYX_ERR(0, 283, __pyx_L1_error)
+        if (__Pyx_PrintOne(0, __pyx_t_9) < 0) __PYX_ERR(0, 254, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-        /* "trviz/cy/decompose.pyx":282
+        /* "trviz/cy/decompose.pyx":253
  *             # sequence[prev_i: motif_end].
  *             # update motif_end
  *             if verbose:             # <<<<<<<<<<<<<<
@@ -5750,7 +5518,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
       }
 
-      /* "trviz/cy/decompose.pyx":284
+      /* "trviz/cy/decompose.pyx":255
  *             if verbose:
  *                 print("Decomposed motif: ", decomposed_motif[::-1])
  *             if prev_i == 0:             # <<<<<<<<<<<<<<
@@ -5760,7 +5528,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       __pyx_t_5 = ((__pyx_v_prev_i == 0) != 0);
       if (__pyx_t_5) {
 
-        /* "trviz/cy/decompose.pyx":285
+        /* "trviz/cy/decompose.pyx":256
  *                 print("Decomposed motif: ", decomposed_motif[::-1])
  *             if prev_i == 0:
  *                 decomposed_motifs.append(sequence[:motif_end])             # <<<<<<<<<<<<<<
@@ -5769,24 +5537,24 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
         if (unlikely(__pyx_v_sequence == Py_None)) {
           PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-          __PYX_ERR(0, 285, __pyx_L1_error)
+          __PYX_ERR(0, 256, __pyx_L1_error)
         }
-        __pyx_t_9 = PySequence_GetSlice(__pyx_v_sequence, 0, __pyx_v_motif_end); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 285, __pyx_L1_error)
+        __pyx_t_9 = PySequence_GetSlice(__pyx_v_sequence, 0, __pyx_v_motif_end); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 256, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
-        __pyx_t_34 = __Pyx_PyList_Append(__pyx_v_decomposed_motifs, __pyx_t_9); if (unlikely(__pyx_t_34 == ((int)-1))) __PYX_ERR(0, 285, __pyx_L1_error)
+        __pyx_t_36 = __Pyx_PyList_Append(__pyx_v_decomposed_motifs, __pyx_t_9); if (unlikely(__pyx_t_36 == ((int)-1))) __PYX_ERR(0, 256, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-        /* "trviz/cy/decompose.pyx":284
+        /* "trviz/cy/decompose.pyx":255
  *             if verbose:
  *                 print("Decomposed motif: ", decomposed_motif[::-1])
  *             if prev_i == 0:             # <<<<<<<<<<<<<<
  *                 decomposed_motifs.append(sequence[:motif_end])
  *                 # print("Added {}".format(sequence[:motif_end]))
  */
-        goto __pyx_L63;
+        goto __pyx_L54;
       }
 
-      /* "trviz/cy/decompose.pyx":288
+      /* "trviz/cy/decompose.pyx":259
  *                 # print("Added {}".format(sequence[:motif_end]))
  *             else:
  *                 decomposed_motifs.append(sequence[prev_i-1:motif_end])             # <<<<<<<<<<<<<<
@@ -5796,16 +5564,16 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       /*else*/ {
         if (unlikely(__pyx_v_sequence == Py_None)) {
           PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-          __PYX_ERR(0, 288, __pyx_L1_error)
+          __PYX_ERR(0, 259, __pyx_L1_error)
         }
-        __pyx_t_9 = PySequence_GetSlice(__pyx_v_sequence, (__pyx_v_prev_i - 1), __pyx_v_motif_end); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 288, __pyx_L1_error)
+        __pyx_t_9 = PySequence_GetSlice(__pyx_v_sequence, (__pyx_v_prev_i - 1), __pyx_v_motif_end); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 259, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
-        __pyx_t_34 = __Pyx_PyList_Append(__pyx_v_decomposed_motifs, __pyx_t_9); if (unlikely(__pyx_t_34 == ((int)-1))) __PYX_ERR(0, 288, __pyx_L1_error)
+        __pyx_t_36 = __Pyx_PyList_Append(__pyx_v_decomposed_motifs, __pyx_t_9); if (unlikely(__pyx_t_36 == ((int)-1))) __PYX_ERR(0, 259, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       }
-      __pyx_L63:;
+      __pyx_L54:;
 
-      /* "trviz/cy/decompose.pyx":290
+      /* "trviz/cy/decompose.pyx":261
  *                 decomposed_motifs.append(sequence[prev_i-1:motif_end])
  *                 # print("Added {}".format(sequence[prev_i-1:motif_end]))
  *             motif_end = prev_i-1 if prev_i > 0 else motif_end             # <<<<<<<<<<<<<<
@@ -5819,7 +5587,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
       }
       __pyx_v_motif_end = __pyx_t_31;
 
-      /* "trviz/cy/decompose.pyx":278
+      /* "trviz/cy/decompose.pyx":249
  *         j = cur_j
  * 
  *         if prev_j == 1 and j != 1:  # decompose             # <<<<<<<<<<<<<<
@@ -5828,7 +5596,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
     }
 
-    /* "trviz/cy/decompose.pyx":297
+    /* "trviz/cy/decompose.pyx":268
  *         #     decomposed_motif += sequence[i - 1]
  * 
  *         if i == 0 and j == 0:             # <<<<<<<<<<<<<<
@@ -5839,23 +5607,23 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     if (__pyx_t_23) {
     } else {
       __pyx_t_5 = __pyx_t_23;
-      goto __pyx_L65_bool_binop_done;
+      goto __pyx_L56_bool_binop_done;
     }
     __pyx_t_23 = ((__pyx_v_j == 0) != 0);
     __pyx_t_5 = __pyx_t_23;
-    __pyx_L65_bool_binop_done:;
+    __pyx_L56_bool_binop_done:;
     if (__pyx_t_5) {
 
-      /* "trviz/cy/decompose.pyx":303
+      /* "trviz/cy/decompose.pyx":274
  *             #     print("Added {}".format(sequence[:motif_end]))
  *             #     decomposed_motifs.append(sequence[:motif_end])
  *             break             # <<<<<<<<<<<<<<
  * 
  *         prev_i = i
  */
-      goto __pyx_L57_break;
+      goto __pyx_L48_break;
 
-      /* "trviz/cy/decompose.pyx":297
+      /* "trviz/cy/decompose.pyx":268
  *         #     decomposed_motif += sequence[i - 1]
  * 
  *         if i == 0 and j == 0:             # <<<<<<<<<<<<<<
@@ -5864,7 +5632,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
     }
 
-    /* "trviz/cy/decompose.pyx":305
+    /* "trviz/cy/decompose.pyx":276
  *             break
  * 
  *         prev_i = i             # <<<<<<<<<<<<<<
@@ -5873,7 +5641,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
     __pyx_v_prev_i = __pyx_v_i;
 
-    /* "trviz/cy/decompose.pyx":306
+    /* "trviz/cy/decompose.pyx":277
  * 
  *         prev_i = i
  *         prev_j = j             # <<<<<<<<<<<<<<
@@ -5882,45 +5650,45 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
     __pyx_v_prev_j = __pyx_v_j;
 
-    /* "trviz/cy/decompose.pyx":307
+    /* "trviz/cy/decompose.pyx":278
  *         prev_i = i
  *         prev_j = j
  *         cur_i = bt_i[i, m, j]             # <<<<<<<<<<<<<<
  *         cur_m = bt_m[i, m, j]
  *         cur_j = bt_j[i, m, j]
  */
-    __pyx_t_26 = __pyx_v_i;
+    __pyx_t_24 = __pyx_v_i;
     __pyx_t_27 = __pyx_v_m;
-    __pyx_t_24 = __pyx_v_j;
-    __pyx_v_cur_i = (*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[2].strides));
+    __pyx_t_26 = __pyx_v_j;
+    __pyx_v_cur_i = (*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_i.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_i.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_i.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_i.diminfo[2].strides));
 
-    /* "trviz/cy/decompose.pyx":308
+    /* "trviz/cy/decompose.pyx":279
  *         prev_j = j
  *         cur_i = bt_i[i, m, j]
  *         cur_m = bt_m[i, m, j]             # <<<<<<<<<<<<<<
  *         cur_j = bt_j[i, m, j]
  * 
  */
-    __pyx_t_24 = __pyx_v_i;
+    __pyx_t_26 = __pyx_v_i;
     __pyx_t_27 = __pyx_v_m;
-    __pyx_t_26 = __pyx_v_j;
-    __pyx_v_cur_m = (*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[2].strides));
+    __pyx_t_24 = __pyx_v_j;
+    __pyx_v_cur_m = (*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_m.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_m.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_m.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_m.diminfo[2].strides));
 
-    /* "trviz/cy/decompose.pyx":309
+    /* "trviz/cy/decompose.pyx":280
  *         cur_i = bt_i[i, m, j]
  *         cur_m = bt_m[i, m, j]
  *         cur_j = bt_j[i, m, j]             # <<<<<<<<<<<<<<
  * 
  *     if verbose:
  */
-    __pyx_t_26 = __pyx_v_i;
+    __pyx_t_24 = __pyx_v_i;
     __pyx_t_27 = __pyx_v_m;
-    __pyx_t_24 = __pyx_v_j;
-    __pyx_v_cur_j = (*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[2].strides));
+    __pyx_t_26 = __pyx_v_j;
+    __pyx_v_cur_j = (*__Pyx_BufPtrStrided3d(__pyx_t_5trviz_2cy_9decompose_DTYPE_t *, __pyx_pybuffernd_bt_j.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_bt_j.diminfo[0].strides, __pyx_t_27, __pyx_pybuffernd_bt_j.diminfo[1].strides, __pyx_t_26, __pyx_pybuffernd_bt_j.diminfo[2].strides));
   }
-  __pyx_L57_break:;
+  __pyx_L48_break:;
 
-  /* "trviz/cy/decompose.pyx":311
+  /* "trviz/cy/decompose.pyx":282
  *         cur_j = bt_j[i, m, j]
  * 
  *     if verbose:             # <<<<<<<<<<<<<<
@@ -5930,18 +5698,18 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __pyx_t_5 = (__pyx_v_verbose != 0);
   if (__pyx_t_5) {
 
-    /* "trviz/cy/decompose.pyx":312
+    /* "trviz/cy/decompose.pyx":283
  * 
  *     if verbose:
  *         print("Input     : {}".format(''.join(decomposed_motifs[::-1])))             # <<<<<<<<<<<<<<
  *         print("Decomposed: {}".format(' '.join(decomposed_motifs[::-1])))
  * 
  */
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Input, __pyx_n_s_format); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 312, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Input, __pyx_n_s_format); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 283, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_v_decomposed_motifs, __pyx_slice__5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 312, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_v_decomposed_motifs, __pyx_slice__5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 283, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_PyString_Join(__pyx_kp_s__4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 312, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyString_Join(__pyx_kp_s__4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 283, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_3 = NULL;
@@ -5957,24 +5725,24 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     __pyx_t_9 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_10, __pyx_t_3, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_1);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 312, __pyx_L1_error)
+    if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 283, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    if (__Pyx_PrintOne(0, __pyx_t_9) < 0) __PYX_ERR(0, 312, __pyx_L1_error)
+    if (__Pyx_PrintOne(0, __pyx_t_9) < 0) __PYX_ERR(0, 283, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-    /* "trviz/cy/decompose.pyx":313
+    /* "trviz/cy/decompose.pyx":284
  *     if verbose:
  *         print("Input     : {}".format(''.join(decomposed_motifs[::-1])))
  *         print("Decomposed: {}".format(' '.join(decomposed_motifs[::-1])))             # <<<<<<<<<<<<<<
  * 
  *     return decomposed_motifs[::-1]
  */
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Decomposed, __pyx_n_s_format); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 313, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Decomposed, __pyx_n_s_format); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_decomposed_motifs, __pyx_slice__5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 313, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_decomposed_motifs, __pyx_slice__5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyString_Join(__pyx_kp_s__6, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 313, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyString_Join(__pyx_kp_s__6, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = NULL;
@@ -5990,13 +5758,13 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     __pyx_t_9 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_10, __pyx_t_1, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_3);
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 313, __pyx_L1_error)
+    if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    if (__Pyx_PrintOne(0, __pyx_t_9) < 0) __PYX_ERR(0, 313, __pyx_L1_error)
+    if (__Pyx_PrintOne(0, __pyx_t_9) < 0) __PYX_ERR(0, 284, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-    /* "trviz/cy/decompose.pyx":311
+    /* "trviz/cy/decompose.pyx":282
  *         cur_j = bt_j[i, m, j]
  * 
  *     if verbose:             # <<<<<<<<<<<<<<
@@ -6005,19 +5773,19 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
  */
   }
 
-  /* "trviz/cy/decompose.pyx":315
+  /* "trviz/cy/decompose.pyx":286
  *         print("Decomposed: {}".format(' '.join(decomposed_motifs[::-1])))
  * 
  *     return decomposed_motifs[::-1]             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_9 = __Pyx_PyObject_GetItem(__pyx_v_decomposed_motifs, __pyx_slice__5); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 315, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetItem(__pyx_v_decomposed_motifs, __pyx_slice__5); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 286, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __pyx_r = ((PyObject*)__pyx_t_9);
   __pyx_t_9 = 0;
   goto __pyx_L0;
 
-  /* "trviz/cy/decompose.pyx":29
+  /* "trviz/cy/decompose.pyx":42
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef list decompose_cy(             # <<<<<<<<<<<<<<
@@ -6106,17 +5874,17 @@ static PyObject *__pyx_pw_5trviz_2cy_9decompose_3decompose_cy(PyObject *__pyx_se
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_motifs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("decompose_cy", 1, 3, 3, 1); __PYX_ERR(0, 29, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("decompose_cy", 1, 3, 3, 1); __PYX_ERR(0, 42, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_kwargs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("decompose_cy", 1, 3, 3, 2); __PYX_ERR(0, 29, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("decompose_cy", 1, 3, 3, 2); __PYX_ERR(0, 42, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "decompose_cy") < 0)) __PYX_ERR(0, 29, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "decompose_cy") < 0)) __PYX_ERR(0, 42, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -6131,15 +5899,15 @@ static PyObject *__pyx_pw_5trviz_2cy_9decompose_3decompose_cy(PyObject *__pyx_se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("decompose_cy", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 29, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("decompose_cy", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 42, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("trviz.cy.decompose.decompose_cy", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_sequence), (&PyString_Type), 1, "sequence", 1))) __PYX_ERR(0, 30, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_motifs), (&PyList_Type), 1, "motifs", 1))) __PYX_ERR(0, 31, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kwargs), (&PyDict_Type), 1, "kwargs", 1))) __PYX_ERR(0, 32, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_sequence), (&PyString_Type), 1, "sequence", 1))) __PYX_ERR(0, 43, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_motifs), (&PyList_Type), 1, "motifs", 1))) __PYX_ERR(0, 44, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_kwargs), (&PyDict_Type), 1, "kwargs", 1))) __PYX_ERR(0, 45, __pyx_L1_error)
   __pyx_r = __pyx_pf_5trviz_2cy_9decompose_2decompose_cy(__pyx_self, __pyx_v_sequence, __pyx_v_motifs, __pyx_v_kwargs);
 
   /* function exit code */
@@ -6160,7 +5928,7 @@ static PyObject *__pyx_pf_5trviz_2cy_9decompose_2decompose_cy(CYTHON_UNUSED PyOb
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("decompose_cy", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5trviz_2cy_9decompose_decompose_cy(__pyx_v_sequence, __pyx_v_motifs, __pyx_v_kwargs, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5trviz_2cy_9decompose_decompose_cy(__pyx_v_sequence, __pyx_v_motifs, __pyx_v_kwargs, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7340,9 +7108,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_KeyError = __Pyx_GetBuiltinName(__pyx_n_s_KeyError); if (!__pyx_builtin_KeyError) __PYX_ERR(0, 19, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 22, __pyx_L1_error)
-  __pyx_builtin_max = __Pyx_GetBuiltinName(__pyx_n_s_max); if (!__pyx_builtin_max) __PYX_ERR(0, 56, __pyx_L1_error)
-  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 69, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_builtin_max = __Pyx_GetBuiltinName(__pyx_n_s_max); if (!__pyx_builtin_max) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 82, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 83, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 965, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -7353,14 +7121,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "trviz/cy/decompose.pyx":283
+  /* "trviz/cy/decompose.pyx":254
  *             # update motif_end
  *             if verbose:
  *                 print("Decomposed motif: ", decomposed_motif[::-1])             # <<<<<<<<<<<<<<
  *             if prev_i == 0:
  *                 decomposed_motifs.append(sequence[:motif_end])
  */
-  __pyx_slice__5 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__5)) __PYX_ERR(0, 283, __pyx_L1_error)
+  __pyx_slice__5 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__5)) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__5);
   __Pyx_GIVEREF(__pyx_slice__5);
 
