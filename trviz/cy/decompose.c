@@ -2204,9 +2204,8 @@ static PyObject *__pyx_pf_5trviz_2cy_9decompose_2decompose_cy(CYTHON_UNUSED PyOb
 static __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_get = {0, &__pyx_n_s_get, 0, 0, 0};
 static __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_items = {0, &__pyx_n_s_items, 0, 0, 0};
 static __Pyx_CachedCFunction __pyx_umethod_PyString_Type_encode = {0, &__pyx_n_s_encode, 0, 0, 0};
-static PyObject *__pyx_int_5;
+static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_neg_1;
-static PyObject *__pyx_int_neg_4;
 static PyObject *__pyx_int_neg_2147483648;
 static PyObject *__pyx_slice__5;
 static PyObject *__pyx_tuple__7;
@@ -2946,15 +2945,15 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   /* "trviz/cy/decompose.pyx":50
  * 
  *     # Parameter setting
- *     cdef int match_score = kwargs.get("match_score", 5)             # <<<<<<<<<<<<<<
- *     cdef int mismatch_score = kwargs.get("mismatch_score", -4)
- *     cdef int insertion_score = kwargs.get("insertion_score", -4)
+ *     cdef int match_score = kwargs.get("match_score", 1)             # <<<<<<<<<<<<<<
+ *     cdef int mismatch_score = kwargs.get("mismatch_score", -1)
+ *     cdef int insertion_score = kwargs.get("insertion_score", -1)
  */
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "get");
     __PYX_ERR(0, 50, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_match_score, __pyx_int_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_match_score, __pyx_int_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2962,42 +2961,42 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
 
   /* "trviz/cy/decompose.pyx":51
  *     # Parameter setting
- *     cdef int match_score = kwargs.get("match_score", 5)
- *     cdef int mismatch_score = kwargs.get("mismatch_score", -4)             # <<<<<<<<<<<<<<
- *     cdef int insertion_score = kwargs.get("insertion_score", -4)
- *     cdef int deletion_score = kwargs.get("deletion_score", -4)
+ *     cdef int match_score = kwargs.get("match_score", 1)
+ *     cdef int mismatch_score = kwargs.get("mismatch_score", -1)             # <<<<<<<<<<<<<<
+ *     cdef int insertion_score = kwargs.get("insertion_score", -1)
+ *     cdef int deletion_score = kwargs.get("deletion_score", -1)
  */
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "get");
     __PYX_ERR(0, 51, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_mismatch_score, __pyx_int_neg_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_mismatch_score, __pyx_int_neg_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_mismatch_score = __pyx_t_2;
 
   /* "trviz/cy/decompose.pyx":52
- *     cdef int match_score = kwargs.get("match_score", 5)
- *     cdef int mismatch_score = kwargs.get("mismatch_score", -4)
- *     cdef int insertion_score = kwargs.get("insertion_score", -4)             # <<<<<<<<<<<<<<
- *     cdef int deletion_score = kwargs.get("deletion_score", -4)
+ *     cdef int match_score = kwargs.get("match_score", 1)
+ *     cdef int mismatch_score = kwargs.get("mismatch_score", -1)
+ *     cdef int insertion_score = kwargs.get("insertion_score", -1)             # <<<<<<<<<<<<<<
+ *     cdef int deletion_score = kwargs.get("deletion_score", -1)
  *     cdef DTYPE_t min_score_threshold = kwargs.get("min_score_threshold", NEGATIVE_INF)
  */
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "get");
     __PYX_ERR(0, 52, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_insertion_score, __pyx_int_neg_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_insertion_score, __pyx_int_neg_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_insertion_score = __pyx_t_2;
 
   /* "trviz/cy/decompose.pyx":53
- *     cdef int mismatch_score = kwargs.get("mismatch_score", -4)
- *     cdef int insertion_score = kwargs.get("insertion_score", -4)
- *     cdef int deletion_score = kwargs.get("deletion_score", -4)             # <<<<<<<<<<<<<<
+ *     cdef int mismatch_score = kwargs.get("mismatch_score", -1)
+ *     cdef int insertion_score = kwargs.get("insertion_score", -1)
+ *     cdef int deletion_score = kwargs.get("deletion_score", -1)             # <<<<<<<<<<<<<<
  *     cdef DTYPE_t min_score_threshold = kwargs.get("min_score_threshold", NEGATIVE_INF)
  *     cdef bint verbose = kwargs.get("verbose", False)
  */
@@ -3005,15 +3004,15 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "get");
     __PYX_ERR(0, 53, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_deletion_score, __pyx_int_neg_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_deletion_score, __pyx_int_neg_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_deletion_score = __pyx_t_2;
 
   /* "trviz/cy/decompose.pyx":54
- *     cdef int insertion_score = kwargs.get("insertion_score", -4)
- *     cdef int deletion_score = kwargs.get("deletion_score", -4)
+ *     cdef int insertion_score = kwargs.get("insertion_score", -1)
+ *     cdef int deletion_score = kwargs.get("deletion_score", -1)
  *     cdef DTYPE_t min_score_threshold = kwargs.get("min_score_threshold", NEGATIVE_INF)             # <<<<<<<<<<<<<<
  *     cdef bint verbose = kwargs.get("verbose", False)
  * 
@@ -3032,7 +3031,7 @@ static PyObject *__pyx_f_5trviz_2cy_9decompose_decompose_cy(PyObject *__pyx_v_se
   __pyx_v_min_score_threshold = __pyx_t_4;
 
   /* "trviz/cy/decompose.pyx":55
- *     cdef int deletion_score = kwargs.get("deletion_score", -4)
+ *     cdef int deletion_score = kwargs.get("deletion_score", -1)
  *     cdef DTYPE_t min_score_threshold = kwargs.get("min_score_threshold", NEGATIVE_INF)
  *     cdef bint verbose = kwargs.get("verbose", False)             # <<<<<<<<<<<<<<
  * 
@@ -7166,9 +7165,8 @@ static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   __pyx_umethod_PyDict_Type_items.type = (PyObject*)&PyDict_Type;
   __pyx_umethod_PyString_Type_encode.type = (PyObject*)&PyString_Type;
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_5 = PyInt_FromLong(5); if (unlikely(!__pyx_int_5)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_neg_1 = PyInt_FromLong(-1); if (unlikely(!__pyx_int_neg_1)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_neg_4 = PyInt_FromLong(-4); if (unlikely(!__pyx_int_neg_4)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_neg_2147483648 = PyInt_FromLong(-2147483648L); if (unlikely(!__pyx_int_neg_2147483648)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
