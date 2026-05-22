@@ -21,7 +21,7 @@ jobs:
         with:
           package-dir: .
         env:
-          CIBW_BEFORE_BUILD: pip install numpy cython matplotlib biopython scipy distinctipy
+          CIBW_BEFORE_BUILD: pip install numpy cython
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
           CIBW_SKIP: "pp* *musllinux*"
           CIBW_ARCHS_LINUX: "x86_64"
