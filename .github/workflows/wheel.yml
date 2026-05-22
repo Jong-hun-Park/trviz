@@ -1,35 +1,31 @@
-name: Build
+name: Test
 
 on: [push, pull_request]
 
 jobs:
-  build_wheels:
-    name: Build wheels on ${{ matrix.os }}
+  test:
+    name: Test on ${{ matrix.os }} / Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: ["macos-latest", "ubuntu-latest"]
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.10", "3.11", "3.12"]
 
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v3
-
-      - name: "Build wheels"
-        uses: pypa/cibuildwheel@v2.16.5
+      - uses: actions/setup-python@v5
         with:
-          package-dir: .
-        env:
-          CIBW_BEFORE_BUILD: pip install numpy cython
-          CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
-          CIBW_SKIP: "pp* *musllinux*"
-          CIBW_ARCHS_LINUX: "x86_64"
-          CIBW_ARCHS_MACOS: "x86_64 arm64"
-          CIBW_TEST_SKIP: "*_arm64"
-          CIBW_TEST_COMMAND: python {package}/tests/test_trviz.py
+          python-version: ${{ matrix.python-version }}
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
-          path: ./wheelhouse/*.whl
+      - name: Install build deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install cython numpy
+
+      - name: Install trviz
+        run: pip install -e .
+
+      - name: Run tests
+        run: python tests/test_trviz.py

@@ -49,8 +49,6 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     classifiers=[
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
@@ -66,6 +64,6 @@ setup(
         'scipy',
         'distinctipy',
     ],
-    python_requires='>=3.8',
+    python_requires='>=3.10',
     ext_modules=extensions if not use_cython else [],
 )
