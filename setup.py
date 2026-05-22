@@ -62,7 +62,7 @@ setup(
     install_requires=[
         'matplotlib',
         'numpy',
-        'biopython',
+        'biopython<1.86',
         'scipy',
         'distinctipy',
     ],
