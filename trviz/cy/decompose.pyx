@@ -24,6 +24,19 @@ cpdef void check_if_dp_parameters_are_valid(dict kwargs):
             if type(v) != bool:
                 raise ValueError(f"Invalid value type. {k}: {v}")
 
+# Equivalent to (int(np.argmax([a, b, c])), max(a, b, c)) — first index wins on
+# ties (>= comparisons). Tie-breaking is load-bearing: see the docstring inside
+# decompose_cy at the j==1, i>1 branch for the motif-end-vs-from_m_left example.
+cdef inline (int, DTYPE_t) _argmax_max3(DTYPE_t a, DTYPE_t b, DTYPE_t c):
+    if a >= b:
+        if a >= c:
+            return 0, a
+        return 2, c
+    if b >= c:
+        return 1, b
+    return 2, c
+
+
 @cython.boundscheck(False)
 @cython.wraparound(False)
 cpdef list decompose_cy(
@@ -41,12 +54,18 @@ cpdef list decompose_cy(
     cdef DTYPE_t min_score_threshold = kwargs.get("min_score_threshold", NEGATIVE_INF)
     cdef bint verbose = kwargs.get("verbose", False)
 
+    cdef bytes sequence_bytes = sequence.encode('ascii')
+    cdef const unsigned char* seq_ptr = sequence_bytes
+    cdef list motif_bytes_list = [mt.encode('ascii') for mt in motifs]
+    cdef np.ndarray[DTYPE_t, ndim=1] motif_lengths_arr = np.asarray(
+        [len(mt) for mt in motifs], dtype=DTYPE)
+
     # Define s[i, m, j]
     # Use C-style arrays instead of NumPy arrays
     # cdef int[:, :, :] s
     # cdef object[:, :, :] backtrack
     cdef np.ndarray[DTYPE_t, ndim=3] s
-    cdef np.ndarray[object, ndim=3] backtrack
+    cdef np.ndarray[DTYPE_t, ndim=3] bt_i, bt_m, bt_j
     cdef int max_motif_length = len(max(motifs, key=len))
     if verbose:
         print("Motifs used for decomposition: {}".format(','.join(motifs)))
@@ -54,7 +73,9 @@ cpdef list decompose_cy(
 
     # Allocate memory for s and backtrack arrays
     s = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
-    backtrack = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=object)
+    bt_i = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
+    bt_m = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
+    bt_j = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=DTYPE)
 
     # Boundary cases, when i = 0 or j = 0
     cdef int m, i, j
@@ -63,58 +84,75 @@ cpdef list decompose_cy(
             for j in range(len(motif) + 1):
                 if i == 0 and j == 0:
                     s[0, m, 0] = 0
-                    backtrack[0, m, j] = (0, m, 0)
+                    bt_i[0, m, j] = 0
+                    bt_m[0, m, j] = m
+                    bt_j[0, m, j] = 0
                 elif i == 0 and j != 0:
                     s[0, m, j] = s[0, m, j - 1] + insertion_score
-                    backtrack[0, m, j] = (0, m, j - 1)
+                    bt_i[0, m, j] = 0
+                    bt_m[0, m, j] = m
+                    bt_j[0, m, j] = j - 1
                 elif i != 0 and j == 0:
                     s[i, m, 0] = s[i - 1, m, 0] + insertion_score
-                    backtrack[i, m, 0] = (i - 1, m, 0)
+                    bt_i[i, m, 0] = i - 1
+                    bt_m[i, m, 0] = m
+                    bt_j[i, m, 0] = 0
 
     # Normal cases, if i != 0
     # Note that sequence and motif are 1-based, but the DP table is 0-based.
-    cdef DTYPE_t diagonal, from_diagonal, from_m_left, from_m_up, max_from_motif_end, max_motif_val
+    cdef DTYPE_t diagonal, from_diagonal, from_left, from_up, from_m_left, from_m_up, max_from_motif_end, max_motif_val, max_val
     cdef int argmax_index, max_m_index, max_j_of_max_m
     cdef int mi
-    cdef str ms
+    cdef DTYPE_t m_end
+    cdef DTYPE_t motif_len
+    cdef bytes motif_b
+    cdef const unsigned char* motif_ptr
 
     for i in range(1, len(sequence) + 1):
+        if i > 1:
+            max_motif_val = NEGATIVE_INF
+            max_m_index = -1
+            max_j_of_max_m = -1
+            for mi in range(len(motifs)):
+                m_end = s[i - 1, mi, motif_lengths_arr[mi]]
+                if m_end > max_motif_val:
+                    max_motif_val = m_end
+                    max_m_index = mi
+                    max_j_of_max_m = motif_lengths_arr[mi]
         for m, motif in enumerate(motifs):
-            for j in range(1, len(motif) + 1):
+            motif_b = motif_bytes_list[m]
+            motif_ptr = motif_b
+            motif_len = motif_lengths_arr[m]
+            for j in range(1, motif_len + 1):
                 if j == 1:
                     if i == 1:
-                        from_diagonal = s[i - 1, m, j - 1] + match_score if sequence[i - 1] == motif[j - 1] else \
+                        from_diagonal = s[i - 1, m, j - 1] + match_score if seq_ptr[i - 1] == motif_ptr[j - 1] else \
                             s[i - 1, m, j - 1] + mismatch_score
                         from_m_left = s[i - 1, m, j] + insertion_score
                         from_m_up = s[i, m, j - 1] + deletion_score
 
                         # s[1][m][1]
-                        s[i, m, j] = max(from_diagonal, from_m_left, from_m_up)
-                        argmax_index = np.argmax([from_diagonal, from_m_left, from_m_up])
+                        argmax_index, max_val = _argmax_max3(from_diagonal, from_m_left, from_m_up)
+                        s[i, m, j] = max_val
 
                         if argmax_index == 0:  # max from end
-                            backtrack[i][m][j] = (0, m, 0)
+                            bt_i[i, m, j] = 0
+                            bt_m[i, m, j] = m
+                            bt_j[i, m, j] = 0
                         elif argmax_index == 1:  # max from left in the same m
-                            backtrack[i][m][j] = (i - 1, m, j)
+                            bt_i[i, m, j] = i - 1
+                            bt_m[i, m, j] = m
+                            bt_j[i, m, j] = j
                         else:  # max from up in the same m
-                            backtrack[i][m][j] = (i, m, 0)  # j == 0
+                            bt_i[i, m, j] = i
+                            bt_m[i, m, j] = m
+                            bt_j[i, m, j] = 0  # j == 0
                     else:
-                        max_motif_val = NEGATIVE_INF
-                        max_m_index = -1
-                        max_j_of_max_m = -1
-                        for mi, ms in enumerate(motifs):
-                            m_end = s[i - 1, mi, len(ms)]
-                            if m_end > max_motif_val:
-                                max_motif_val = m_end
-                                max_m_index = mi
-                                max_j_of_max_m = len(ms)
-
-                        max_from_motif_end = max_motif_val + match_score if sequence[i - 1] == motif[
+                        max_from_motif_end = max_motif_val + match_score if seq_ptr[i - 1] == motif_ptr[
                             0] else max_motif_val + mismatch_score
                         from_m_left = s[i - 1, m, 1] + insertion_score
                         from_m_up = s[i, m, 0] + deletion_score
 
-                        s[i, m, j] = max(max_from_motif_end, from_m_left, from_m_up)
                         '''
                             Tie-breaking for max_from_motif_end vs from_m_left
                             np.argmax select the first item if they have the same values
@@ -125,28 +163,41 @@ cpdef list decompose_cy(
                             Decomposition 1) ACGT- AACGT
                             Decomposition 2) ACGTA -ACGT
                         '''
-                        argmax_index = np.argmax([max_from_motif_end, from_m_left, from_m_up])
+                        argmax_index, max_val = _argmax_max3(max_from_motif_end, from_m_left, from_m_up)
+                        s[i, m, j] = max_val
 
                         if argmax_index == 0:  # max from motif end
-                            backtrack[i, m, j] = (i - 1, max_m_index, max_j_of_max_m)
+                            bt_i[i, m, j] = i - 1
+                            bt_m[i, m, j] = max_m_index
+                            bt_j[i, m, j] = max_j_of_max_m
                         elif argmax_index == 1:  # max from left in the same m
-                            backtrack[i, m, j] = (i - 1, m, 1)
+                            bt_i[i, m, j] = i - 1
+                            bt_m[i, m, j] = m
+                            bt_j[i, m, j] = 1
                         else:  # max from up in the same m
-                            backtrack[i, m, j] = (i, m, 0)
+                            bt_i[i, m, j] = i
+                            bt_m[i, m, j] = m
+                            bt_j[i, m, j] = 0
                 else:
-                    diagonal = s[i - 1, m, j - 1] + match_score if sequence[i - 1] == motif[j - 1] else \
+                    diagonal = s[i - 1, m, j - 1] + match_score if seq_ptr[i - 1] == motif_ptr[j - 1] else \
                     s[i - 1, m, j - 1] + mismatch_score
                     from_left = s[i - 1, m, j] + insertion_score
                     from_up = s[i, m, j - 1] + deletion_score
 
-                    s[i, m, j] = max(diagonal, from_left, from_up)
-                    argmax_index = np.argmax([diagonal, from_left, from_up])
+                    argmax_index, max_val = _argmax_max3(diagonal, from_left, from_up)
+                    s[i, m, j] = max_val
                     if argmax_index == 0:
-                        backtrack[i, m, j] = (i - 1, m, j - 1)
+                        bt_i[i, m, j] = i - 1
+                        bt_m[i, m, j] = m
+                        bt_j[i, m, j] = j - 1
                     elif argmax_index == 1:
-                        backtrack[i, m, j] = (i - 1, m, j)
+                        bt_i[i, m, j] = i - 1
+                        bt_m[i, m, j] = m
+                        bt_j[i, m, j] = j
                     else:
-                        backtrack[i, m, j] = (i, m, j - 1)
+                        bt_i[i, m, j] = i
+                        bt_m[i, m, j] = m
+                        bt_j[i, m, j] = j - 1
 
     if verbose:
         print("DP table")
@@ -157,23 +208,31 @@ cpdef list decompose_cy(
         print("Backtrack table")
         for i in range(len(sequence) + 1):
             for m in range(len(motifs) + 1):
-                print(f"i{i}, m{m}, {backtrack[i]}")
+                print(f"i{i}, m{m}, bt_i={bt_i[i]}, bt_m={bt_m[i]}, bt_j={bt_j[i]}")
 
     # Backtracking - getting decomposed motifs
-    cdef object backtrack_start = None
+    cdef int start_i = 0
+    cdef int start_m = 0
+    cdef int start_j = 0
+    cdef bint found = False
     cdef DTYPE_t backtrack_max = min_score_threshold
     for m, motif in enumerate(motifs):
         if backtrack_max < s[len(sequence), m, len(motif)]:
             backtrack_max = s[len(sequence), m, len(motif)]
-            backtrack_start = (len(sequence), m, len(motif))
+            start_i = len(sequence)
+            start_m = m
+            start_j = len(motif)
+            found = True
 
-    if backtrack_start is None:
+    if not found:
         raise ValueError("No good match greater than score threshold of {}".format(min_score_threshold))
 
     if verbose:
         print("Best score: ", backtrack_max)
 
-    cdef object backtrack_pointer = backtrack_start
+    cdef int cur_i = start_i
+    cdef int cur_m = start_m
+    cdef int cur_j = start_j
     cdef int prev_i = -1
     cdef int prev_j = -1
     cdef int motif_end = len(sequence)
@@ -182,8 +241,10 @@ cpdef list decompose_cy(
 
     while True:
         if verbose:
-            print("Backtrack pointer", backtrack_pointer)
-        i, m, j = backtrack_pointer
+            print("Backtrack pointer", (cur_i, cur_m, cur_j))
+        i = cur_i
+        m = cur_m
+        j = cur_j
 
         if prev_j == 1 and j != 1:  # decompose
             # This condition indicates there was a jump. So, we need to decompose the motif
@@ -214,7 +275,9 @@ cpdef list decompose_cy(
 
         prev_i = i
         prev_j = j
-        backtrack_pointer = backtrack[i, m, j]
+        cur_i = bt_i[i, m, j]
+        cur_m = bt_m[i, m, j]
+        cur_j = bt_j[i, m, j]
 
     if verbose:
         print("Input     : {}".format(''.join(decomposed_motifs[::-1])))
