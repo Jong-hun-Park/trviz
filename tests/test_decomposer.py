@@ -227,6 +227,16 @@ def test_decompose_dp_invalid_sequence(tr_decomposer_dp):
         tr_decomposer_dp.decompose("NNNNNN", "ACTG")
 
 
+def test_decompose_rejects_non_string_sequence(tr_decomposer_dp):
+    with pytest.raises(TypeError, match="Sequence must be a string"):
+        tr_decomposer_dp.decompose(123, ["ACTG"])
+
+
+def test_decompose_rejects_non_list_motifs(tr_decomposer_dp):
+    with pytest.raises(TypeError, match="Motifs must be a list of strings"):
+        tr_decomposer_dp.decompose("ACTGACTG", {"not": "a list"})
+
+
 @pytest.mark.parametrize(
     "sequence, motifs, kwargs, expected",
     [

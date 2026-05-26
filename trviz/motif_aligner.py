@@ -50,7 +50,7 @@ class MotifAligner:
         elif tool == 'star':
             return self._align_motifs_with_star
         else:
-            ValueError(tool)
+            raise ValueError(f"Unknown alignment tool: {tool}")
 
 
     @staticmethod

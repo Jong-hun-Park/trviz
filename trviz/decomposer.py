@@ -94,11 +94,11 @@ class Decomposer:
         :return: decomposed sequence
         """
         if not isinstance(sequence, str):
-            TypeError("Sequence must be a string")
+            raise TypeError("Sequence must be a string")
         if isinstance(motifs, str):
             motifs = [motifs]  # only one string is given
         if not isinstance(motifs, list):
-            TypeError("Motifs must be a list of strings")
+            raise TypeError("Motifs must be a list of strings")
 
         sequence = sequence.upper()
         motifs = [m.upper() for m in motifs]
