@@ -29,6 +29,11 @@ jobs:
           CIBW_BUILD: "cp310-* cp311-* cp312-*"
           CIBW_ARCHS_LINUX: x86_64
           CIBW_ARCHS_MACOS: x86_64 arm64
+          # manylinux_2_28 (AlmaLinux 8) is required because scipy 1.16+
+          # no longer publishes manylinux2014 wheels; without this the
+          # test-time `pip install` falls back to a source build that
+          # fails on missing OpenBLAS in the container.
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
           CIBW_TEST_SKIP: "*_arm64"  # cross-built arm64 wheels can't be tested on x86 runners
           CIBW_TEST_COMMAND: python {package}/tests/test_trviz.py
 
