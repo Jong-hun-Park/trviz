@@ -107,6 +107,20 @@ def test_trplot_with_user_provided_ax(visualizer, simple_inputs):
     plt.close(user_fig)
 
 
+def test_trplot_with_single_sequence(visualizer):
+    """Regression: clustering is a no-op for N=1, must not crash on empty distance matrix."""
+    fig, ax = visualizer.trplot(
+        aligned_labeled_repeats=["AAAB"],
+        sample_ids=["s1"],
+        symbol_to_motif={"A": "ACT", "B": "ACG"},
+        sort_by_clustering=True,  # the buggy path — was raising ValueError
+        output_name=None,
+    )
+    assert isinstance(fig, plt.Figure)
+    assert isinstance(ax, plt.Axes)
+    plt.close(fig)
+
+
 def test_plot_motif_color_map_returns_fig_and_ax(visualizer):
     symbol_to_motif = {"A": "ACT", "B": "ACG"}
     motif_counter = {"ACT": 3, "ACG": 1}
