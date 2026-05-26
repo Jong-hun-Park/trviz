@@ -55,6 +55,7 @@ class TandemRepeatVisualizer:
         dpi=300,
         ax=None,
         close=False,
+        private_motifs=None,
     ):
         """Generate a plot for motif color map.
 
@@ -108,8 +109,16 @@ class TandemRepeatVisualizer:
                 plt.Rectangle(box_position, box_width, box_height, linewidth=0, facecolor=color, edgecolor="white")
             )
             y_base_position -= 1
-            motif = symbol_to_motif[symbol]
-            text = f"{motif:<{max_motif_length + 2}}" + f"{motif_counter[motif]:>5}"
+            if symbol == PRIVATE_MOTIF_LABEL and private_motifs:
+                # The private color represents N distinct motifs that all share
+                # one symbol. Show "private (N)" + total count rather than one
+                # arbitrary motif name, which would mislead readers.
+                count = sum(motif_counter[m] for m in private_motifs)
+                label = f"private ({len(private_motifs)})"
+                text = f"{label:<{max_motif_length + 2}}" + f"{count:>5}"
+            else:
+                motif = symbol_to_motif[symbol]
+                text = f"{motif:<{max_motif_length + 2}}" + f"{motif_counter[motif]:>5}"
             yticklabels.append(text)
 
         ax.yaxis.tick_right()

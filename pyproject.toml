@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "trviz"
-version = "1.4.1"
+version = "1.4.2"
 description = "A python library for decomposing and visualizing tandem repeat sequences"
 readme = "README.md"
 license = { file = "LICENSE.md" }

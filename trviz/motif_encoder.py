@@ -13,6 +13,11 @@ class MotifEncoder:
         self.motif_to_symbol = None
         self.score_matrix = None
         self.motif_counter = None
+        # All distinct motifs that share PRIVATE_MOTIF_LABEL after encoding.
+        # symbol_to_motif[PRIVATE_MOTIF_LABEL] only holds one arbitrary entry
+        # (the comprehension key is constant), so callers that want the full
+        # list of private motifs (e.g. the legend renderer) read this instead.
+        self.private_motifs: list = []
 
     @staticmethod
     def _divide_motifs_into_normal_and_private(motif_counter, private_motif_threshold):
@@ -130,10 +135,12 @@ class MotifEncoder:
 
             # Assign a code to all private motifs
             motif_to_symbol.update({motif: PRIVATE_MOTIF_LABEL for motif, _ in private_motifs.most_common()})
-            # TODO(B035): {PRIVATE_MOTIF_LABEL: motif for ...} produces only the last motif because
-            #             the comprehension key is constant. Likely intended a list or different
-            #             structure here. Investigate as a separate issue.
+            # symbol_to_motif[PRIVATE_MOTIF_LABEL] is intentionally one arbitrary
+            # private motif (the comprehension key is constant). The full list
+            # of private motifs is exposed via self.private_motifs below so the
+            # legend renderer can label the private color correctly.
             symbol_to_motif.update({PRIVATE_MOTIF_LABEL: motif for motif, _ in private_motifs.most_common()})  # noqa: B035
+            self.private_motifs = [motif for motif, _ in private_motifs.most_common()]
 
             # For normal motifs
             motif_to_symbol.update(
