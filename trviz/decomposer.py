@@ -1,3 +1,4 @@
+import logging
 from typing import List
 from collections import Counter, defaultdict
 
@@ -5,12 +6,15 @@ from trviz.utils import is_valid_sequence
 from trviz.utils import get_motifs_from_visited_states_and_region
 
 import numpy as np
+
+logger = logging.getLogger(__name__)
+
 DP_MODULE = "DP"
 try:
     from trviz.cy.decompose import decompose_cy
     DP_MODULE = "DP_CY"
 except ImportError:
-    print("Cython is not available. Using pure python implementation for decomposition")
+    logger.warning("Cython is not available. Using pure python implementation for decomposition")
 
 
 class Decomposer:
@@ -77,8 +81,8 @@ class Decomposer:
                             max_frequency = motif_pair_counter[motif_pair]
                             max_frequency_motif_pair = motif_pair
                     if verbose:
-                        print("Multiple pairs found", motif_pair_str_to_motif_pair[''.join(motif_pair)])
-                        print("Max frequency motif pair:", max_frequency_motif_pair)
+                        logger.info("Multiple pairs found %s", motif_pair_str_to_motif_pair[''.join(motif_pair)])
+                        logger.info("Max frequency motif pair: %s", max_frequency_motif_pair)
 
                     tr[i], tr[i + 1] = max_frequency_motif_pair
             refined_trs.append(tr)
@@ -202,8 +206,8 @@ class Decomposer:
         # 0 <= j <= len(m): count: len(m)+1
         max_motif_length = len(max(motifs, key=len))
         if verbose:
-            print("Motifs used for decomposition: {}".format(','.join(motifs)))
-            print("Max motif length", max_motif_length)
+            logger.info("Motifs used for decomposition: %s", ','.join(motifs))
+            logger.info("Max motif length %s", max_motif_length)
 
         s = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1))
         backtrack = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1), dtype=object)
@@ -296,15 +300,15 @@ class Decomposer:
                             backtrack[i, m, j] = (i, m, j - 1)
 
         if verbose:
-            print("DP table")
+            logger.debug("DP table")
             for i in range(len(sequence) + 1):
                 for m in range(len(motifs)):
-                    print(f"i{i}, m{m}, {s[i]}")
+                    logger.debug("i%s, m%s, %s", i, m, s[i])
 
-            print("Backtrack table")
+            logger.debug("Backtrack table")
             for i in range(len(sequence) + 1):
                 for m in range(len(motifs) + 1):
-                    print(f"i{i}, m{m}, {backtrack[i]}")
+                    logger.debug("i%s, m%s, %s", i, m, backtrack[i])
 
         # Backtracking - getting decomposed motifs
         backtrack_start = None
@@ -318,7 +322,7 @@ class Decomposer:
             raise ValueError("No good match greater than score threshold of {}".format(min_score_threshold))
 
         if verbose:
-            print("Best score: ", backtrack_max)
+            logger.info("Best score: %s", backtrack_max)
 
         backtrack_pointer = backtrack_start
         prev_i = -1
@@ -328,12 +332,12 @@ class Decomposer:
 
         while True:
             if verbose:
-                print("Backtrack pointer", backtrack_pointer)
+                logger.debug("Backtrack pointer %s", backtrack_pointer)
             i, m, j = backtrack_pointer
 
             if prev_j == 1 and j != 1:  # decompose
                 if verbose:
-                    print("Decomposed motif: ", decomposed_motif[::-1])
+                    logger.debug("Decomposed motif: %s", decomposed_motif[::-1])
                 decomposed_motifs.append(decomposed_motif[::-1])
                 decomposed_motif = ""
             if prev_i != i and i != 0:  # emitted a symbol and not the start
@@ -346,8 +350,8 @@ class Decomposer:
             prev_j = j
 
         if verbose:
-            print("Input     : {}".format(''.join(decomposed_motifs[::-1])))
-            print("Decomposed: {}".format(' '.join(decomposed_motifs[::-1])))
+            logger.info("Input     : %s", ''.join(decomposed_motifs[::-1]))
+            logger.info("Decomposed: %s", ' '.join(decomposed_motifs[::-1]))
 
         return decomposed_motifs[::-1]
 
@@ -489,20 +493,20 @@ class Decomposer:
             repeat_count = round(len(sequence) / len(consensus_motif))
 
         if verbose:
-            print("Estimated repeat count", repeat_count)
-            print("Building HMM...")
-            print("motif", consensus_motif)
-            print("sequence", sequence)
+            logger.info("Estimated repeat count %s", repeat_count)
+            logger.info("Building HMM...")
+            logger.info("motif %s", consensus_motif)
+            logger.info("sequence %s", sequence)
 
         repeat_finder_hmm = self._build_repeat_finder_hmm(consensus_motif, repeat_count, has_flanking_sequence)
         if verbose:
-            print("Building HMM done")
+            logger.info("Building HMM done")
         logp, path = repeat_finder_hmm.viterbi(sequence)
         visited_states = [state.name for idx, state in path[1:-1]]
         deomposed_motifs = get_motifs_from_visited_states_and_region(visited_states, sequence)
         if verbose:
-            print(logp)
-            print(deomposed_motifs)
+            logger.info("logp: %s", logp)
+            logger.info("decomposed_motifs: %s", deomposed_motifs)
 
         return deomposed_motifs
 

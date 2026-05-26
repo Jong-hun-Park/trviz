@@ -1,3 +1,4 @@
+import logging
 from typing import List, Dict
 import string
 from collections import Counter
@@ -5,6 +6,8 @@ from collections import Counter
 import numpy as np
 import itertools
 from Bio import SeqIO
+
+logger = logging.getLogger(__name__)
 
 LOWERCASE_LETTERS = string.ascii_lowercase
 UPPERCASE_LETTERS = string.ascii_uppercase
@@ -82,7 +85,7 @@ def is_valid_sequence(sequence):
 def sort_by_manually(aligned_vntrs, sample_ids, sample_order_file):
     """ Sort the aligned and encoded tandem repeats based on the given order """
     if sample_order_file is None:
-        print("Sample order file is not provided. Follow the given sample order.")
+        logger.warning("Sample order file is not provided. Follow the given sample order.")
         return sample_ids, aligned_vntrs
 
     with open(sample_order_file) as f:
@@ -275,10 +278,10 @@ def sort_by_simulated_annealing_optimized(seq_list, sample_ids, symbol_to_motif)
     all_index_pairs = list(itertools.combinations(range(len(seq_list)), 2))
     while True:
         iteration += 1
-        print("T:", T)
+        logger.debug("T: %s", T)
         if T <= 1e-2:
             break
-        print("iteration", iteration)
+        logger.debug("iteration %s", iteration)
         not_changed_count = 0
 
         # from random import choice
@@ -320,14 +323,14 @@ def sort_by_simulated_annealing_optimized(seq_list, sample_ids, symbol_to_motif)
             if after_cost == current_cost:
                 continue
             elif after_cost < current_cost:
-                print("Swap occurred at {} and {}".format(index_1, index_2), "after cost", after_cost, "cur cost", current_cost)
+                logger.debug("Swap occurred at %s and %s after cost %s cur cost %s", index_1, index_2, after_cost, current_cost)
                 seq_list[index_1], seq_list[index_2] = seq_list[index_2], seq_list[index_1]
                 sample_ids[index_1], sample_ids[index_2] = sample_ids[index_2], sample_ids[index_1]
             else:
                 prob = np.exp(-(after_cost - current_cost) * 10 / T)
                 if prob > np.random.uniform(low=0.0, high=1.0):
                     # swap
-                    print("Swap occurred {}".format(prob), "after cost", after_cost, "cur cost", current_cost)
+                    logger.debug("Swap occurred %s after cost %s cur cost %s", prob, after_cost, current_cost)
                     seq_list[index_1], seq_list[index_2] = seq_list[index_2], seq_list[index_1]
                     sample_ids[index_1], sample_ids[index_2] = sample_ids[index_2], sample_ids[index_1]
                 else:
@@ -337,9 +340,9 @@ def sort_by_simulated_annealing_optimized(seq_list, sample_ids, symbol_to_motif)
         # if not_changed_count == len(seq_list):
         #     break
 
-    print("The initial cost", initial_cost)
+    logger.info("The initial cost %s", initial_cost)
     after_cost = calculate_total_cost(seq_list, dist_matrix)
-    print("Cost after sorting", after_cost)
+    logger.info("Cost after sorting %s", after_cost)
 
     if initial_cost < after_cost:
         # print("The result has higher cost, so it doesn't change the order")
@@ -379,6 +382,8 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
     bar = fill * filledLength + '-' * (length - filledLength)
+    # Progress bar uses print() with \r intentionally — logging would line-buffer
+    # and break in-place updates.
     print(f'\r{prefix} |{bar}| {percent}% {suffix}', end=print_end)
     # Print New Line on Complete
     if iteration == total:
@@ -423,7 +428,7 @@ def get_motif_marks(sample_ids: List[str], decomposed_trs: List[List[str]], regi
         cumulative_length = 0
 
         if sample_id not in region_prediction:
-            print("Sample {} is not in the region prediction file".format(sample_id))
+            logger.warning("Sample %s is not in the region prediction file", sample_id)
             continue
 
         for motif_seq in decomposed_tr:

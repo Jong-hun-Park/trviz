@@ -1,13 +1,10 @@
+import logging
 import subprocess
 import os
 from typing import Tuple
 from typing import List
 from typing import Dict
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+from io import StringIO
 
 from Bio.Align.Applications import MuscleCommandline
 from Bio.Align.Applications import ClustalOmegaCommandline
@@ -16,6 +13,8 @@ from Bio import AlignIO
 from Bio import SeqIO
 
 import shutil
+
+logger = logging.getLogger(__name__)
 
 
 class MotifAligner:
@@ -139,9 +138,9 @@ class MotifAligner:
             if mafft_process.returncode == 0:
                 os.remove(score_matrix_file)
             else:
-                print("Error: MAFFT command failed to execute. File not removed.")
+                logger.error("MAFFT command failed to execute. File not removed.")
         else:
-            print("Score matrix file is not given. Default scoring parameters are used (not recommended).")
+            logger.warning("Score matrix file is not given. Default scoring parameters are used (not recommended).")
             mafft_command = f"mafft --quiet --text --auto {'--reorder' if not preserve_order else ''} {aln_input} > {aln_output}"
             os.system(mafft_command)
 
@@ -264,6 +263,6 @@ class MotifAligner:
             aligned_samples.append(sample_id)
 
         for sample, seq in zip(aligned_samples, msa_result):
-            print(f"{sample}\t{seq}")
+            logger.debug("%s\t%s", sample, seq)
 
         return aligned_samples, msa_result

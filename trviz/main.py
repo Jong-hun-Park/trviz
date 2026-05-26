@@ -1,3 +1,4 @@
+import logging
 import sys
 import os
 from typing import List, Tuple, Dict
@@ -13,6 +14,8 @@ from trviz.utils import sort
 from trviz.utils import add_padding
 from trviz.utils import get_score_matrix
 from trviz.utils import get_motif_marks
+
+logger = logging.getLogger(__name__)
 
 
 class TandemRepeatVizWorker:
@@ -155,10 +158,10 @@ class TandemRepeatVizWorker:
             raise ValueError("The style should be either 'waterfall' or 'seattle'.")
 
         if verbose:
-            print("ID: {}".format(tr_id))
-            print("Motifs: {}".format(motifs))
-            print(f"Loaded {len(tr_sequences)} tandem repeat sequences")
-            print("Decomposing TR sequences")
+            logger.info("ID: %s", tr_id)
+            logger.info("Motifs: %s", motifs)
+            logger.info("Loaded %s tandem repeat sequences", len(tr_sequences))
+            logger.info("Decomposing TR sequences")
 
         # 1. Decomposition
         decomposed_trs = []
@@ -173,7 +176,7 @@ class TandemRepeatVizWorker:
 
         # 2. Encoding
         if verbose:
-            print("Encoding")
+            logger.info("Encoding")
         encoded_trs = self.motif_encoder.encode(decomposed_trs,
                                                 motif_map_file=f"{output_dir}/{tr_id}_motif_map.txt",
                                                 auto=True)
@@ -186,12 +189,12 @@ class TandemRepeatVizWorker:
         # 3. Align motifs
         if skip_alignment:
             if verbose:
-                print("Skip alignment step")
+                logger.info("Skip alignment step")
             aligned_trs = add_padding(encoded_trs)
             sorted_sample_ids = sample_ids
         else:
             if verbose:
-                print("Alignment")
+                logger.info("Alignment")
             score_matrix = get_score_matrix(self.motif_encoder.symbol_to_motif)
             sorted_sample_ids, aligned_trs = self.motif_aligner.align(sample_ids,
                                                                       encoded_trs,
@@ -215,7 +218,7 @@ class TandemRepeatVizWorker:
 
         # 5. Visualization
         if verbose:
-            print("Visualization")
+            logger.info("Visualization")
         if save:
             trplot_output = output_name if output_name is not None else f"{output_dir}/{str(tr_id)}.png"
         else:

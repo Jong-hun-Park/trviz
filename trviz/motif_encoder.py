@@ -1,9 +1,13 @@
+import logging
 from collections import Counter
 from typing import Dict, List
 
 from trviz.utils import INDEX_TO_CHR, PRIVATE_MOTIF_LABEL
 from trviz.utils import get_motif_counter
 from trviz.utils import get_score_matrix
+
+logger = logging.getLogger(__name__)
+
 
 class MotifEncoder:
 
@@ -125,7 +129,7 @@ class MotifEncoder:
             normal_motifs, private_motifs = self._divide_motifs_into_normal_and_private(motif_counter,
                                                                                         self.private_motif_threshold)
             if len(normal_motifs) + 1 > len(INDEX_TO_CHR):
-                print("Motif counter:", motif_counter)
+                logger.error("Motif counter: %s", motif_counter)
                 raise ValueError("Too many unique motifs. Can not encode properly: {} unique motifs".format(
                     len(normal_motifs) + len(private_motifs)))
 

@@ -1,3 +1,4 @@
+import logging
 from typing import List, Tuple, Dict
 from collections import Counter
 import matplotlib.pyplot as plt
@@ -7,6 +8,8 @@ import numpy as np
 import distinctipy
 
 from trviz.utils import PRIVATE_MOTIF_LABEL
+
+logger = logging.getLogger(__name__)
 
 
 class TandemRepeatVisualizer:
@@ -267,13 +270,13 @@ class TandemRepeatVisualizer:
                                                                                         allele_as_row,
                                                                                         hide_dendrogram)
             if debug:
-                print("Sort by clustering")
-                print('\n'.join(sorted_sample_ids))
+                logger.debug("Sort by clustering")
+                logger.debug("%s", '\n'.join(sorted_sample_ids))
         else:
             # Already sorted in some way
             sorted_sample_ids, sorted_aligned_labeled_repeats = sample_ids, aligned_labeled_repeats
             if debug:
-                print("No clustering")
+                logger.debug("No clustering")
 
         # Set symbol to color map
         self.set_symbol_to_motif_map(aligned_labeled_repeats, alpha, color_palette, colored_motifs, colormap,
