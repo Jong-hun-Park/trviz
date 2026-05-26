@@ -636,6 +636,11 @@ class TandemRepeatVisualizer:
 
         from trviz.utils import calculate_cost_with_dist_matrix, get_distance_matrix
 
+        # Clustering is a no-op for <2 sequences. scipy.linkage on an empty
+        # condensed distance matrix raises, so short-circuit here.
+        if len(aligned_labeled_repeats) < 2:
+            return list(sample_ids), list(aligned_labeled_repeats)
+
         distance_matrix = get_distance_matrix(symbol_to_motif)
         dist_mat = np.zeros([len(aligned_labeled_repeats), len(aligned_labeled_repeats)])
         for i in range(len(aligned_labeled_repeats)):
