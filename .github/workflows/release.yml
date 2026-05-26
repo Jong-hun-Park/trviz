@@ -1,0 +1,77 @@
+name: Publish to PyPI
+
+# Triggered when a tag like v1.4.0, v1.5.0, etc. is pushed.
+# Builds wheels for Linux + macOS, an sdist, then publishes via PyPI
+# trusted publishing (OIDC — no API tokens stored).
+#
+# To set up trusted publishing on PyPI, see:
+# https://pypi.org/manage/project/trviz/settings/publishing/
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build_wheels:
+    name: Wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.21
+        env:
+          CIBW_BUILD: "cp310-* cp311-* cp312-*"
+          CIBW_ARCHS_LINUX: x86_64
+          CIBW_ARCHS_MACOS: x86_64 arm64
+          CIBW_TEST_SKIP: "*_arm64"  # cross-built arm64 wheels can't be tested on x86 runners
+          CIBW_TEST_COMMAND: python {package}/tests/test_trviz.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.os }}
+          path: ./wheelhouse/*.whl
+
+  build_sdist:
+    name: Source distribution
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build sdist
+        run: |
+          python -m pip install --upgrade build
+          python -m build --sdist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sdist
+          path: dist/*.tar.gz
+
+  publish:
+    name: Publish to PyPI
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write  # required for trusted publishing (OIDC)
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true  # flatten wheels-* and sdist into one dist/ dir
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
