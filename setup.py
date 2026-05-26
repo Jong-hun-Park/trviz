@@ -1,69 +1,33 @@
-from setuptools import Extension, setup, find_packages
+"""Build the trviz Cython extension.
+
+All package metadata lives in pyproject.toml. This file exists only to
+declare the C extension because setuptools' declarative pyproject support
+for compiled extensions is still rough.
+
+Build from .pyx when Cython is available, fall back to the committed .c
+file otherwise.
+"""
+from setuptools import Extension, setup
 import numpy
-import sys
-import platform
 
 try:
     from Cython.Build import cythonize
+    HAVE_CYTHON = True
 except ImportError:
-    USE_CYTHON = False
-else:
-    USE_CYTHON = True
+    HAVE_CYTHON = False
 
-ext = 'pyx' if USE_CYTHON else 'c'
-
-with open('README.md', 'r', encoding='utf-8') as f:
-    long_description = f.read()
-
-use_cython = '--cython' in sys.argv
-if '--cython' in sys.argv:
-    print("Use cython")
-    sys.argv.remove('--cython')
-    USE_CYTHON = True
-else:
-    USE_CYTHON = False
+source = "trviz/cy/decompose.pyx" if HAVE_CYTHON else "trviz/cy/decompose.c"
 
 extensions = [
     Extension(
         "trviz.cy.decompose",
-        ["trviz/cy/decompose.{}".format(ext)],
+        [source],
         extra_compile_args=["-O3"],
         include_dirs=[numpy.get_include()],
     )
 ]
 
-if USE_CYTHON:
-    try:
-        extensions = cythonize(extensions)
-    except Exception as e:
-        print(e)
-        print("Cythonizing failed. Continue without cythonizing")
+if HAVE_CYTHON:
+    extensions = cythonize(extensions)
 
-setup(
-    name='trviz',
-    version="1.3.0",
-    author='Jonghun Park',
-    author_email='jop002@ucsd.edu',
-    description='A python library for decomposing and visualizing tandem repeat sequences',
-    url="https://github.com/Jong-hun-Park/trviz",
-    long_description=long_description,
-    long_description_content_type='text/markdown',
-    classifiers=[
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-        'License :: OSI Approved :: BSD License',
-        'Operating System :: OS Independent',
-    ],
-    packages=find_packages(),
-    include_package_data=True,
-    install_requires=[
-        'matplotlib',
-        'numpy',
-        'biopython<1.86',
-        'scipy',
-        'distinctipy',
-    ],
-    python_requires='>=3.10',
-    ext_modules=extensions if not use_cython else [],
-)
+setup(ext_modules=extensions)
