@@ -1,2 +1,66 @@
 [build-system]
-requires = ["setuptools", "wheel", "Cython", "numpy"]
+requires = ["setuptools>=64", "wheel", "Cython>=3.0", "numpy>=2.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trviz"
+version = "1.4.0"
+description = "A python library for decomposing and visualizing tandem repeat sequences"
+readme = "README.md"
+license = { file = "LICENSE.md" }
+requires-python = ">=3.10"
+authors = [
+  { name = "Jonghun Park", email = "jonghunpark@ucsd.edu" },
+]
+classifiers = [
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: BSD License",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+  "matplotlib",
+  "numpy",
+  "biopython<1.86",
+  "scipy",
+  "distinctipy",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-mypy",
+  "pytest-xdist",
+  "cython>=3.0",
+  "ruff",
+  "pre-commit",
+]
+
+[project.urls]
+Homepage = "https://github.com/Jong-hun-Park/trviz"
+Documentation = "https://trviz.readthedocs.io/"
+Issues = "https://github.com/Jong-hun-Park/trviz/issues"
+
+[tool.setuptools.packages.find]
+include = ["trviz*"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = ["trviz/cy/decompose.c"]
+
+[tool.ruff.lint]
+select = [
+  "E",      # pycodestyle errors
+  "F",      # pyflakes
+  "W",      # pycodestyle warnings
+  "I",      # isort (import ordering)
+  "G",      # flake8-logging-format (catches logger.info(f"..."))
+  "B",      # flake8-bugbear (likely bugs)
+  "UP",     # pyupgrade (modern Python idioms)
+]
+ignore = [
+  "E501",   # line too long — ruff format already enforces line-length, this rule is redundant
+  "UP031",  # use format specifiers instead of % — codebase mixes both styles intentionally
+]

@@ -1,72 +1,72 @@
-import sys
+import logging
 import os
-from typing import List, Tuple, Dict
+import sys
+
 from matplotlib.colors import ListedColormap
 
-sys.path.insert(0, './')
+sys.path.insert(0, "./")
 
 from trviz.decomposer import Decomposer
-from trviz.motif_encoder import MotifEncoder
 from trviz.motif_aligner import MotifAligner
+from trviz.motif_encoder import MotifEncoder
+from trviz.utils import add_padding, get_motif_marks, get_score_matrix, sort
 from trviz.visualizer import TandemRepeatVisualizer
-from trviz.utils import sort
-from trviz.utils import add_padding
-from trviz.utils import get_score_matrix
-from trviz.utils import get_motif_marks
+
+logger = logging.getLogger(__name__)
 
 
 class TandemRepeatVizWorker:
-
     def __init__(self):
         self.decomposer = Decomposer()
         self.motif_encoder = MotifEncoder()
         self.motif_aligner = MotifAligner()
         self.visualizer = TandemRepeatVisualizer()
 
-    def generate_trplot(self,
-                        tr_id: str,
-                        sample_ids: List[str],
-                        tr_sequences: List[str],
-                        motifs: List[str],
-
-                        skip_alignment: bool = False,
-                        rearrangement_method: str = 'clustering',
-                        sample_order_file: str = None,
-                        output_dir: str = "./",
-                        region_prediction_file: str = None,
-
-                        # Figure parameters
-                        figure_size: Tuple[int, int] = None,
-                        motif_map_size: Tuple[int, int] = None,
-                        output_name: str = None,
-                        dpi: int = 300,
-                        hide_xticks: bool = False,
-                        hide_yticks: bool = False,
-                        hide_dendrogram: bool = True,
-                        sample_to_label: Dict[str, str] = None,
-                        allele_as_row: bool = True,
-                        xlabel_size: int = 8,
-                        ylabel_size: int = 8,
-                        xlabel_rotation: int = 0,
-                        ylabel_rotation: int = 0,
-                        private_motif_color: str = 'black',
-                        frame_on: Dict[str, bool] = None,
-                        show_figure: bool = False,
-                        style: str = 'seattle',
-                        no_edge: bool = False,
-                        color_palette: str = None,
-                        colormap: ListedColormap = None,
-                        motif_style: str = 'box',
-                        xtick_step: int = 1,
-                        ytick_step: int = 1,
-                        xtick_offset: int = 0,
-                        ytick_offset: int = 0,
-                        title: str = None,
-                        xlabel: str = None,
-                        ylabel: str = None,
-                        colored_motifs: List[str] = None,
-                        verbose: bool = True,
-                        ):
+    def generate_trplot(
+        self,
+        tr_id: str,
+        sample_ids: list[str],
+        tr_sequences: list[str],
+        motifs: list[str],
+        skip_alignment: bool = False,
+        rearrangement_method: str = "clustering",
+        sample_order_file: str = None,
+        output_dir: str = "./",
+        region_prediction_file: str = None,
+        # Figure parameters
+        figure_size: tuple[int, int] = None,
+        motif_map_size: tuple[int, int] = None,
+        output_name: str = None,
+        dpi: int = 300,
+        hide_xticks: bool = False,
+        hide_yticks: bool = False,
+        hide_dendrogram: bool = True,
+        sample_to_label: dict[str, str] = None,
+        allele_as_row: bool = True,
+        xlabel_size: int = 8,
+        ylabel_size: int = 8,
+        xlabel_rotation: int = 0,
+        ylabel_rotation: int = 0,
+        private_motif_color: str = "black",
+        frame_on: dict[str, bool] = None,
+        show_figure: bool = False,
+        style: str = "seattle",
+        no_edge: bool = False,
+        color_palette: str = None,
+        colormap: ListedColormap = None,
+        motif_style: str = "box",
+        xtick_step: int = 1,
+        ytick_step: int = 1,
+        xtick_offset: int = 0,
+        ytick_offset: int = 0,
+        title: str = None,
+        xlabel: str = None,
+        ylabel: str = None,
+        colored_motifs: list[str] = None,
+        verbose: bool = True,
+        save: bool = True,
+        close: bool = False,
+    ):
         """
         A method to generate a plot of tandem repeat motif composition.
         This executes the following modules sequentially and finally output the plot.
@@ -123,32 +123,47 @@ class TandemRepeatVizWorker:
         :param ylabel: y label in the plot
         :param xlabel: x lable in the plot
         :param verbose: if true, output detailed information
+        :param save: if true (default), save the figure to disk using ``output_name`` (or
+                     ``{output_dir}/{tr_id}.png`` if not provided). If false, skip saving
+                     and return the ``(fig, ax)`` tuple so the caller can post-style and
+                     save the figure themselves.
+        :param close: if true, call ``plt.close(fig)`` after drawing. Default is false so
+                      callers can apply post-hoc styling. Set to true for batch jobs that
+                      generate many plots and need to release figure memory.
+
+        Returns
+        -------
+        (fig, ax) : tuple of (matplotlib.figure.Figure, matplotlib.axes.Axes)
+            The trplot figure and main axes. Use them to apply matplotlib styling
+            (e.g. ``ax.tick_params(labelsize=14)``) before saving via ``fig.savefig(...)``.
+            Pass ``save=False`` if you want to skip the built-in savefig call.
         """
 
         if len(sample_ids) != len(tr_sequences):
             raise ValueError("The number of sample IDs and the number of sequences are different.")
 
-        if sample_order_file is not None or rearrangement_method == 'manually':
-            rearrangement_method = 'manually'
+        if sample_order_file is not None or rearrangement_method == "manually":
+            rearrangement_method = "manually"
             if sample_order_file is None:
                 raise ValueError("Please specify the sample order file for manual rearrangement.")
             if not os.path.exists(sample_order_file):
                 raise ValueError("The specified sample order file does not exist.")
 
-        if style not in ['waterfall', 'seattle']:
+        if style not in ["waterfall", "seattle"]:
             raise ValueError("The style should be either 'waterfall' or 'seattle'.")
 
         if verbose:
-            print("ID: {}".format(tr_id))
-            print("Motifs: {}".format(motifs))
-            print(f"Loaded {len(tr_sequences)} tandem repeat sequences")
-            print("Decomposing TR sequences")
+            logger.info("ID: %s", tr_id)
+            logger.info("Motifs: %s", motifs)
+            logger.info("Loaded %s tandem repeat sequences", len(tr_sequences))
+            logger.info("Decomposing TR sequences")
 
         # 1. Decomposition
         decomposed_trs = []
         for i, tr_sequence in enumerate(tr_sequences):
             if verbose:
                 from trviz.utils import print_progress_bar
+
                 print_progress_bar(i + 1, len(tr_sequences))
             decomposed_trs.append(self.decomposer.decompose(tr_sequence, motifs))
 
@@ -157,40 +172,44 @@ class TandemRepeatVizWorker:
 
         # 2. Encoding
         if verbose:
-            print("Encoding")
-        encoded_trs = self.motif_encoder.encode(decomposed_trs,
-                                                motif_map_file=f"{output_dir}/{tr_id}_motif_map.txt",
-                                                auto=True)
+            logger.info("Encoding")
+        encoded_trs = self.motif_encoder.encode(
+            decomposed_trs, motif_map_file=f"{output_dir}/{tr_id}_motif_map.txt", auto=True
+        )
 
-        if style == 'waterfall':
+        if style == "waterfall":
             skip_alignment = True
-            rearrangement_method = 'motif_count'
+            rearrangement_method = "motif_count"
             allele_as_row = True
 
         # 3. Align motifs
         if skip_alignment:
             if verbose:
-                print("Skip alignment step")
+                logger.info("Skip alignment step")
             aligned_trs = add_padding(encoded_trs)
             sorted_sample_ids = sample_ids
         else:
             if verbose:
-                print("Alignment")
+                logger.info("Alignment")
             score_matrix = get_score_matrix(self.motif_encoder.symbol_to_motif)
-            sorted_sample_ids, aligned_trs = self.motif_aligner.align(sample_ids,
-                                                                      encoded_trs,
-                                                                      tr_id,
-                                                                      score_matrix=score_matrix,
-                                                                      output_dir=output_dir,
-                                                                      tool='star' if region_prediction_file is not None else 'mafft')
+            sorted_sample_ids, aligned_trs = self.motif_aligner.align(
+                sample_ids,
+                encoded_trs,
+                tr_id,
+                score_matrix=score_matrix,
+                output_dir=output_dir,
+                tool="star" if region_prediction_file is not None else "mafft",
+            )
 
         # 4. Re-arrangement
-        if rearrangement_method is not None and rearrangement_method != 'clustering':
-            sorted_sample_ids, aligned_trs = sort(aligned_trs,
-                                                  sorted_sample_ids,
-                                                  self.motif_encoder.symbol_to_motif,
-                                                  sample_order_file,
-                                                  rearrangement_method)
+        if rearrangement_method is not None and rearrangement_method != "clustering":
+            sorted_sample_ids, aligned_trs = sort(
+                aligned_trs,
+                sorted_sample_ids,
+                self.motif_encoder.symbol_to_motif,
+                sample_order_file,
+                rearrangement_method,
+            )
 
         motif_marks = None
         if region_prediction_file is not None:
@@ -199,46 +218,57 @@ class TandemRepeatVizWorker:
 
         # 5. Visualization
         if verbose:
-            print("Visualization")
-        self.visualizer.trplot(aligned_labeled_repeats=aligned_trs,
-                               sample_ids=sorted_sample_ids,
-                               figure_size=figure_size,
-                               output_name=f"{output_dir}/{str(tr_id)}.png" if output_name is None else output_name,
-                               dpi=dpi,
-                               sort_by_clustering=True if rearrangement_method == 'clustering' else False,
-                               motif_marks=motif_marks,
-                               hide_xticks=hide_xticks,
-                               hide_yticks=hide_yticks,
-                               allele_as_row=allele_as_row,
-                               xlabel_size=xlabel_size,
-                               ylabel_size=ylabel_size,
-                               hide_dendrogram=hide_dendrogram,
-                               symbol_to_motif=self.motif_encoder.symbol_to_motif,
-                               xlabel_rotation=xlabel_rotation,
-                               ylabel_rotation=ylabel_rotation,
-                               sample_to_label=sample_to_label,
-                               private_motif_color=private_motif_color,
-                               show_figure=show_figure,
-                               no_edge=no_edge,
-                               frame_on=frame_on,
-                               color_palette=color_palette,
-                               colormap=colormap,
-                               motif_style=motif_style,
-                               xtick_step=xtick_step,
-                               ytick_step=ytick_step,
-                               xtick_offset=xtick_offset,
-                               ytick_offset=ytick_offset,
-                               title=title,
-                               xlabel=xlabel,
-                               ylabel=ylabel,
-                               colored_motifs=colored_motifs,
-                               )
+            logger.info("Visualization")
+        if save:
+            trplot_output = output_name if output_name is not None else f"{output_dir}/{str(tr_id)}.png"
+        else:
+            trplot_output = None
+        fig, ax = self.visualizer.trplot(
+            aligned_labeled_repeats=aligned_trs,
+            sample_ids=sorted_sample_ids,
+            figure_size=figure_size,
+            output_name=trplot_output,
+            dpi=dpi,
+            sort_by_clustering=True if rearrangement_method == "clustering" else False,
+            motif_marks=motif_marks,
+            hide_xticks=hide_xticks,
+            hide_yticks=hide_yticks,
+            allele_as_row=allele_as_row,
+            xlabel_size=xlabel_size,
+            ylabel_size=ylabel_size,
+            hide_dendrogram=hide_dendrogram,
+            symbol_to_motif=self.motif_encoder.symbol_to_motif,
+            xlabel_rotation=xlabel_rotation,
+            ylabel_rotation=ylabel_rotation,
+            sample_to_label=sample_to_label,
+            private_motif_color=private_motif_color,
+            show_figure=show_figure,
+            no_edge=no_edge,
+            frame_on=frame_on,
+            color_palette=color_palette,
+            colormap=colormap,
+            motif_style=motif_style,
+            xtick_step=xtick_step,
+            ytick_step=ytick_step,
+            xtick_offset=xtick_offset,
+            ytick_offset=ytick_offset,
+            title=title,
+            xlabel=xlabel,
+            ylabel=ylabel,
+            colored_motifs=colored_motifs,
+            close=close,
+        )
 
         # 6. Motif map
-        self.visualizer.plot_motif_color_map(self.motif_encoder.symbol_to_motif,
-                                             self.motif_encoder.motif_counter,
-                                             self.visualizer.symbol_to_color,
-                                             show_figure=show_figure,
-                                             file_name=f"{output_dir}/{str(tr_id)}_motif_map.png",
-                                             figure_size=motif_map_size,
-                                             )
+        motif_map_output = f"{output_dir}/{str(tr_id)}_motif_map.png" if save else None
+        self.visualizer.plot_motif_color_map(
+            self.motif_encoder.symbol_to_motif,
+            self.motif_encoder.motif_counter,
+            self.visualizer.symbol_to_color,
+            show_figure=show_figure,
+            file_name=motif_map_output,
+            figure_size=motif_map_size,
+            close=close,
+        )
+
+        return fig, ax

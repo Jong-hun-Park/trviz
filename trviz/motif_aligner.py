@@ -1,32 +1,25 @@
-import subprocess
+import logging
 import os
-from typing import Tuple
-from typing import List
-from typing import Dict
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
-
-from Bio.Align.Applications import MuscleCommandline
-from Bio.Align.Applications import ClustalOmegaCommandline
-from Bio.Align.Applications import MafftCommandline
-from Bio import AlignIO
-from Bio import SeqIO
-
 import shutil
+import subprocess
+from io import StringIO
+
+from Bio import AlignIO, SeqIO
+from Bio.Align.Applications import ClustalOmegaCommandline, MuscleCommandline
+
+logger = logging.getLogger(__name__)
 
 
 class MotifAligner:
-    def align(self,
-              sample_ids: List[str],
-              encoded_vntrs: List[str],
-              vid: str = None,
-              score_matrix: Dict[Dict, int] = None,
-              output_dir: str = "./",
-              tool: str = "mafft",
-              ) -> Tuple[List, List]:
+    def align(
+        self,
+        sample_ids: list[str],
+        encoded_vntrs: list[str],
+        vid: str = None,
+        score_matrix: dict[dict, int] = None,
+        output_dir: str = "./",
+        tool: str = "mafft",
+    ) -> tuple[list, list]:
         """
         Align encoded VNTRs using multiple sequence alignment tools. Default tool is MAFFT.
 
@@ -41,22 +34,21 @@ class MotifAligner:
         return motif_aligner(sample_ids, encoded_vntrs, vid, score_matrix, output_dir)
 
     def _get_motif_aligner(self, tool):
-        if tool == 'mafft':
+        if tool == "mafft":
             return self._align_motifs_with_mafft
-        elif tool == 'muscle':
+        elif tool == "muscle":
             return self._align_motifs_with_muscle
-        elif tool == 'clustalo':
+        elif tool == "clustalo":
             return self._align_motifs_with_clustalo
-        elif tool == 'star':
+        elif tool == "star":
             return self._align_motifs_with_star
         else:
-            ValueError(tool)
-
+            raise ValueError(f"Unknown alignment tool: {tool}")
 
     @staticmethod
     def _align_motifs_with_muscle(sample_ids, labeled_vntrs, vid, score_matrix, output_dir):
-        muscle_cline = MuscleCommandline('muscle', clwstrict=True)
-        data = '\n'.join(['>%s\n' % str(sample_ids[i]) + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
+        muscle_cline = MuscleCommandline("muscle", clwstrict=True)
+        data = "\n".join([">%s\n" % str(sample_ids[i]) + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
         stdout, stderr = muscle_cline(stdin=data)
         alignment = AlignIO.read(StringIO(stdout), "clustal")
         aligned_vntrs = [str(aligned.seq) for aligned in alignment]
@@ -65,14 +57,13 @@ class MotifAligner:
 
     @staticmethod
     def _align_motifs_with_clustalo(sample_ids, labeled_vntrs, vid, score_matrix, output_dir):
-        clustalo_cline = ClustalOmegaCommandline('clustalo', infile="data.fasta", outfile="test.out",
-                                                 force=True,
-                                                 clusteringout="cluster.out")
+        clustalo_cline = ClustalOmegaCommandline(
+            "clustalo", infile="data.fasta", outfile="test.out", force=True, clusteringout="cluster.out"
+        )
 
         # Use dist-in (and use pre computed distance)
         # See the clusters - and plot only for those clusters.
 
-        data = '\n'.join(['>%s\n' % str(sample_ids[i]) + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
         stdout, stderr = clustalo_cline()
         alignment = AlignIO.read(StringIO(stdout), "clustal")
         aligned_vntrs = [str(aligned.seq) for aligned in alignment]
@@ -92,12 +83,12 @@ class MotifAligner:
             aln_output = f"{output_dir}/{vid}_alignment_output.fa"
 
         # Writing alignment input
-        data = '\n'.join(['>%s\n' % sample_ids[i] + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
+        data = "\n".join([">%s\n" % sample_ids[i] + labeled_vntrs[i] for i in range(len(labeled_vntrs))])
         with open(aln_input, "w") as f:
             f.write(data)
 
         def write_score_matrix_for_mafft(score_matrix, output_dir):
-            score_matrix_file = "{}/matrixfile.txt".format(output_dir)
+            score_matrix_file = f"{output_dir}/matrixfile.txt"
 
             with open(score_matrix_file, "w") as of:
                 for symbol_1 in score_matrix:
@@ -120,14 +111,9 @@ class MotifAligner:
 
         if score_matrix is not None:
             score_matrix_file = write_score_matrix_for_mafft(score_matrix, output_dir)
-            mafft_command = "mafft --quiet --auto " \
-                            "--textmatrix {} " \
-                            "--op {} --ep {} " \
-                            "{} > {}".format(score_matrix_file,
-                                             score_matrix['gap_open'],
-                                             score_matrix['gap_extension'],
-                                             aln_input,
-                                             aln_output)
+            mafft_command = "mafft --quiet --auto --textmatrix {} --op {} --ep {} {} > {}".format(
+                score_matrix_file, score_matrix["gap_open"], score_matrix["gap_extension"], aln_input, aln_output
+            )
 
             if not preserve_order:
                 mafft_command += " --reorder"
@@ -139,10 +125,12 @@ class MotifAligner:
             if mafft_process.returncode == 0:
                 os.remove(score_matrix_file)
             else:
-                print("Error: MAFFT command failed to execute. File not removed.")
+                logger.error("MAFFT command failed to execute. File not removed.")
         else:
-            print("Score matrix file is not given. Default scoring parameters are used (not recommended).")
-            mafft_command = f"mafft --quiet --text --auto {'--reorder' if not preserve_order else ''} {aln_input} > {aln_output}"
+            logger.warning("Score matrix file is not given. Default scoring parameters are used (not recommended).")
+            mafft_command = (
+                f"mafft --quiet --text --auto {'--reorder' if not preserve_order else ''} {aln_input} > {aln_output}"
+            )
             os.system(mafft_command)
 
         if not os.path.exists(aln_output):
@@ -174,7 +162,7 @@ class MotifAligner:
         aligned_trs = []
         aligned_sample_ids = []
 
-        with open(aln_output, "r") as handle:
+        with open(aln_output) as handle:
             for record in SeqIO.parse(handle, "fasta"):
                 aligned_sample_ids.append(record.id)
                 aligned_trs.append(str(record.seq))
@@ -210,11 +198,11 @@ class MotifAligner:
                     pairwise_gap_added_indices.extend(range(i, i + len(msa_center[i:])))
                     continue
                 if msa_center[i] != pairwise_center[i]:
-                    if msa_center[i] == '-':
-                        pairwise_center = pairwise_center[0:i] + '-' + pairwise_center[i:]
+                    if msa_center[i] == "-":
+                        pairwise_center = pairwise_center[0:i] + "-" + pairwise_center[i:]
                         pairwise_gap_added_indices.append(i)
                     else:
-                        msa_center = msa_center[0:i] + '-' + msa_center[i:]
+                        msa_center = msa_center[0:i] + "-" + msa_center[i:]
                         msa_gap_added_indices.append(i)
                 i += 1
             return sorted(msa_gap_added_indices), sorted(pairwise_gap_added_indices)
@@ -222,7 +210,7 @@ class MotifAligner:
         def adjust(string_list, indices):
             for i, string in enumerate(string_list):
                 for index in indices:
-                    string = string[:index] + '-' + string[index:]
+                    string = string[:index] + "-" + string[index:]
                 string_list[i] = string
 
         # Center should be the first element in the list
@@ -230,19 +218,23 @@ class MotifAligner:
         center_seq = labeled_vntrs[0]
         results = []
         for i in range(1, len(labeled_vntrs)):
-            results.append(MotifAligner._align_motifs_with_mafft([center_id, sample_ids[i]],
-                                                                 [center_seq, labeled_vntrs[i]],
-                                                                 vid,
-                                                                 score_matrix,
-                                                                 output_dir,
-                                                                 preserve_order=True))
+            results.append(
+                MotifAligner._align_motifs_with_mafft(
+                    [center_id, sample_ids[i]],
+                    [center_seq, labeled_vntrs[i]],
+                    vid,
+                    score_matrix,
+                    output_dir,
+                    preserve_order=True,
+                )
+            )
 
         def _merge(msa_result, alignment_pair):
             """
             Merge the alignment result with the current MSA result
-            :param msa_result: 
-            :param alignment_pair: 
-            :return: 
+            :param msa_result:
+            :param alignment_pair:
+            :return:
             """
             msa_center_seq = msa_result[0]
             pairwise_center_seq, pairwise_sample_seq = alignment_pair[1]
@@ -263,7 +255,7 @@ class MotifAligner:
             _merge(msa_result, alignment_pair)
             aligned_samples.append(sample_id)
 
-        for sample, seq in zip(aligned_samples, msa_result):
-            print(f"{sample}\t{seq}")
+        for sample, seq in zip(aligned_samples, msa_result, strict=True):
+            logger.debug("%s\t%s", sample, seq)
 
         return aligned_samples, msa_result

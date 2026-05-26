@@ -8,40 +8,42 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../trviz'))
 
-project = 'trviz'
-copyright = '2022, Jonghun Park'
-author = 'Jonghun Park'
-release = '0.1.0'
+sys.path.insert(0, os.path.abspath("../../trviz"))
+
+project = "trviz"
+copyright = "2022, Jonghun Park"
+author = "Jonghun Park"
+release = "0.1.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['myst_parser',
-              'sphinx.ext.duration',
-              'sphinx.ext.doctest',
-              'sphinx.ext.autodoc',
-              'sphinx.ext.autosummary',
-              'autoapi.extension',
-              ]
+extensions = [
+    "myst_parser",
+    "sphinx.ext.duration",
+    "sphinx.ext.doctest",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "autoapi.extension",
+]
 
 autoapi_type = "python"
-autoapi_dirs = ['../../trviz']
+autoapi_dirs = ["../../trviz"]
 
 source_suffix = {
-    '.rst': 'restructuredtext',
-    '.txt': 'restructuredtext',
-    '.md': 'markdown',
+    ".rst": "restructuredtext",
+    ".txt": "restructuredtext",
+    ".md": "markdown",
 }
 
-templates_path = ['_templates']
+templates_path = ["_templates"]
 exclude_patterns = []
 
-language = 'python'
+language = "python"
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+html_theme = "sphinx_rtd_theme"
+html_static_path = ["_static"]

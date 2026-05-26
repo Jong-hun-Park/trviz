@@ -110,6 +110,10 @@ ENV/
 env.bak/
 venv.bak/
 
+# uv (Python packaging) — let developers regenerate locally; library
+# end-users use pip and get fresh dep resolution.
+uv.lock
+
 # Spyder project settings
 .spyderproject
 .spyproject
