@@ -66,6 +66,8 @@ class TandemRepeatVizWorker:
                         ylabel: str = None,
                         colored_motifs: List[str] = None,
                         verbose: bool = True,
+                        save: bool = True,
+                        close: bool = False,
                         ):
         """
         A method to generate a plot of tandem repeat motif composition.
@@ -123,6 +125,20 @@ class TandemRepeatVizWorker:
         :param ylabel: y label in the plot
         :param xlabel: x lable in the plot
         :param verbose: if true, output detailed information
+        :param save: if true (default), save the figure to disk using ``output_name`` (or
+                     ``{output_dir}/{tr_id}.png`` if not provided). If false, skip saving
+                     and return the ``(fig, ax)`` tuple so the caller can post-style and
+                     save the figure themselves.
+        :param close: if true, call ``plt.close(fig)`` after drawing. Default is false so
+                      callers can apply post-hoc styling. Set to true for batch jobs that
+                      generate many plots and need to release figure memory.
+
+        Returns
+        -------
+        (fig, ax) : tuple of (matplotlib.figure.Figure, matplotlib.axes.Axes)
+            The trplot figure and main axes. Use them to apply matplotlib styling
+            (e.g. ``ax.tick_params(labelsize=14)``) before saving via ``fig.savefig(...)``.
+            Pass ``save=False`` if you want to skip the built-in savefig call.
         """
 
         if len(sample_ids) != len(tr_sequences):
@@ -200,45 +216,54 @@ class TandemRepeatVizWorker:
         # 5. Visualization
         if verbose:
             print("Visualization")
-        self.visualizer.trplot(aligned_labeled_repeats=aligned_trs,
-                               sample_ids=sorted_sample_ids,
-                               figure_size=figure_size,
-                               output_name=f"{output_dir}/{str(tr_id)}.png" if output_name is None else output_name,
-                               dpi=dpi,
-                               sort_by_clustering=True if rearrangement_method == 'clustering' else False,
-                               motif_marks=motif_marks,
-                               hide_xticks=hide_xticks,
-                               hide_yticks=hide_yticks,
-                               allele_as_row=allele_as_row,
-                               xlabel_size=xlabel_size,
-                               ylabel_size=ylabel_size,
-                               hide_dendrogram=hide_dendrogram,
-                               symbol_to_motif=self.motif_encoder.symbol_to_motif,
-                               xlabel_rotation=xlabel_rotation,
-                               ylabel_rotation=ylabel_rotation,
-                               sample_to_label=sample_to_label,
-                               private_motif_color=private_motif_color,
-                               show_figure=show_figure,
-                               no_edge=no_edge,
-                               frame_on=frame_on,
-                               color_palette=color_palette,
-                               colormap=colormap,
-                               motif_style=motif_style,
-                               xtick_step=xtick_step,
-                               ytick_step=ytick_step,
-                               xtick_offset=xtick_offset,
-                               ytick_offset=ytick_offset,
-                               title=title,
-                               xlabel=xlabel,
-                               ylabel=ylabel,
-                               colored_motifs=colored_motifs,
-                               )
+        if save:
+            trplot_output = output_name if output_name is not None else f"{output_dir}/{str(tr_id)}.png"
+        else:
+            trplot_output = None
+        fig, ax = self.visualizer.trplot(aligned_labeled_repeats=aligned_trs,
+                                          sample_ids=sorted_sample_ids,
+                                          figure_size=figure_size,
+                                          output_name=trplot_output,
+                                          dpi=dpi,
+                                          sort_by_clustering=True if rearrangement_method == 'clustering' else False,
+                                          motif_marks=motif_marks,
+                                          hide_xticks=hide_xticks,
+                                          hide_yticks=hide_yticks,
+                                          allele_as_row=allele_as_row,
+                                          xlabel_size=xlabel_size,
+                                          ylabel_size=ylabel_size,
+                                          hide_dendrogram=hide_dendrogram,
+                                          symbol_to_motif=self.motif_encoder.symbol_to_motif,
+                                          xlabel_rotation=xlabel_rotation,
+                                          ylabel_rotation=ylabel_rotation,
+                                          sample_to_label=sample_to_label,
+                                          private_motif_color=private_motif_color,
+                                          show_figure=show_figure,
+                                          no_edge=no_edge,
+                                          frame_on=frame_on,
+                                          color_palette=color_palette,
+                                          colormap=colormap,
+                                          motif_style=motif_style,
+                                          xtick_step=xtick_step,
+                                          ytick_step=ytick_step,
+                                          xtick_offset=xtick_offset,
+                                          ytick_offset=ytick_offset,
+                                          title=title,
+                                          xlabel=xlabel,
+                                          ylabel=ylabel,
+                                          colored_motifs=colored_motifs,
+                                          close=close,
+                                          )
 
         # 6. Motif map
+        motif_map_output = f"{output_dir}/{str(tr_id)}_motif_map.png" if save else None
         self.visualizer.plot_motif_color_map(self.motif_encoder.symbol_to_motif,
                                              self.motif_encoder.motif_counter,
                                              self.visualizer.symbol_to_color,
                                              show_figure=show_figure,
-                                             file_name=f"{output_dir}/{str(tr_id)}_motif_map.png",
+                                             file_name=motif_map_output,
                                              figure_size=motif_map_size,
+                                             close=close,
                                              )
+
+        return fig, ax

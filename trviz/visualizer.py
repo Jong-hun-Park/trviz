@@ -40,14 +40,31 @@ class TandemRepeatVisualizer:
         return list(sorted(unique_repeats, key=unique_repeats.get, reverse=True))
 
     @staticmethod
-    def plot_motif_color_map(symbol_to_motif, motif_counter, symbol_to_color, file_name,
+    def plot_motif_color_map(symbol_to_motif, motif_counter, symbol_to_color, file_name=None,
                              figure_size=None,
                              box_size=1,
                              box_margin=0.1,
                              label_size=None,
                              show_figure=False,
-                             dpi=300):
-        """ Generate a plot for motif color map """
+                             dpi=300,
+                             ax=None,
+                             close=False):
+        """ Generate a plot for motif color map.
+
+        Returns
+        -------
+        (fig, ax) : tuple of (matplotlib.figure.Figure, matplotlib.axes.Axes)
+            The figure and axes the plot was drawn on. Use them to apply
+            additional matplotlib styling (e.g. ``ax.tick_params(labelsize=14)``)
+            before saving with ``fig.savefig(...)``.
+
+        Notes
+        -----
+        - Pass ``ax=`` to draw into an existing axes instead of creating a new figure.
+        - Pass ``file_name=`` to save the figure; if ``None`` (default), no file is written.
+        - ``close=True`` closes the figure after drawing (useful for batch jobs that
+          generate many plots and need to release memory).
+        """
 
         if box_margin < 0 or box_margin > box_size:
             raise ValueError(f"Box margin should be between 0 and {box_size}.")
@@ -55,7 +72,9 @@ class TandemRepeatVisualizer:
         if symbol_to_color is None:
             raise ValueError("Symbol to color is not set.")
 
-        if figure_size is not None:
+        if ax is not None:
+            fig = ax.figure
+        elif figure_size is not None:
             fig, ax = plt.subplots(figsize=figure_size)
         else:
             max_motif_length = len(max(symbol_to_motif.values(), key=len))
@@ -114,10 +133,13 @@ class TandemRepeatVisualizer:
 
         # No frame
         ax.set_frame_on(False)
-        fig.savefig(file_name, dpi=dpi, bbox_inches='tight', pad_inches=0)
+        if file_name is not None:
+            fig.savefig(file_name, dpi=dpi, bbox_inches='tight', pad_inches=0)
         if show_figure:
             plt.show()
-        plt.close(fig)
+        if close:
+            plt.close(fig)
+        return fig, ax
 
     def trplot(self,
                aligned_labeled_repeats: List[str],
@@ -154,7 +176,9 @@ class TandemRepeatVisualizer:
                xlabel: str = None,
                ylabel: str = None,
                colored_motifs: List[str] = None,
-               debug: bool = False
+               debug: bool = False,
+               ax=None,
+               close: bool = False,
                ):
         """
         Generate a plot showing the variations in tandem repeat sequences.
@@ -198,10 +222,27 @@ class TandemRepeatVisualizer:
         :param ylabel: y label
         :param colored_motifs: a list of motifs to be colored. Other motifs will be colored in grey.
         :param debug: if true, print verbose information.
+        :param ax: a ``matplotlib.axes.Axes`` to draw into. If ``None`` (default), a new
+                   figure and axes are created. Use this to embed the plot in a custom
+                   subplot grid.
+        :param close: if true, call ``plt.close(fig)`` after drawing (useful for batch
+                      jobs). Default is ``False`` so callers can post-style the figure.
+
+        Returns
+        -------
+        (fig, ax) : tuple of (matplotlib.figure.Figure, matplotlib.axes.Axes)
+            The figure and main axes the plot was drawn on. Use them to apply
+            additional matplotlib styling (e.g. ``ax.tick_params(labelsize=14)``,
+            ``ax.set_xlabel('Repeat unit', fontsize=12)``) before saving via
+            ``fig.savefig(...)``. Pass ``output_name=None`` to skip the built-in
+            savefig call when you want full control over output.
         """
 
         max_repeat_count = len(aligned_labeled_repeats[0])
-        if figure_size is None:
+        if ax is not None:
+            ax_main = ax
+            fig = ax.figure
+        elif figure_size is None:
             h = len(sample_ids) // 5 + 2 if len(sample_ids) > 50 else 5
             w = max_repeat_count // 5 + 2 if max_repeat_count > 50 else max_repeat_count // 5 + 2
             if not allele_as_row:
@@ -264,12 +305,12 @@ class TandemRepeatVisualizer:
                 fig.savefig(f"{output_name}.pdf", dpi=dpi, bbox_inches='tight')
             else:
                 fig.savefig(f"{output_name}", dpi=dpi, bbox_inches='tight')
-        else:
-            fig.savefig("test_trplot.png", dpi=dpi, bbox_inches='tight')
 
         if show_figure:
             plt.show()
-        plt.close(fig)
+        if close:
+            plt.close(fig)
+        return fig, ax_main
 
     def set_symbol_to_motif_map(self, aligned_labeled_repeats, alpha, color_palette, colored_motifs, colormap,
                                 symbol_to_motif):
