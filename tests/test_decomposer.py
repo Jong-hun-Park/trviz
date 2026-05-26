@@ -11,28 +11,36 @@ def tr_decomposer_dp():
 @pytest.mark.parametrize(
     "sequence, motifs, expected",
     [
+        ("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "AAAAAA", ["AAAAAA", "AAAAAA", "AAAAAA", "AAAAAA", "AAAAAA"]),
+        ("ACTGACTGACTG", "ACTG", ["ACTG", "ACTG", "ACTG"]),
+        ("AACCTTTTCTAACCTTTTCT", "AACCTTTTCT", ["AACCTTTTCT", "AACCTTTTCT"]),
         (
-                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                "AAAAAA",
-                ["AAAAAA", "AAAAAA", "AAAAAA", "AAAAAA", "AAAAAA"]
-        ),
-        (
-                "ACTGACTGACTG",
-                "ACTG",
-                ["ACTG", "ACTG", "ACTG"]
-        ),
-        (
-                "AACCTTTTCTAACCTTTTCT",
-                "AACCTTTTCT",
-                ["AACCTTTTCT", "AACCTTTTCT"]
-        ),
-        (
-                "CGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGG",
+            "CGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGG",
+            "CGG",
+            [
                 "CGG",
-                ["CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
-                 "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG"]
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+            ],
         ),
-    ]
+    ],
 )
 def test_decompose_dp_perfect_repeats_single_motif(tr_decomposer_dp, sequence, motifs, expected):
     decomposed_tr = tr_decomposer_dp.decompose(sequence, motifs)
@@ -42,45 +50,39 @@ def test_decompose_dp_perfect_repeats_single_motif(tr_decomposer_dp, sequence, m
 @pytest.mark.parametrize(
     "sequence, motifs, expected",
     [
+        ("AAAAACAAAAAAAAAAATAAAAAATTAAAA", ["AAAAAA"], ["AAAAAC", "AAAAAA", "AAAAAT", "AAAAAA", "TTAAAA"]),
+        ("ACTGACTTACTG", ["ACTG"], ["ACTG", "ACTT", "ACTG"]),
+        ("AACCTTTTCTAACCTTGTCT", ["AACCTTTTCT"], ["AACCTTTTCT", "AACCTTGTCT"]),
         (
-                "AAAAAC"
-                "AAAAAA"
-                "AAAAAT"
-                "AAAAAA"
-                "TTAAAA",
-                ["AAAAAA"],
-                ["AAAAAC", "AAAAAA", "AAAAAT", "AAAAAA", "TTAAAA"]
+            "CGCCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGT",
+            ["CGG"],
+            [
+                "CGC",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGT",
+            ],
+            # ["CG", "CCGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
+            #  "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGT"]
         ),
-        (
-                "ACTG"
-                "ACTT"
-                "ACTG",
-                ["ACTG"],
-                ["ACTG", "ACTT", "ACTG"]
-        ),
-        (
-                "AACCTTTTCT"
-                "AACCTTGTCT",
-                ["AACCTTTTCT"],
-                ["AACCTTTTCT", "AACCTTGTCT"]
-        ),
-        (
-                "CGCCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGT",
-                ["CGG"],
-                ["CGC", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
-                 "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGT"]
-                # ["CG", "CCGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
-                #  "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGT"]
-        ),
-        (
-                "AAATA"
-                "AAATT"
-                "AAATAA"
-                "AAATA",
-                ["AAATA"],
-                ['AAATA', 'AAATT', 'AAATAA', 'AAATA']
-        ),
-    ]
+        ("AAATAAAATTAAATAAAAATA", ["AAATA"], ["AAATA", "AAATT", "AAATAA", "AAATA"]),
+    ],
 )
 def test_decompose_dp_imperfect_repeats_single_motif(tr_decomposer_dp, sequence, motifs, expected):
     decomposed_tr = tr_decomposer_dp.decompose(sequence, motifs)
@@ -90,88 +92,70 @@ def test_decompose_dp_imperfect_repeats_single_motif(tr_decomposer_dp, sequence,
 @pytest.mark.parametrize(
     "sequence, motifs, expected",
     [
+        ("AAAAACAAAAAAAAAAATAAAAAATTAAAA", ["AAAAAA", "TTAAAA"], ["AAAAAC", "AAAAAA", "AAAAAT", "AAAAAA", "TTAAAA"]),
+        ("ACTGACTTACTG", ["ACTG", "ACTT"], ["ACTG", "ACTT", "ACTG"]),
+        ("AACCTTTTCTAACCTTGTCTAACCTTGTCT", ["AACCTTTTCT", "AACCTTGTCT"], ["AACCTTTTCT", "AACCTTGTCT", "AACCTTGTCT"]),
         (
-                "AAAAAC"
-                "AAAAAA"
-                "AAAAAT"
-                "AAAAAA"
-                "TTAAAA",
-                ["AAAAAA", "TTAAAA"],
-                ["AAAAAC", "AAAAAA", "AAAAAT", "AAAAAA", "TTAAAA"]
+            "CGCCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGT",
+            ["CGG", "CGC", "CGT"],
+            [
+                "CGC",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGG",
+                "CGT",
+            ],
+            # Compare with the prev test
+            # ["CG", "CCGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
+            #  "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGT"]
         ),
         (
-                "ACTG"
-                "ACTT"
-                "ACTG",
-                ["ACTG", "ACTT"],
-                ["ACTG", "ACTT", "ACTG"]
+            "AAATAAAATTAAATAAAAATA",
+            ["AAATA", "AAATAA"],
+            # ['AAATA', 'AAATT', 'AAATA', 'AAAATA']  # Compare with the prev test
+            ["AAATA", "AAATT", "AAATAA", "AAATA"],
         ),
         (
-                "AACCTTTTCT"
-                "AACCTTGTCT"
-                "AACCTTGTCT",
-                ["AACCTTTTCT", "AACCTTGTCT"],
-                ["AACCTTTTCT", "AACCTTGTCT", "AACCTTGTCT"]
+            "ACCCAACCCACCCAACCCA",
+            ["ACCCA"],
+            ["ACCCA", "ACCC", "ACCCA", "ACCCA"],
         ),
         (
-                "CGCCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGT",
-                ["CGG", "CGC", "CGT"],
-                ["CGC", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
-                 "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGT"]
-                # Compare with the prev test
-                # ["CG", "CCGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG",
-                #  "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGG", "CGT"]
+            "ACTACTACCACT",
+            ["ACT"],
+            ["ACT", "ACT", "ACC", "ACT"],
         ),
         (
-                "AAATA"
-                "AAATT"
-                "AAATA"
-                "AAAATA",
-                ["AAATA", "AAATAA"],
-                # ['AAATA', 'AAATT', 'AAATA', 'AAAATA']  # Compare with the prev test
-                ['AAATA', 'AAATT', 'AAATAA', 'AAATA']
+            "ACTACTACCGACT",
+            ["ACT"],
+            ["ACT", "ACT", "ACCG", "ACT"],
         ),
         (
-                "ACCCA"
-                "ACCC"
-                "ACCCA"
-                "ACCCA",
-                ["ACCCA"],
-                ["ACCCA", "ACCC", "ACCCA", "ACCCA"],
+            "ACTACTACCGACT",
+            ["ACT", "AC", "CG"],
+            ["ACT", "ACT", "AC", "CG", "ACT"],
         ),
         (
-                "ACT"
-                "ACT"
-                "ACC"
-                "ACT",
-                ["ACT"],
-                ["ACT", "ACT", "ACC", "ACT"],
+            "AATAAAATAAAAATAA",
+            ["AATAA"],
+            ["AATAA", "AATAAA", "AATAA"],
         ),
-        (
-                "ACT"
-                "ACT"
-                "ACCG"
-                "ACT",
-                ["ACT"],
-                ["ACT", "ACT", "ACCG", "ACT"],
-        ),
-        (
-                "ACT"
-                "ACT"
-                "AC"
-                "CG"
-                "ACT",
-                ["ACT", "AC", "CG"],
-                ["ACT", "ACT", "AC", "CG", "ACT"],
-        ),
-        (
-                "AATAA"
-                "AATAAA"
-                "AATAA",
-                ["AATAA"],
-                ["AATAA", "AATAAA", "AATAA"],
-        ),
-    ]
+    ],
 )
 def test_decompose_dp_imperfect_repeats_multiple_motif(tr_decomposer_dp, sequence, motifs, expected):
     decomposed_tr = tr_decomposer_dp.decompose(sequence, motifs)
@@ -182,39 +166,39 @@ def test_decompose_dp_imperfect_repeats_multiple_motif(tr_decomposer_dp, sequenc
     "sequence, motifs, kwargs, expected",
     [
         (
-                "ACGTTTACGTTTACGTTTACGTTT",
-                ["ACGTTT"],
-                {'match_score': 5, 'mismatch_score': -2, 'insertion_score': -3, 'deletion_score': -3},
-                ["ACGTTT", "ACGTTT", "ACGTTT", "ACGTTT"],
+            "ACGTTTACGTTTACGTTTACGTTT",
+            ["ACGTTT"],
+            {"match_score": 5, "mismatch_score": -2, "insertion_score": -3, "deletion_score": -3},
+            ["ACGTTT", "ACGTTT", "ACGTTT", "ACGTTT"],
         ),
         (
-                "ACGTTTACGTTTACGTTTACGTTT",
-                "ACGTTT",
-                {'match_score': '5', 'mismatch_score': '3', 'insertion_score': '1', 'deletion_score': '1'},
-                ValueError,
+            "ACGTTTACGTTTACGTTTACGTTT",
+            "ACGTTT",
+            {"match_score": "5", "mismatch_score": "3", "insertion_score": "1", "deletion_score": "1"},
+            ValueError,
         ),
         (
-                "ACGTTTACGTTTACGTTTACGTTT",
-                "ACGTTT",
-                {'mismatch': 3},  # Invalid. mismatch_score is the correct key
-                KeyError,
+            "ACGTTTACGTTTACGTTTACGTTT",
+            "ACGTTT",
+            {"mismatch": 3},  # Invalid. mismatch_score is the correct key
+            KeyError,
         ),
         (
-                "ACGTTTACGTTTACGTTTACGTTT",
-                "ACGTTT",
-                {'verbose': True},
-                ["ACGTTT", "ACGTTT", "ACGTTT", "ACGTTT"],
+            "ACGTTTACGTTTACGTTTACGTTT",
+            "ACGTTT",
+            {"verbose": True},
+            ["ACGTTT", "ACGTTT", "ACGTTT", "ACGTTT"],
         ),
         (
-                "ACGTTTACGTTTACGTTTACGTTT",
-                "ACGTTT",
-                {'verbose': 'T'},
-                ValueError,
+            "ACGTTTACGTTTACGTTTACGTTT",
+            "ACGTTT",
+            {"verbose": "T"},
+            ValueError,
         ),
-    ]
+    ],
 )
 def test_decompose_dp_arguments(tr_decomposer_dp, sequence, motifs, kwargs, expected):
-    if type(expected) == type and issubclass(expected, Exception):
+    if isinstance(expected, type) and issubclass(expected, Exception):
         with pytest.raises(expected):
             tr_decomposer_dp.decompose(sequence, motifs, **kwargs)
     else:
@@ -241,31 +225,29 @@ def test_decompose_rejects_non_list_motifs(tr_decomposer_dp):
     "sequence, motifs, kwargs, expected",
     [
         (  # insertion tie-break
-                "ACGTACGTTACGTAACGT",
-                ["ACGT"],
-                {'match_score': 2, 'mismatch_score': -1, 'insertion_score': -1, 'deletion_score': -1, 'verbose': True},
-                ["ACGT", "ACGTT", "ACGTA", "ACGT"],
+            "ACGTACGTTACGTAACGT",
+            ["ACGT"],
+            {"match_score": 2, "mismatch_score": -1, "insertion_score": -1, "deletion_score": -1, "verbose": True},
+            ["ACGT", "ACGTT", "ACGTA", "ACGT"],
         ),
         (  # insertion tie-break
-                "ACGTACGTTACGTAACGT",
-                ["ACGT"],
-                {'match_score': 2, 'mismatch_score': -1, 'insertion_score': -2, 'deletion_score': -2, 'verbose': True},
-                ["ACGT", "ACGTT", "ACGTA", "ACGT"],
+            "ACGTACGTTACGTAACGT",
+            ["ACGT"],
+            {"match_score": 2, "mismatch_score": -1, "insertion_score": -2, "deletion_score": -2, "verbose": True},
+            ["ACGT", "ACGTT", "ACGTA", "ACGT"],
         ),
         (
-                "ACCCAACCCACCCAACCCA",
-                ["ACCCA"],
-                {'match_score': 2, 'mismatch_score': -1, 'insertion_score': -1, 'deletion_score': -1, 'verbose': True},
-                ["ACCCA", "ACCC", "ACCCA", "ACCCA"],
+            "ACCCAACCCACCCAACCCA",
+            ["ACCCA"],
+            {"match_score": 2, "mismatch_score": -1, "insertion_score": -1, "deletion_score": -1, "verbose": True},
+            ["ACCCA", "ACCC", "ACCCA", "ACCCA"],
         ),
-    ]
+    ],
 )
 def test_decompose_dp_tie_break(tr_decomposer_dp, sequence, motifs, kwargs, expected):
-    if type(expected) == type and issubclass(expected, Exception):
+    if isinstance(expected, type) and issubclass(expected, Exception):
         with pytest.raises(expected):
             tr_decomposer_dp.decompose(sequence, motifs, **kwargs)
     else:
         decomposed_tr = tr_decomposer_dp.decompose(sequence, motifs, **kwargs)
         assert decomposed_tr == expected
-
-

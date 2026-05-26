@@ -1,24 +1,22 @@
 import logging
-from typing import List
 from collections import Counter, defaultdict
 
-from trviz.utils import is_valid_sequence
-from trviz.utils import get_motifs_from_visited_states_and_region
-
 import numpy as np
+
+from trviz.utils import get_motifs_from_visited_states_and_region, is_valid_sequence
 
 logger = logging.getLogger(__name__)
 
 DP_MODULE = "DP"
 try:
     from trviz.cy.decompose import decompose_cy
+
     DP_MODULE = "DP_CY"
 except ImportError:
     logger.warning("Cython is not available. Using pure python implementation for decomposition")
 
 
 class Decomposer:
-
     def __init__(self, mode=DP_MODULE):
         if mode == "DP_CY":
             self.mode = mode
@@ -30,7 +28,7 @@ class Decomposer:
             raise ValueError(f"{mode} is invalid mode for tandem repeat decomposer.")
 
     @staticmethod
-    def refine(decomposed_trs: List[List[str]], verbose=False) -> List[List[str]]:
+    def refine(decomposed_trs: list[list[str]], verbose=False) -> list[list[str]]:
         """
         There can be multiple optimal ways to decompose a string into motifs.
         A simple example would be an insertion of a sequence in the boundary of motifs.
@@ -54,9 +52,9 @@ class Decomposer:
         # Count motif pairs
         for tr in decomposed_trs:
             for i in range(len(tr) - 1):
-                first_motif, second_motif = tr[i], tr[i+1]
+                first_motif, second_motif = tr[i], tr[i + 1]
                 motif_pair = (first_motif, second_motif)
-                motif_pair_str = ''.join(motif_pair)
+                motif_pair_str = "".join(motif_pair)
 
                 motif_pair_counter[motif_pair] += 1
                 motif_pair_str_counter[motif_pair_str] += 1
@@ -65,7 +63,7 @@ class Decomposer:
         refined_trs = []
         for tr in decomposed_trs:
             for i in range(len(tr) - 1):
-                first_motif, second_motif = tr[i], tr[i+1]
+                first_motif, second_motif = tr[i], tr[i + 1]
                 motif_pair = (first_motif, second_motif)
 
                 # After replacement, a new pair can be created. In this case, we just skip
@@ -73,15 +71,16 @@ class Decomposer:
                     continue
 
                 # find the most frequent pair and replace the low frequency pair with the high frequency pair
-                if motif_pair_counter[motif_pair] < motif_pair_str_counter[''.join(motif_pair)]:
+                if motif_pair_counter[motif_pair] < motif_pair_str_counter["".join(motif_pair)]:
                     max_frequency = 0
                     max_frequency_motif_pair = None
-                    for motif_pair in motif_pair_str_to_motif_pair[''.join(motif_pair)]:
-                        if motif_pair_counter[motif_pair] > max_frequency:
-                            max_frequency = motif_pair_counter[motif_pair]
-                            max_frequency_motif_pair = motif_pair
+                    candidate_pairs = motif_pair_str_to_motif_pair["".join(motif_pair)]
+                    for candidate_pair in candidate_pairs:
+                        if motif_pair_counter[candidate_pair] > max_frequency:
+                            max_frequency = motif_pair_counter[candidate_pair]
+                            max_frequency_motif_pair = candidate_pair
                     if verbose:
-                        logger.info("Multiple pairs found %s", motif_pair_str_to_motif_pair[''.join(motif_pair)])
+                        logger.info("Multiple pairs found %s", candidate_pairs)
                         logger.info("Max frequency motif pair: %s", max_frequency_motif_pair)
 
                     tr[i], tr[i + 1] = max_frequency_motif_pair
@@ -123,10 +122,10 @@ class Decomposer:
 
     @staticmethod
     def _decompose_dp(
-            sequence,
-            motifs,
-            **kwargs,
-    ) -> List:
+        sequence,
+        motifs,
+        **kwargs,
+    ) -> list:
         """
         Decompose sequence into motifs using dynamic programming
 
@@ -175,17 +174,22 @@ class Decomposer:
         """
 
         def _check_if_dp_parameters_are_valid(**kwargs):
-            valid_keys = {"match_score", "mismatch_score",
-                          "insertion_score", "deletion_score", "min_score_threshold",
-                          "verbose"}
+            valid_keys = {
+                "match_score",
+                "mismatch_score",
+                "insertion_score",
+                "deletion_score",
+                "min_score_threshold",
+                "verbose",
+            }
             for k, v in kwargs.items():
                 if k not in valid_keys:
                     raise KeyError(f"Invalid keyword: {k}")
                 if "score" in k:
-                    if type(v) not in [int, float]:
+                    if not isinstance(v, (int, float)):
                         raise ValueError(f"Invalid value {k}: {v}")
                 if "verbose" == k:
-                    if type(v) != bool:
+                    if not isinstance(v, bool):
                         raise ValueError(f"Invalid value type. {k}: {v}")
 
         _check_if_dp_parameters_are_valid(**kwargs)
@@ -206,7 +210,7 @@ class Decomposer:
         # 0 <= j <= len(m): count: len(m)+1
         max_motif_length = len(max(motifs, key=len))
         if verbose:
-            logger.info("Motifs used for decomposition: %s", ','.join(motifs))
+            logger.info("Motifs used for decomposition: %s", ",".join(motifs))
             logger.info("Max motif length %s", max_motif_length)
 
         s = np.zeros((len(sequence) + 1, len(motifs), max_motif_length + 1))
@@ -234,8 +238,11 @@ class Decomposer:
                     # print(f'motif: {motif}, i:{i}, m:{m}, j:{j}')
                     if j == 1:
                         if i == 1:
-                            from_diagonal = s[i - 1, m, j - 1] + match_score if sequence[i - 1] == motif[j - 1] else \
-                                s[i - 1, m, j - 1] + mismatch_score
+                            from_diagonal = (
+                                s[i - 1, m, j - 1] + match_score
+                                if sequence[i - 1] == motif[j - 1]
+                                else s[i - 1, m, j - 1] + mismatch_score
+                            )
                             from_m_left = s[i - 1, m, j] + insertion_score
                             from_m_up = s[i, m, j - 1] + deletion_score
 
@@ -250,7 +257,7 @@ class Decomposer:
                             else:  # max from up in the same m
                                 backtrack[i][m][j] = (i, m, 0)  # j == 0
                         else:
-                            max_motif_val = float('-inf')
+                            max_motif_val = float("-inf")
                             max_m_index = -1
                             max_j_of_max_m = -1
                             for mi, ms in enumerate(motifs):
@@ -260,22 +267,25 @@ class Decomposer:
                                     max_m_index = mi
                                     max_j_of_max_m = len(ms)
 
-                            max_from_motif_end = max_motif_val + match_score if sequence[i - 1] == motif[
-                                0] else max_motif_val + mismatch_score
+                            max_from_motif_end = (
+                                max_motif_val + match_score
+                                if sequence[i - 1] == motif[0]
+                                else max_motif_val + mismatch_score
+                            )
                             from_m_left = s[i - 1, m, 1] + insertion_score
                             from_m_up = s[i, m, 0] + deletion_score
 
                             s[i, m, j] = max(max_from_motif_end, from_m_left, from_m_up)
-                            '''
+                            """
                                 Tie-breaking for max_from_motif_end vs from_m_left
                                 np.argmax select the first item if they have the same values
                                 Select motif_end when motif_end and from_m_left has the same value
-                                
+
                                 In the following example, 2) is preferred.
                                 Motif: ACGT, Sequence: ACGT"T"ACGT (Additional T in between the motif)
                                 Decomposition 1) ACGT- TACGT
                                 Decomposition 2) ACGTT -ACGT
-                            '''
+                            """
                             argmax_index = np.argmax([max_from_motif_end, from_m_left, from_m_up])
 
                             if argmax_index == 0:  # max from motif end
@@ -285,8 +295,11 @@ class Decomposer:
                             else:  # max from up in the same m
                                 backtrack[i, m, j] = (i, m, 0)
                     else:
-                        diagonal = s[i - 1, m, j - 1] + match_score if sequence[i - 1] == motif[j - 1] else \
-                        s[i - 1, m, j - 1] + mismatch_score
+                        diagonal = (
+                            s[i - 1, m, j - 1] + match_score
+                            if sequence[i - 1] == motif[j - 1]
+                            else s[i - 1, m, j - 1] + mismatch_score
+                        )
                         from_left = s[i - 1, m, j] + insertion_score
                         from_up = s[i, m, j - 1] + deletion_score
 
@@ -319,7 +332,7 @@ class Decomposer:
                 backtrack_start = (len(sequence), m, len(motif))
 
         if backtrack_start is None:
-            raise ValueError("No good match greater than score threshold of {}".format(min_score_threshold))
+            raise ValueError(f"No good match greater than score threshold of {min_score_threshold}")
 
         if verbose:
             logger.info("Best score: %s", backtrack_max)
@@ -350,8 +363,8 @@ class Decomposer:
             prev_j = j
 
         if verbose:
-            logger.info("Input     : %s", ''.join(decomposed_motifs[::-1]))
-            logger.info("Decomposed: %s", ' '.join(decomposed_motifs[::-1]))
+            logger.info("Input     : %s", "".join(decomposed_motifs[::-1]))
+            logger.info("Decomposed: %s", " ".join(decomposed_motifs[::-1]))
 
         return decomposed_motifs[::-1]
 
@@ -362,10 +375,10 @@ class Decomposer:
 
         model = Model(name="RepeatFinderHMM")
 
-        insert_distribution = DiscreteDistribution({'A': 0.25, 'C': 0.25, 'G': 0.25, 'T': 0.25})
+        insert_distribution = DiscreteDistribution({"A": 0.25, "C": 0.25, "G": 0.25, "T": 0.25})
         if has_flanking_sequence:
-            start_random_matches = State(insert_distribution, name='start_random_matches')
-            end_random_matches = State(insert_distribution, name='end_random_matches')
+            start_random_matches = State(insert_distribution, name="start_random_matches")
+            end_random_matches = State(insert_distribution, name="end_random_matches")
             model.add_states([start_random_matches, end_random_matches])
 
         last_end = None
@@ -374,18 +387,18 @@ class Decomposer:
             match_states = []
             delete_states = []
             for i in range(len(motif) + 1):  # I0 to IN
-                insert_states.append(State(insert_distribution, name='I%s_%s' % (i, repeat)))
+                insert_states.append(State(insert_distribution, name="I%s_%s" % (i, repeat)))
 
             for i in range(len(motif)):  # M1 to MN
-                distribution_map = dict({'A': 0.01, 'C': 0.01, 'G': 0.01, 'T': 0.01})
+                distribution_map = dict({"A": 0.01, "C": 0.01, "G": 0.01, "T": 0.01})
                 distribution_map[motif[i]] = 0.97
-                match_states.append(State(DiscreteDistribution(distribution_map), name='M%s_%s' % (str(i + 1), repeat)))
+                match_states.append(State(DiscreteDistribution(distribution_map), name="M%s_%s" % (str(i + 1), repeat)))
 
             for i in range(len(motif)):  # D1 to DN
-                delete_states.append(State(None, name='D%s_%s' % (str(i + 1), repeat)))
+                delete_states.append(State(None, name="D%s_%s" % (str(i + 1), repeat)))
 
-            unit_start = State(None, name='unit_start_%s' % repeat)
-            unit_end = State(None, name='unit_end_%s' % repeat)
+            unit_start = State(None, name="unit_start_%s" % repeat)
+            unit_end = State(None, name="unit_end_%s" % repeat)
             model.add_states(insert_states + match_states + delete_states + [unit_start, unit_end])
             last = len(delete_states) - 1
 
@@ -472,10 +485,10 @@ class Decomposer:
                 if k not in valid_keys:
                     raise KeyError(f"Invalid keyword: {k}")
                 if "repeat_count" in k:
-                    if type(v) != int:
+                    if not isinstance(v, int):
                         raise ValueError(f"Invalid value {k}: {v}")
                 if "has_flanking_sequence" in k or "verbose" == k:
-                    if type(v) != bool:
+                    if not isinstance(v, bool):
                         raise ValueError(f"Invalid value {k}: {v}")
 
         _check_if_hmm_parameters_are_valid(**kwargs)
@@ -509,4 +522,3 @@ class Decomposer:
             logger.info("decomposed_motifs: %s", deomposed_motifs)
 
         return deomposed_motifs
-

@@ -1,10 +1,9 @@
+import itertools
 import logging
-from typing import List, Dict
 import string
 from collections import Counter
 
 import numpy as np
-import itertools
 from Bio import SeqIO
 
 logger = logging.getLogger(__name__)
@@ -13,16 +12,18 @@ LOWERCASE_LETTERS = string.ascii_lowercase
 UPPERCASE_LETTERS = string.ascii_uppercase
 DIGITS = string.digits
 
-skipping_characters = ['(', '=', '<', '>', '?', '-']
-PRIVATE_MOTIF_LABEL = '?'
+skipping_characters = ["(", "=", "<", ">", "?", "-"]
+PRIVATE_MOTIF_LABEL = "?"
 INDEX_TO_CHR = list(LOWERCASE_LETTERS) + list(UPPERCASE_LETTERS) + list(DIGITS)
-INDEX_TO_CHR.extend([chr(x) for x in range(33, 127) if chr(x) not in skipping_characters and chr(x) not in INDEX_TO_CHR])
+INDEX_TO_CHR.extend(
+    [chr(x) for x in range(33, 127) if chr(x) not in skipping_characters and chr(x) not in INDEX_TO_CHR]
+)
 
-DNA_CHARACTERS = {'A', 'C', 'G', 'T'}
+DNA_CHARACTERS = {"A", "C", "G", "T"}
 
 
 def get_sample_and_sequence_from_fasta(fasta_file):
-    """ Read fasta file and output headers and sequences """
+    """Read fasta file and output headers and sequences"""
     headers = []
     sequences = []
     with open(fasta_file) as handle:
@@ -32,8 +33,9 @@ def get_sample_and_sequence_from_fasta(fasta_file):
 
     return headers, sequences
 
+
 def get_motif_counter(decomposed_vntrs):
-    """ Return a counter for each motif """
+    """Return a counter for each motif"""
     motif_counter = Counter()
     for decomposed_vntr in decomposed_vntrs:
         motif_counter.update(Counter(decomposed_vntr))
@@ -42,9 +44,13 @@ def get_motif_counter(decomposed_vntrs):
 
 
 def is_emitting_state(state_name):
-    """ Check if the given state is emitting state, that is insertion or matching state """
-    if state_name.startswith('M') or state_name.startswith('I') or state_name.startswith('start_random_matches') \
-            or state_name.startswith('end_random_matches'):
+    """Check if the given state is emitting state, that is insertion or matching state"""
+    if (
+        state_name.startswith("M")
+        or state_name.startswith("I")
+        or state_name.startswith("start_random_matches")
+        or state_name.startswith("end_random_matches")
+    ):
         return True
     return False
 
@@ -53,13 +59,13 @@ def get_repeating_pattern_lengths(visited_states):
     lengths = []
     prev_start = None
     for i in range(len(visited_states)):
-        if visited_states[i].startswith('unit_end') and prev_start is not None:
+        if visited_states[i].startswith("unit_end") and prev_start is not None:
             current_len = 0
             for j in range(prev_start, i):
                 if is_emitting_state(visited_states[j]):
                     current_len += 1
             lengths.append(current_len)
-        if visited_states[i].startswith('unit_start'):
+        if visited_states[i].startswith("unit_start"):
             prev_start = i
     return lengths
 
@@ -68,14 +74,14 @@ def get_motifs_from_visited_states_and_region(visited_states, region):
     lengths = get_repeating_pattern_lengths(visited_states)
     repeat_segments = []
     added = 0
-    for l in lengths:
-        repeat_segments.append(region[added:added + l])
-        added += l
+    for length in lengths:
+        repeat_segments.append(region[added : added + length])
+        added += length
     return repeat_segments
 
 
 def is_valid_sequence(sequence):
-    """ Check if the given sequence is DNA sequence """
+    """Check if the given sequence is DNA sequence"""
     for s in sequence:
         if s not in DNA_CHARACTERS:
             return False
@@ -83,7 +89,7 @@ def is_valid_sequence(sequence):
 
 
 def sort_by_manually(aligned_vntrs, sample_ids, sample_order_file):
-    """ Sort the aligned and encoded tandem repeats based on the given order """
+    """Sort the aligned and encoded tandem repeats based on the given order"""
     if sample_order_file is None:
         logger.warning("Sample order file is not provided. Follow the given sample order.")
         return sample_ids, aligned_vntrs
@@ -100,18 +106,25 @@ def sort_by_manually(aligned_vntrs, sample_ids, sample_order_file):
     return sorted_sample_ids, sorted_aligned_vntrs
 
 
-def sort(aligned_vntrs, sample_ids, symbol_to_motif, sample_order_file, method='motif_count'):
-    """ Sort the aligned and encoded tandem repeats """
-    if method == 'name':
-        return zip(*sorted(list(zip(sample_ids, aligned_vntrs)), key=lambda x: x[0]))
-    elif method == 'motif_count':
-        return zip(*sorted(list(zip(sample_ids, aligned_vntrs)), key=lambda x: len(x[1].replace('-', '')), reverse=True))
-    elif method == 'simulated_annealing':
+def sort(aligned_vntrs, sample_ids, symbol_to_motif, sample_order_file, method="motif_count"):
+    """Sort the aligned and encoded tandem repeats"""
+    if method == "name":
+        return zip(*sorted(list(zip(sample_ids, aligned_vntrs, strict=True)), key=lambda x: x[0]), strict=True)
+    elif method == "motif_count":
+        return zip(
+            *sorted(
+                list(zip(sample_ids, aligned_vntrs, strict=True)),
+                key=lambda x: len(x[1].replace("-", "")),
+                reverse=True,
+            ),
+            strict=True,
+        )
+    elif method == "simulated_annealing":
         return sort_by_simulated_annealing_optimized(aligned_vntrs, sample_ids, symbol_to_motif)
-    elif method == 'manually':
+    elif method == "manually":
         return sort_by_manually(aligned_vntrs, sample_ids, sample_order_file)
     else:
-        raise ValueError("Please check the rearrangement method. {}".format(method))
+        raise ValueError(f"Please check the rearrangement method. {method}")
 
 
 def get_levenshtein_distance(s1, s2):
@@ -129,7 +142,7 @@ def get_levenshtein_distance(s1, s2):
 
     distances = range(len(s1) + 1)
     for i2, c2 in enumerate(s2):
-        distances_ = [i2+1]
+        distances_ = [i2 + 1]
         for i1, c1 in enumerate(s1):
             if c1 == c2:
                 distances_.append(distances[i1])
@@ -147,12 +160,12 @@ def _calculate_cost(seq1, seq2, alphabet_to_motif):
     for i in range(len(seq1)):
         if seq1[i] != seq2[i]:
             # convert the motif to actual sequence
-            if seq1[i] != '-' and seq2[i] != '-':
+            if seq1[i] != "-" and seq2[i] != "-":
                 s1 = alphabet_to_motif[seq1[i].lower()]
                 s2 = alphabet_to_motif[seq2[i].lower()]
                 cost += get_levenshtein_distance(s1, s2)
             else:
-                if seq1[i] == '-':
+                if seq1[i] == "-":
                     cost += len(alphabet_to_motif[seq2[i].lower()])
                 else:
                     cost += len(alphabet_to_motif[seq1[i].lower()])
@@ -168,10 +181,10 @@ def calculate_cost_with_dist_matrix(aligned_encoded_vntr1, aligned_encoded_vntr2
         symbol2 = aligned_encoded_vntr2[i]
         if symbol1 != symbol2:
             # convert the motif to actual sequence
-            if symbol1 != '-' and symbol2 != '-':
+            if symbol1 != "-" and symbol2 != "-":
                 cost += dist_matrix[symbol1][symbol2]
             else:
-                if symbol1 == '-':
+                if symbol1 == "-":
                     if allow_copy_change:
                         cost += 1  # allow motif count change as "one edit"
                     else:
@@ -214,24 +227,27 @@ def get_distance_matrix(symbol_to_motif, score=False):
             else:
                 edit_dist = get_levenshtein_distance(motif_seq1, motif_seq2)
                 if score:
-                    dist_matrix[symbol1][symbol2] = max_score * (1.0 - edit_dist / max(len(motif_seq1), len(motif_seq2)))
+                    dist_matrix[symbol1][symbol2] = max_score * (
+                        1.0 - edit_dist / max(len(motif_seq1), len(motif_seq2))
+                    )
                 else:
                     dist_matrix[symbol1][symbol2] = edit_dist
 
     return dist_matrix
 
 
-def get_score_matrix(symbol_to_motif,
-                     match_score=2,
-                     mismatch_score_for_edit_dist_of_1=-1,
-                     mismatch_score_for_edit_dist_greater_than_1=-2,
-                     gap_open_penalty=1.5,
-                     gap_extension_penalty=0.6,
-                     ):
+def get_score_matrix(
+    symbol_to_motif,
+    match_score=2,
+    mismatch_score_for_edit_dist_of_1=-1,
+    mismatch_score_for_edit_dist_greater_than_1=-2,
+    gap_open_penalty=1.5,
+    gap_extension_penalty=0.6,
+):
 
     score_matrix = dict()
-    score_matrix['gap_open'] = gap_open_penalty
-    score_matrix['gap_extension'] = gap_extension_penalty
+    score_matrix["gap_open"] = gap_open_penalty
+    score_matrix["gap_extension"] = gap_extension_penalty
 
     for symbol1 in symbol_to_motif:
         score_matrix[symbol1] = dict()
@@ -253,6 +269,7 @@ def get_score_matrix(symbol_to_motif,
 
     return score_matrix
 
+
 def calculate_total_cost(alinged_vntrs, dist_matrix):
     total_cost = 0
     for i in range(len(alinged_vntrs) - 1):
@@ -267,8 +284,6 @@ def sort_by_simulated_annealing_optimized(seq_list, sample_ids, symbol_to_motif)
     initial_cost = calculate_total_cost(seq_list, dist_matrix)
     initial_seq_list = seq_list.copy()
     initial_sample_ids = sample_ids.copy()
-    initial_cost_test = calculate_cost(seq_list, symbol_to_motif)
-    # assert initial_cost == initial_cost_test, "Should be the same {} {}".format(initial_cost, initial_cost_test)
 
     T = 1_000
     DECAY = 0.9
@@ -323,7 +338,9 @@ def sort_by_simulated_annealing_optimized(seq_list, sample_ids, symbol_to_motif)
             if after_cost == current_cost:
                 continue
             elif after_cost < current_cost:
-                logger.debug("Swap occurred at %s and %s after cost %s cur cost %s", index_1, index_2, after_cost, current_cost)
+                logger.debug(
+                    "Swap occurred at %s and %s after cost %s cur cost %s", index_1, index_2, after_cost, current_cost
+                )
                 seq_list[index_1], seq_list[index_2] = seq_list[index_2], seq_list[index_1]
                 sample_ids[index_1], sample_ids[index_2] = sample_ids[index_2], sample_ids[index_1]
             else:
@@ -361,12 +378,12 @@ def add_padding(encoded_trs):
     padded_trs = []
     for encoded_tr in encoded_trs:
         padding_count = max_motif_count - len(encoded_tr)
-        padded_trs.append(encoded_tr + '-' * padding_count)
+        padded_trs.append(encoded_tr + "-" * padding_count)
 
     return padded_trs
 
 
-def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', print_end="\r"):
+def print_progress_bar(iteration, total, prefix="", suffix="", decimals=1, length=100, fill="█", print_end="\r"):
     """
     Call in a loop to create terminal progress bar
     @params:
@@ -381,17 +398,18 @@ def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, lengt
     """
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
-    bar = fill * filledLength + '-' * (length - filledLength)
+    bar = fill * filledLength + "-" * (length - filledLength)
     # Progress bar uses print() with \r intentionally — logging would line-buffer
     # and break in-place updates.
-    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end=print_end)
+    print(f"\r{prefix} |{bar}| {percent}% {suffix}", end=print_end)
     # Print New Line on Complete
     if iteration == total:
         print()
 
 
-def get_motif_marks(sample_ids: List[str], decomposed_trs: List[List[str]], region_prediction_file: str) \
-        -> Dict[str, str]:
+def get_motif_marks(
+    sample_ids: list[str], decomposed_trs: list[list[str]], region_prediction_file: str
+) -> dict[str, str]:
     """
     Parse the region prediction file and store the result in a dictionary
     The format of the file
@@ -408,22 +426,22 @@ def get_motif_marks(sample_ids: List[str], decomposed_trs: List[List[str]], regi
     :return:
     """
     region_prediction = {}
-    with open(region_prediction_file, 'r') as f:
+    with open(region_prediction_file) as f:
         for line in f:
             line = line.strip()
-            if line.startswith('>'):
+            if line.startswith(">"):
                 sample_id = line.strip()[1:]  # remove the '>' sign
                 continue
             else:
                 region_prediction[sample_id] = []
-                regions = line.strip().split('\t')
+                regions = line.strip().split("\t")
                 for region in regions:
-                    region, start, end = region.split(',')
+                    region, start, end = region.split(",")
                     region_prediction[sample_id].append((region, start, end))  # start is inclusive, end is exclusive
 
     # get the motif marks
     motif_marks = {}
-    for sample_id, decomposed_tr in zip(sample_ids, decomposed_trs):
+    for sample_id, decomposed_tr in zip(sample_ids, decomposed_trs, strict=True):
         motif_mark = ""
         cumulative_length = 0
 
@@ -438,8 +456,11 @@ def get_motif_marks(sample_ids: List[str], decomposed_trs: List[List[str]], regi
                 if region == "intron":
                     # Check if the motif sequence has overlap with any intron regions
                     # any overlap is considered as intron
-                    if int(start) <= motif_start < int(end) or int(start) <= motif_end < int(end)\
-                            or motif_start <= int(start) <= int(end) < motif_end:
+                    if (
+                        int(start) <= motif_start < int(end)
+                        or int(start) <= motif_end < int(end)
+                        or motif_start <= int(start) <= int(end) < motif_end
+                    ):
                         motif_mark += "I"
                         break
             else:
@@ -448,11 +469,13 @@ def get_motif_marks(sample_ids: List[str], decomposed_trs: List[List[str]], regi
             cumulative_length += len(motif_seq)
 
         motif_marks[sample_id] = motif_mark
-        assert len(motif_mark) == len(decomposed_tr), "The length of the motif mark is not equal to the number of motifs"
+        assert len(motif_mark) == len(decomposed_tr), (
+            "The length of the motif mark is not equal to the number of motifs"
+        )
     return motif_marks
 
 
-def get_sample_to_population(population_data, sep='\t', sample_index=0, population_index=5):
+def get_sample_to_population(population_data, sep="\t", sample_index=0, population_index=5):
     """
     Parse the population data file and store the result in a dictionary
     :param population_data: A file containing sample to population information with separated by "sep" parameter
@@ -464,7 +487,7 @@ def get_sample_to_population(population_data, sep='\t', sample_index=0, populati
     """
 
     sample_to_population = {}
-    with open(population_data, "r") as f:
+    with open(population_data) as f:
         for line in f:
             split = line.strip().split(sep)
             sample, population = split[sample_index], split[population_index]

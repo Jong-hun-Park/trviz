@@ -1,4 +1,5 @@
 """Tests for the matplotlib-idiomatic fig/ax return from the visualization API."""
+
 from io import BytesIO
 
 import matplotlib
@@ -111,7 +112,9 @@ def test_plot_motif_color_map_returns_fig_and_ax(visualizer):
     motif_counter = {"ACT": 3, "ACG": 1}
     symbol_to_color = {"A": (0.9, 0.6, 0.0), "B": (0.3, 0.7, 0.9)}
     fig, ax = visualizer.plot_motif_color_map(
-        symbol_to_motif, motif_counter, symbol_to_color,
+        symbol_to_motif,
+        motif_counter,
+        symbol_to_color,
         file_name=None,  # skip savefig
     )
     assert isinstance(fig, plt.Figure)

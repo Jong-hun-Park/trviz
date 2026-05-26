@@ -7,11 +7,13 @@ for compiled extensions is still rough.
 Build from .pyx when Cython is available, fall back to the committed .c
 file otherwise.
 """
-from setuptools import Extension, setup
+
 import numpy
+from setuptools import Extension, setup
 
 try:
     from Cython.Build import cythonize
+
     HAVE_CYTHON = True
 except ImportError:
     HAVE_CYTHON = False
