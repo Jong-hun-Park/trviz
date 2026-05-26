@@ -269,6 +269,7 @@ class TandemRepeatVizWorker:
             file_name=motif_map_output,
             figure_size=motif_map_size,
             close=close,
+            private_motifs=self.motif_encoder.private_motifs,
         )
 
         return fig, ax

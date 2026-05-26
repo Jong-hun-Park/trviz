@@ -121,6 +121,29 @@ def test_trplot_with_single_sequence(visualizer):
     plt.close(fig)
 
 
+def test_plot_motif_color_map_labels_private_motifs(visualizer):
+    """The private color row should be labeled with a count of private motifs,
+    not one arbitrary motif's name."""
+    from trviz.utils import PRIVATE_MOTIF_LABEL
+
+    # 3 private motifs collapsed to PRIVATE_MOTIF_LABEL, plus one normal
+    symbol_to_motif = {PRIVATE_MOTIF_LABEL: "GGG", "a": "ACT"}
+    motif_counter = {"AAA": 1, "CCC": 1, "GGG": 1, "ACT": 17}
+    symbol_to_color = {PRIVATE_MOTIF_LABEL: "black", "a": "red"}
+    private_motifs = ["AAA", "CCC", "GGG"]
+
+    fig, ax = visualizer.plot_motif_color_map(
+        symbol_to_motif, motif_counter, symbol_to_color,
+        private_motifs=private_motifs,
+    )
+    labels = [t.get_text() for t in ax.get_yticklabels()]
+    # Some label should contain the private count, not just a single motif name
+    private_label = next((line for line in labels if "private" in line), None)
+    assert private_label is not None, f"expected a 'private' label, got {labels}"
+    assert "(3)" in private_label  # 3 private motifs
+    plt.close(fig)
+
+
 def test_plot_motif_color_map_returns_fig_and_ax(visualizer):
     symbol_to_motif = {"A": "ACT", "B": "ACG"}
     motif_counter = {"ACT": 3, "ACG": 1}

@@ -1,6 +1,6 @@
 import logging
 
-__version__ = "1.4.1"
+__version__ = "1.4.2"
 
 # Library convention: attach a NullHandler so trviz never emits log records
 # unless the user explicitly configures logging in their application. See
